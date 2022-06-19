@@ -24,7 +24,7 @@ function SelectModel(props) {
                         props.setModel(item);
                     }}
                 >
-                    <label style={{ color: "black", fontSize: "medium" }}>
+                    <label style={{ width: "100%", cursor: "pointer" }}>
                         {item.desc}
                     </label>
                 </Card>

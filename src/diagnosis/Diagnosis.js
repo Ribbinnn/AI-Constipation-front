@@ -24,6 +24,7 @@ export default function Diagnosis(props) {
   const [loading, setLoading] = useState(false);
   const [model, setModel] = useState(null);
   const [HN, setHN] = useState("1234567"); // edit soon
+  const [image, setImage] = useState(null);
   const [current, setCurrent] = useState(0);
   const stepsTitle = [
     "Personal Details",
@@ -141,6 +142,8 @@ export default function Diagnosis(props) {
         {current === 2 && (
           <InsertInput
             model={model}
+            image={image}
+            setImage={setImage}
           />
         )}
         {current === 3 && (

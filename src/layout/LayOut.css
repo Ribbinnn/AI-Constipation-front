@@ -314,6 +314,13 @@ ol {
   min-width: 100px;
 }
 
+.primary-btn.cancel,
+.primary-btn.cancel:hover,
+.primary-btn.cancel:focus,
+.primary-btn.cancel:active {
+  background-color: #c4c4c4;
+}
+
 .primary-btn.smaller {
   height: 45px;
 }
@@ -333,12 +340,34 @@ ol {
   opacity: 0;
 }
 
+.ant-btn-icon-only {
+  vertical-align: -1.7px;
+}
+
 /* .ant-btn-link,
 .ant-btn-link:hover,
 .ant-btn-link:active,
 .ant-btn-link:focus {
   color: #58595b;
 } */
+
+.label-btn,
+.label-btn:hover,
+.label-btn:focus,
+.label-btn:active {
+  background-color: white;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  height: 0px;
+  text-align: left;
+}
+
+.label-btn:hover,
+.label-btn:focus,
+.label-btn:active {
+  background-color: #fafafa;
+}
 
 /* input ----------------------- */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -982,9 +1011,21 @@ hr {
 
 .ant-modal-title,
 .ant-modal-body {
-  text-align: center;
+  /* text-align: center; */
   font-size: large;
   color: black;
+}
+
+.upload-image-modal .ant-modal-header {
+  padding: 30px;
+}
+
+.upload-image-modal .ant-modal-body {
+  padding: 10px 40px 30px 40px;
+}
+
+.webcam-modal .ant-modal-body {
+  text-align: center;
 }
 
 .ant-modal-confirm-warning .ant-modal-body,
@@ -1009,15 +1050,6 @@ hr {
 
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn,
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn:hover {
-  background-color: #9772fb;
-  border: none;
-  border-radius: 8px;
-  font-size: medium;
-  font-weight: bold;
-}
-
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn,
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn:hover {
   background-color: #9772fb;
@@ -1028,11 +1060,7 @@ hr {
 }
 
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn,
-.ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn[disabled],
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn[disabled]:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn,
-.save-2-pacs-modal .ant-modal-footer .ant-btn:hover  {
+.ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn:hover {
   background-color: #c4c4c4;
   border: none;
   border-radius: 8px;
@@ -1047,8 +1075,8 @@ hr {
 }
 
 .ant-modal-confirm-body .ant-modal-confirm-title {
-  font-size: large;
   color: black;
+  font-size: large;
 }
 
 /* popconfirm -------------------- */
@@ -1404,4 +1432,24 @@ table tr td.ant-table-selection-column {
   margin-left: 10px;
   background: #e9c869;
   font-weight: bold;
+}
+
+/* cropper ------------------------ */
+.crop-container {
+  position: relative;
+  width: 100%;
+  height: 330px;
+  background: #333;
+}
+
+/* .cropButton {
+  width: 100%;
+  margin-top: 20px;
+} */
+
+.controls {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
