@@ -11,16 +11,16 @@ export const createUser = async (username, password, first_name, last_name, role
     }
 }
 
-export const updateUser = async (first_name, last_name, role, email, id, password, isChulaSSO) => {
+export const updateUser = async (id, password, first_name, last_name, role, email) => {
     try {
         if (password === "") {
             const res = (
-                await instance.patch("/users", {first_name, last_name, role, email, id, isChulaSSO})
+                await instance.patch("/users", {id, first_name, last_name, role, email})
             ).data;
             return res;
         } else {
             const res = (
-                await instance.patch("/users", {first_name, last_name, role, email, id, password, isChulaSSO})
+                await instance.patch("/users", {id, password, first_name, last_name, role, email})
             ).data;
             return res;
         }
@@ -54,7 +54,7 @@ export const getUserById = async (user_id) => {
 export const deleteUserById = async (user_id) => {
     try {
         const res = (
-            await instance.patch("/users/" + user_id)
+            await instance.patch("/users/delete/" + user_id)
         ).data;
         return res;
     } catch (e) {

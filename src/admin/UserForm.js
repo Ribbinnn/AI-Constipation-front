@@ -12,9 +12,8 @@ const { Option } = Select;
 function UserForm() {
     const { mode } = useParams();
     const [loaded, setLoaded] = useState(false);
-    const roles = ["clinician", "radiologist", "admin"];
+    const roles = ["general", "clinician", "admin"];
     const [users, setUsers] = useState([]);
-    const isChulaSSO = false; // delete soon
     const [form] = Form.useForm();
     const [submit, setSubmit] = useState(false);
     const [inputVisible, setInputVisible] = useState(true);
@@ -210,14 +209,20 @@ function UserForm() {
                                                     // console.log(res);
                                                     Modal.success({content: "Create user successfully."});
                                                     setSubmit(true);
-                                                }).catch((err) => console.log(err.response));
+                                                }).catch((err) => {
+                                                    console.log(err.response);
+                                                    Modal.error({ content: err.response.data.message });
+                                                });
                                             } else {
-                                                updateUser(data.first_name, data.last_name, data.role, data.email, data.username, data.password, isChulaSSO)
+                                                updateUser(data.username, data.password, data.first_name, data.last_name, data.role, data.email)
                                                 .then((res) => {
                                                     // console.log(res);
                                                     Modal.success({content: "Update user successfully."});
                                                     setSubmit(true);
-                                                }).catch((err) => console.log(err.response));
+                                                }).catch((err) => {
+                                                    console.log(err.response);
+                                                    Modal.error({ content: err.response.data.message });
+                                                });
                                             }
                                         }
                                     } catch (errInfo) {
