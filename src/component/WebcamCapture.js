@@ -7,8 +7,8 @@ import Webcam from "react-webcam";
 * code reference: https://github.com/Sristi27/React-webcam
 */
 
-const width = 600;
-const height = 450;
+const width = 440;
+const height = 550;
 
 const videoConstraints = {
     width: width,
@@ -45,10 +45,14 @@ export const WebcamCapture = (props) => {
             maskClosable={false}
             keyboard={false}
             visible={props.visible}
-            onCancel={() => props.setVisible(false)}
+            onCancel={() => {
+                props.setVisible(false);
+                setImage('');
+            }}
             footer={null}
-            width="700px"
+            width="550px"
             className="webcam-modal"
+            style={{ top: 10 }}
             zIndex={2000}
         >
             <div>
@@ -63,7 +67,7 @@ export const WebcamCapture = (props) => {
                     /> : <img src={image} />}
                 </div>
                 <div>
-                    {image != '' ? <div style={{ marginTop: "18px" }}>
+                    {image != '' ? <div style={{ marginTop: "20px" }}>
                         <Button
                             className="primary-btn smaller"
                             onClick={() => setImage('')}
@@ -75,9 +79,10 @@ export const WebcamCapture = (props) => {
                             style={{ marginLeft: "15px" }}
                             onClick={() => {
                                 props.setImage(image);
+                                document.getElementById("input-file").value = "";
                                 props.setImageName(null);
                                 props.setVisible(false);
-                                // setImage('');
+                                setImage('');
                             }}
                         >
                             OK
@@ -85,7 +90,7 @@ export const WebcamCapture = (props) => {
                     </div> :
                     <Button
                         className="primary-btn smaller"
-                        style={{ marginTop: "10px" }}
+                        style={{ marginTop: "12px" }}
                         onClick={() => capture()}
                     >
                         Capture

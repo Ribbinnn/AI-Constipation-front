@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Modal, Row, Col, Button, Image, Slider } from "antd";
+import { Modal, Row, Col, Button, Image, Slider, InputNumber } from "antd";
 import { CameraOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import Cropper from 'react-easy-crop'
 import { getOrientation } from 'get-orientation/browser'
@@ -11,15 +11,20 @@ function UploadImageModal(props) {
     const [webcamVisible, setWebcamVisible] = useState(false);
 
     const onCancel = () => {
-        return Modal.confirm({
-            icon: <ExclamationCircleOutlined />,
-            content: "Image will not be saved.",
-            onOk: () => {
-                props.setVisible(false);
-                setImageSrc(null);
-            },
-            zIndex: 3000,
-        });
+        if (imageSrc) {
+            return Modal.confirm({
+                icon: <ExclamationCircleOutlined />,
+                content: "Image will not be saved.",
+                onOk: () => {
+                    props.setVisible(false);
+                    setImageSrc(null);
+                    setImageName(null);
+                },
+                zIndex: 3000,
+            });
+        } else {
+            props.setVisible(false);
+        }
     };
 
     const [imageSrc, setImageSrc] = useState(null);
@@ -81,7 +86,7 @@ function UploadImageModal(props) {
     return(
         <div>
             <Modal
-                centered
+                // centered
                 destroyOnClose
                 maskClosable={false}
                 keyboard={false}
@@ -89,29 +94,30 @@ function UploadImageModal(props) {
                 onCancel={onCancel}
                 title={<label style={{ color: "#9772fb", fontSize: "25px" }}>Upload X-ray image</label>}
                 footer={null}
-                width="1300px"
+                width="1000px"
                 className="upload-image-modal"
+                style={{ top: 30 }}
             >
                 <div>
                     <Row>
-                        <Col span={6}>
-                            <label style={{ display: "block", marginBottom: "20px" }}>
-                                กรุณากำหนดขอบ Pelvic inlet โดยใช้ <br /> ขอบในของกระดูก iIium (ดังตัวอย่าง)
+                        <Col span={7}>
+                            <label>
+                                กรุณากำหนดภาพดังนี้
+                                <ul style={{ paddingLeft: "1rem", margin: "12px 0 22px 0" }}>
+                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>จุดกลางภาพ:</label> the level of the <br /> iliac crest</li>
+                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านบน:</label> superior to the <br /> upper kidney pole</li>
+                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านล่าง:</label> inferior to the <br /> inferior pubic rami</li>
+                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านข้าง:</label> laterally to the <br /> lateral abdominal wall</li>
+                                </ul>
                             </label>
-                            <label style={{ display: "block" }}>ภาพก่อน crop</label>
                             <Image
                                 preview={false}
                                 height={300}
-                                src="/pics/image before crop.png"
-                            />
-                            <label style={{ display: "block", marginTop: "10px" }}>ภาพหลัง crop</label>
-                            <Image
-                                preview={false}
-                                height={180}
-                                src="/pics/image after crop.png"
+                                src="/pics/crop_overlay.png"
                             />
                         </Col>
-                        <Col span={18}>
+                        <Col span={1} />
+                        <Col span={16} style={{ paddingLeft: "7px" }}>
                             <label>Select Image:</label>
                             <Button
                                 type="primary"
@@ -132,7 +138,7 @@ function UploadImageModal(props) {
                             >
                                     Browse
                                     <input 
-                                        type="file" 
+                                        type="file"
                                         id="input-file"
                                         // accept=".png, .jpeg, .jpg"
                                         accept="image/*"
@@ -142,7 +148,7 @@ function UploadImageModal(props) {
                             </Button>
                             <label style={{ marginLeft: "20px" }}>{imageName ? imageName : ""}</label>
                             {imageSrc && <div>
-                                <Row style={{ margin: "35px 0 10px 0" }}>
+                                <Row style={{ margin: "27px 0 5px 0" }}>
                                     <Col span={24}>
                                         <div className="crop-container">
                                             <Cropper
@@ -150,7 +156,7 @@ function UploadImageModal(props) {
                                                 crop={crop}
                                                 rotation={rotation}
                                                 zoom={zoom}
-                                                aspect={4 / 3}
+                                                aspect={4 / 5}
                                                 onCropChange={setCrop}
                                                 onRotationChange={setRotation}
                                                 onCropComplete={onCropComplete}
@@ -171,31 +177,59 @@ function UploadImageModal(props) {
                                     </Col> */}
                                 </Row>
                                 <div className="controls">
-                                    <div>
-                                        <label>Zoom</label>
-                                        <Slider
-                                            value={zoom}
-                                            min={1}
-                                            max={3}
-                                            step={0.01}
-                                            onChange={(zoom) => setZoom(zoom)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label>Rotation</label>
-                                        <Slider
-                                            value={rotation}
-                                            min={0}
-                                            max={360}
-                                            step={1}
-                                            onChange={(rotation) => setRotation(rotation)}
-                                        />
-                                    </div>
+                                    <Row style={{ alignItems: "center" }}>
+                                        <Col span={2}>
+                                            <label>Zoom</label>
+                                        </Col>
+                                        <Col span={18} style={{ paddingLeft: "7px", paddingRight: "15px" }}>
+                                            <Slider
+                                                value={typeof zoom === "number" ? zoom : 0}
+                                                min={1}
+                                                max={3}
+                                                step={0.01}
+                                                onChange={(zoom) => setZoom(zoom)}
+                                            />
+                                        </Col>
+                                        <Col span={4}>
+                                            <InputNumber
+                                                // className="input-text"
+                                                value={zoom.toFixed(2)}
+                                                min={1}
+                                                max={3}
+                                                step={0.01}
+                                                onChange={(zoom) => setZoom(zoom)}
+                                            />
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ alignItems: "center", marginTop: "10px" }}>
+                                        <Col span={3}>
+                                            <label>Rotation</label>
+                                        </Col>
+                                        <Col span={17} style={{ paddingLeft: "1px", paddingRight: "15px" }}>
+                                            <Slider
+                                                value={typeof rotation === "number" ? rotation : 0}
+                                                min={0}
+                                                max={360}
+                                                step={1}
+                                                onChange={(rotation) => setRotation(rotation)}
+                                            />
+                                        </Col>
+                                        <Col span={4}>
+                                            <InputNumber
+                                                // className="input-text"
+                                                value={rotation}
+                                                min={0}
+                                                max={360}
+                                                step={1}
+                                                onChange={(rotation) => setRotation(rotation)}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </div>
                             </div>}
                         </Col>
                     </Row>
-                    <Row justify="end">
+                    <Row justify="end" /*style={{ marginTop: "10px" }}*/>
                         <Button
                             className="primary-btn smaller cancel"
                             style={{ marginRight: "15px" }}
@@ -205,20 +239,23 @@ function UploadImageModal(props) {
                         </Button>
                         <Button
                             className="primary-btn smaller"
-                            style={{ marginRight: "15px" }}
                             onClick={() => {
                                 // showCroppedImage();
-                                const croppedImage = getCroppedImg(
-                                    imageSrc,
-                                    croppedAreaPixels,
-                                    rotation
-                                );
+                                const croppedImage = null;
+                                if (imageSrc) {
+                                    croppedImage = getCroppedImg(
+                                        imageSrc,
+                                        croppedAreaPixels,
+                                        rotation
+                                    );
+                                }
                                 props.setImage(croppedImage);
                                 props.setVisible(false);
                                 setImageSrc(null);
+                                setImageName(null);
                             }}
                         >
-                            OK
+                            Process
                         </Button>
                     </Row>
                 </div>

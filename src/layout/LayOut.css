@@ -440,6 +440,27 @@ ol {
   box-shadow: none;
 } */
 
+.ant-input-number,
+.ant-input-number:hover,
+.ant-input-number:focus {
+  color: black;
+  background: #fafafa;
+  /* font-size: medium; */
+  border: 1px solid #c4c4c4;
+  border-radius: 3px;
+  box-shadow: none;
+  /* height: 45px; */
+}
+
+.ant-input-number-input {
+  height: 35px;
+}
+
+.ant-input-number-handler:hover .ant-input-number-handler-up-inner,
+.ant-input-number-handler:hover .ant-input-number-handler-down-inner {
+  color: black;
+}
+
 .ant-form-item-has-error
   :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
 .ant-form-item-has-error
@@ -1026,6 +1047,7 @@ hr {
 
 .webcam-modal .ant-modal-body {
   text-align: center;
+  padding: 25px;
 }
 
 .ant-modal-confirm-warning .ant-modal-body,
@@ -1448,8 +1470,8 @@ table tr td.ant-table-selection-column {
 } */
 
 .controls {
-  padding: 20px;
-  display: flex;
+  padding: 22px 18px;
+  /* display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: stretch; */
 }
