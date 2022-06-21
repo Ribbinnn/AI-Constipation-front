@@ -11,15 +11,9 @@ function InsertInput(props) {
 
     return(
         <div>
-            {(props.model.name === "questionaire" || props.model.name === "integrated") && <Row style={{ marginBottom: "25px" }}>
+            {(props.model === "questionaire" || props.model === "integrated") && <Row style={{ marginBottom: "25px" }}>
                     <Col span={11}>
-                        <Card
-                            hoverable={true}
-                            // className={props.model ? (props.model.name === item.name ? "selected-card" : "") : ""}
-                            // onClick={() => {
-                            //     props.setModel(item);
-                            // }}
-                        >
+                        <Card hoverable={true}>
                             <label>
                                 Fill in symptom questionnaire
                             </label>
@@ -29,20 +23,14 @@ function InsertInput(props) {
                         <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>OR</label>
                     </Col>
                     <Col span={11}>
-                        <Card
-                            hoverable={true}
-                            // className={props.model ? (props.model.name === item.name ? "selected-card" : "") : ""}
-                            // onClick={() => {
-                            //     props.setModel(item);
-                            // }}
-                        >
+                        <Card hoverable={true}>
                             <label>
                                 Import file .csv
                             </label>
                         </Card>
                     </Col>
                 </Row>}
-            {(props.model.name === "image" || props.model.name === "integrated") &&
+            {(props.model === "image" || props.model === "integrated") &&
                 <Button
                     type="link"
                     className="label-btn"
@@ -50,12 +38,8 @@ function InsertInput(props) {
                     onClick={() => setUploadImageVisible(true)}
                 >
                     <Card
-                        style={{ marginBottom: "25px" }}
+                        // style={{ marginBottom: "25px" }}
                         hoverable={true}
-                        // className={props.model ? (props.model.name === item.name ? "selected-card" : "") : ""}
-                        // onClick={() => {
-                        //     document.getElementById("upload-image-button").click();
-                        // }}
                     >
                         <div style={{ display: "flex", alignItems: "center" }}>
                             {props.image && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}

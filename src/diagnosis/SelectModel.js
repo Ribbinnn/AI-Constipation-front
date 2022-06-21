@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Card } from "antd";
-// import { LoadingOutlined } from "@ant-design/icons";
-// import { getPatientData } from "../api/pacs"
-// import ImageModal from "../component/ImageModal";
-// import * as moment from "moment";
 // import Contexts from '../utils/Contexts';
 
 function SelectModel(props) {
@@ -17,16 +13,18 @@ function SelectModel(props) {
         <div>
             {modelList.map((item, i) => (
                 <Card
+                    key={i}
                     style={{ marginBottom: "25px" }}
                     hoverable={true}
-                    className={props.model ? (props.model.name === item.name ? "selected-card" : "") : ""}
+                    className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
                     onClick={() => {
-                        props.setModel(item);
+                        props.setModel(item.name);
                     }}
                 >
-                    <label style={{ width: "100%", cursor: "pointer" }}>
-                        {item.desc}
-                    </label>
+                    <div style={{ width: "100%", cursor: "pointer" }}>
+                        <label style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
+                        <label>{item.desc}</label>
+                    </div>
                 </Card>
             ))}
         </div>
