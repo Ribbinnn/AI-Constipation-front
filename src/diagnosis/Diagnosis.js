@@ -22,10 +22,13 @@ const LoadingIcon = (
 export default function Diagnosis(props) {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [loading, setLoading] = useState(false);
-  const [model, setModel] = useState(null);
-  const [HN, setHN] = useState("1234567"); // edit soon
-  const [image, setImage] = useState(null);
   const [current, setCurrent] = useState(0);
+  const personalDetailsRef = useRef();
+
+  const [details, setDetails] = useState(null);
+  const [model, setModel] = useState(null);
+  const [image, setImage] = useState(null);
+
   const stepsTitle = [
     "Personal Details",
     "Select Model",
@@ -52,6 +55,11 @@ export default function Diagnosis(props) {
 
   const next = () => {
     /** add condition for each step to go next step here */
+    if (current === 0) {
+      personalDetailsRef.current.setPersonalDetails();
+    } else {
+      setCurrent(current + 1);
+    }
     // if (current === 0 && globalProject.projectReq.length === 0) {
     //   setCurrent(2);
     //   setCurrentActivity({ ...currentActivity, enablePageChange: false });
@@ -82,7 +90,7 @@ export default function Diagnosis(props) {
     //       });
     //   } else {
     //     if (current === 0) setCurrentActivity({ ...currentActivity, enablePageChange: false });
-        setCurrent(current + 1);
+    //     setCurrent(current + 1);
     //   }
     // }
   };
@@ -131,7 +139,12 @@ export default function Diagnosis(props) {
       {/* ----- add content below -------- */}
       <div className="steps-content-diagnosis">
         {current === 0 && (
-          <PersonalDetails />
+          <PersonalDetails
+            ref={personalDetailsRef}
+            details={details}
+            setDetails={setDetails}
+            setCurrent={setCurrent}
+          />
         )}
         {current === 1 && (
           <SelectModel

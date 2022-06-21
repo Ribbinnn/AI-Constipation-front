@@ -1,21 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Form, Input, Select, Row, Col, Radio } from "antd";
-// import { LoadingOutlined } from "@ant-design/icons";
-// import { getPatientData } from "../api/pacs"
-// import ImageModal from "../component/ImageModal";
-// import * as moment from "moment";
+import React, { useContext, forwardRef, useImperativeHandle } from "react";
+import { Form, Input, Select, Row, Col, Radio, InputNumber, Rate } from "antd";
 // import Contexts from '../utils/Contexts';
 
 const { Option } = Select;
 
-function PersonalDetails(props) {
+const PersonalDetails = forwardRef((props, ref) => {
     const [form] = Form.useForm();
-    const hospitalMockUp = ["Hospital1", "Hospital2", "Hospital3"];
-    const [gender, setGender] = useState(null);
+    const hospitals = [
+        "Chulalongkorn University", "Prince of Songkla University", "Thammasat University"
+    ];
+    const ratingDesc = [
+        "ไม่มั่นใจ", "มั่นใจเล็กน้อย", "มั่นใจปานกลาง", "ค่อนข้างมั่นใจ", "มั่นใจมาก"
+    ];
+    const ratingScore = [0, 25, 50, 75, 100];
+
+    useImperativeHandle(ref, () => ({
+        setPersonalDetails: async () => {
+            try {
+                const data = await form.validateFields();
+                data.confident = ratingScore[data.confident - 1];
+                // console.log(data);
+                props.setDetails(data);
+                await props.setCurrent(1);
+            } catch (errInfo) {
+                console.log('Validate Failed:', errInfo);
+            }
+        },
+    }));
 
     return(
         <div>
-            <Form layout="vertical" requiredMark={false}>
+            <Form form={form} layout="vertical" requiredMark={false}>
                 <Row style={{ alignItems: "baseline" }}>
                     <Col span={7}>
                         <label>Hospital:</label>
@@ -24,22 +39,18 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="hospital"
                             key="hospital"
-                            // initialValue={}
+                            initialValue={props.details ? props.details.hospital : null}
                             rules={[
                                 {
                                     required: true,
                                 },
                             ]}>
-                                <Select
-                                    // onChange={(value) => {
-                                    //     value === "all" ? queryString.delete("findings") : queryString.set("findings", value);
-                                    // }}
-                                >
-                                        {hospitalMockUp.map((hospital, i) => (
-                                            <Option key={i} value={hospital}>
-                                                {hospital}
-                                            </Option>
-                                        ))}
+                                <Select>
+                                    {hospitals.map((hospital, i) => (
+                                        <Option key={i} value={hospital}>
+                                            {hospital}
+                                        </Option>
+                                    ))}
                                 </Select>
                         </Form.Item>
                     </Col>
@@ -52,7 +63,7 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="hn"
                             key="hn"
-                            // initialValue={}
+                            initialValue={props.details ? props.details.hn : null}
                             rules={[
                                 {
                                     required: true,
@@ -70,7 +81,7 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="name"
                             key="name"
-                            // initialValue={}
+                            initialValue={props.details ? props.details.name : null}
                             rules={[
                                 {
                                     required: true,
@@ -88,16 +99,13 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="gender"
                             key="gender"
-                            // initialValue={}
+                            initialValue={props.details ? props.details.gender : null}
                             rules={[
                                 {
                                     required: true,
                                 },
                             ]}>
-                                <Radio.Group
-                                    // onChange={onChange}
-                                    value={gender}
-                                >
+                                <Radio.Group>
                                     <Radio value="female" style={{ color: "#58595b" }}>Female</Radio>
                                     <Radio value="male" style={{ color: "#58595b" }}>Male</Radio>
                                 </Radio.Group>
@@ -112,15 +120,18 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="age"
                             key="age"
-                            // initialValue={}
+                            initialValue={props.details ? props.details.age : null}
                             rules={[
                                 {
                                     required: true,
                                 },
                             ]}>
-                                <Input
-                                    type="number"
-                                    className="input-text fixed-size" />
+                                <InputNumber
+                                    className="bigger"
+                                    min={0}
+                                    max={130}
+                                    step={1}
+                                />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -132,22 +143,22 @@ function PersonalDetails(props) {
                         <Form.Item
                             name="confident"
                             key="confident"
-                            // initialValue={}
+                            initialValue={props.details ? ratingScore.indexOf(props.details.confident) : null}
                             rules={[
                                 {
-                                    required: true, // + check range 0-100
+                                    required: true,
                                 }
                             ]}>
-                                <Input
-                                    type="number"
-                                    className="input-text fixed-size" />
-                                <label style={{ marginLeft: "10px", color: "#58595b" }}>%</label>
+                                <Rate
+                                    className="rating"
+                                    tooltips={ratingDesc}
+                                />
                         </Form.Item>
                     </Col>
                 </Row>
             </Form>
         </div>
     );
-}
+});
 
 export default PersonalDetails;

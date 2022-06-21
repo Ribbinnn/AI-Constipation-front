@@ -445,20 +445,42 @@ ol {
 .ant-input-number:focus {
   color: black;
   background: #fafafa;
-  /* font-size: medium; */
   border: 1px solid #c4c4c4;
   border-radius: 3px;
   box-shadow: none;
-  /* height: 45px; */
+}
+
+.ant-input-number.bigger,
+.ant-input-number.bigger:hover,
+.ant-input-number.bigger:focus {
+  border-radius: 5px;
+  font-size: medium;
+  width: 270px;
 }
 
 .ant-input-number-input {
   height: 35px;
 }
 
+.ant-input-number.bigger .ant-input-number-input {
+  height: 45px;
+}
+
+.ant-input-number-handler {
+  border-left: 1px solid #c4c4c4;
+}
+
+.ant-input-number-handler-down {
+  border-top: 1px solid #c4c4c4;
+}
+
 .ant-input-number-handler:hover .ant-input-number-handler-up-inner,
 .ant-input-number-handler:hover .ant-input-number-handler-down-inner {
-  color: black;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-input-number.bigger .ant-input-number-handler-wrap {
+  border-radius: 0 5px 5px 0;
 }
 
 .ant-form-item-has-error
@@ -688,8 +710,7 @@ hr {
 }
 
 .ant-select-arrow {
-  color: #c4c4c4;
-  font-weight: bold;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .ant-select-disabled .ant-select-arrow {
@@ -973,7 +994,7 @@ hr {
 }
 
 .ant-picker-suffix {
-  color: #c4c4c4;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .ant-picker-cell:not(.ant-picker-cell-in-view) .ant-picker-cell-inner{
@@ -1056,12 +1077,12 @@ hr {
 }
 
 .ant-modal-confirm .ant-modal-confirm-body > .anticon {
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .ant-modal-confirm-warning .ant-modal-confirm-body > .anticon,
 .ant-modal-confirm-success .ant-modal-confirm-body > .anticon {
-  font-size: 30px;
+  /* font-size: 30px; */
   margin-right: 23px;
 }
 
