@@ -18,7 +18,7 @@ const PersonalDetails = forwardRef((props, ref) => {
         setPersonalDetails: async () => {
             try {
                 const data = await form.validateFields();
-                data.confident = ratingScore[data.confident - 1];
+                data.DD_confidence = ratingScore[data.DD_confidence - 1];
                 // console.log(data);
                 props.setDetails(data);
                 await props.setCurrent(1);
@@ -106,8 +106,8 @@ const PersonalDetails = forwardRef((props, ref) => {
                                 },
                             ]}>
                                 <Radio.Group>
-                                    <Radio value="female" style={{ color: "#58595b" }}>Female</Radio>
-                                    <Radio value="male" style={{ color: "#58595b" }}>Male</Radio>
+                                    <Radio key="female" value="female" style={{ color: "#58595b" }}>Female</Radio>
+                                    <Radio key="male" value="male" style={{ color: "#58595b" }}>Male</Radio>
                                 </Radio.Group>
                         </Form.Item>
                     </Col>
@@ -141,9 +141,9 @@ const PersonalDetails = forwardRef((props, ref) => {
                     </Col>
                     <Col span={17}>
                         <Form.Item
-                            name="confident"
-                            key="confident"
-                            initialValue={props.details ? ratingScore.indexOf(props.details.confident) : null}
+                            name="DD_confidence"
+                            key="DD_confidence"
+                            initialValue={props.details ? ratingScore.indexOf(props.details.DD_confidence) + 1 : null}
                             rules={[
                                 {
                                     required: true,

@@ -114,6 +114,7 @@ export default function NavBar() {
           View History
         </Menu.Item>
         <Menu.Item
+          key="resources"
           className="menuitem"
           icon={<BookOutlined />}
         >
