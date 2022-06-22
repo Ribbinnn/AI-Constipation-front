@@ -483,6 +483,10 @@ ol {
   border-radius: 0 5px 5px 0;
 }
 
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  color: #f32424;
+}
+
 .ant-form-item-has-error
   :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
 .ant-form-item-has-error
@@ -495,6 +499,19 @@ ol {
 
 .ant-form-item-explain.ant-form-item-explain-error {
   color: #f32424;
+}
+
+.ant-form-vertical .ant-form-item.form-item-force-inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.ant-form-vertical .ant-form-item.form-item-force-inline .ant-form-item-control {
+  padding-bottom: 8px;
+}
+
+.children-form-item {
+  padding-left: 50px;
 }
 
 .checkbox-container {
@@ -586,6 +603,7 @@ ol {
 .ant-radio-input:focus + .ant-radio-inner,
 .ant-radio-checked .ant-radio-inner {
   border-color: #c4c4c4;
+  background-color: #fafafa;
 }
 
 .ant-radio-input:focus + .ant-radio-inner {
@@ -1066,6 +1084,15 @@ hr {
   padding: 10px 40px 30px 40px;
 }
 
+.fill-question-modal .ant-modal-header {
+  padding: 30px 30px 25px 30px;
+}
+
+.fill-question-modal .ant-modal-body {
+  padding: 0 30px 30px 30px;
+  height: 700px;
+}
+
 .webcam-modal .ant-modal-body {
   text-align: center;
   padding: 25px;
@@ -1394,6 +1421,16 @@ table tr td.ant-table-selection-column {
 .ant-slider-track,
 .ant-slider:hover .ant-slider-track {
   background-color: #9772fb;
+}
+
+.ant-slider-dot,
+.ant-slider-dot-active {
+  background-color: #9772fb;
+  border-color: #9772fb;
+}
+
+.ant-slider-mark {
+  top: 16px;
 }
 
 /* checkbox ------- */

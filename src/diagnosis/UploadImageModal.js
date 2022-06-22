@@ -10,16 +10,18 @@ function UploadImageModal(props) {
     const [imageName, setImageName] = useState(null);
     const [webcamVisible, setWebcamVisible] = useState(false);
 
+    const onOK = () => {
+        props.setVisible(false);
+        setImageSrc(null);
+        setImageName(null);
+    }
+
     const onCancel = () => {
         if (imageSrc) {
             return Modal.confirm({
                 icon: <ExclamationCircleOutlined />,
                 content: "Image will not be saved.",
-                onOk: () => {
-                    props.setVisible(false);
-                    setImageSrc(null);
-                    setImageName(null);
-                },
+                onOk: onOK,
                 zIndex: 3000,
             });
         } else {
@@ -92,7 +94,11 @@ function UploadImageModal(props) {
                 keyboard={false}
                 visible={props.visible}
                 onCancel={onCancel}
-                title={<label style={{ color: "#9772fb", fontSize: "25px" }}>Upload X-ray image</label>}
+                title={
+                    <label style={{ color: "#9772fb", fontSize: "25px" }}>
+                        Upload X-ray image
+                    </label>
+                }
                 footer={null}
                 width="1000px"
                 className="upload-image-modal"
@@ -241,7 +247,7 @@ function UploadImageModal(props) {
                             className="primary-btn smaller"
                             onClick={() => {
                                 // showCroppedImage();
-                                const croppedImage = null;
+                                let croppedImage = null;
                                 if (imageSrc) {
                                     croppedImage = getCroppedImg(
                                         imageSrc,
@@ -250,9 +256,7 @@ function UploadImageModal(props) {
                                     );
                                 }
                                 props.setImage(croppedImage);
-                                props.setVisible(false);
-                                setImageSrc(null);
-                                setImageName(null);
+                                onOK();
                             }}
                         >
                             Process

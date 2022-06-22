@@ -4,7 +4,7 @@ import { Card } from "antd";
 
 function SelectModel(props) {
     const modelList = [
-        {name: "questionaire", desc: "Symptom Questionnaire"},
+        {name: "questionnaire", desc: "Symptom Questionnaire"},
         {name: "image", desc: "X-Ray Image"},
         {name: "integrated", desc: "Symptom Questionnaire + X-Ray Image"},
     ]
@@ -22,8 +22,8 @@ function SelectModel(props) {
                     }}
                 >
                     <div style={{ width: "100%", cursor: "pointer" }}>
-                        <label style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
-                        <label>{item.desc}</label>
+                        <label className="clickable-label" style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
+                        <label className="clickable-label">{item.desc}</label>
                     </div>
                 </Card>
             ))}

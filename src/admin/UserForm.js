@@ -112,7 +112,7 @@ function UserForm() {
                                 {
                                     min: 8,
                                     max: 32,
-                                    message: "'password' length must be 8-32."
+                                    message: "'password' length must be 8-32"
                                 }
                             ]}
                             style={{display: "inline-block", marginRight: "30px"}}

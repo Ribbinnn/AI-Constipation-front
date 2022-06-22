@@ -27,6 +27,7 @@ export default function Diagnosis(props) {
 
   const [details, setDetails] = useState(null);
   const [model, setModel] = useState(null);
+  const [question, setQuestion] = useState({});
   const [image, setImage] = useState(null);
 
   const stepsTitle = [
@@ -155,6 +156,8 @@ export default function Diagnosis(props) {
         {current === 2 && (
           <InsertInput
             model={model}
+            question={question}
+            setQuestion={setQuestion}
             image={image}
             setImage={setImage}
           />
@@ -185,8 +188,13 @@ export default function Diagnosis(props) {
             Back
           </Button>
         )}
-        {(current !== 1 && current < stepsTitle.length - 1 || current === 1 && model) && (
-          <Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
+        {(current === 0
+          ||current === 1 && model
+          || current === 2 && (
+            model === "questionnaire" && Object.keys(question).length !== 0
+            || model === "image" && image)
+          || current === 3)
+          && (<Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
             Next
           </Button>
         )}
