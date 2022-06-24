@@ -5,8 +5,8 @@ import Home from "./Home";
 import Login from "./Login";
 import NavBar from "./layout/NavBar";
 import Diagnosis from "./diagnosis/Diagnosis";
-import Report from "./view history/Report";
-import ViewHistory from "./view history/ViewHistory";
+import Report from "./view results/Report";
+import ViewResults from "./view results/ViewResults";
 import AboutUs from "./AboutUs";
 import Admin from "./admin/Admin";
 import PageNotFound from "./PageNotFound";
@@ -74,12 +74,12 @@ function Routes() {
                   render={() => (auth ? <Diagnosis /> : <Redirect to="/login" />)}
                 />
                 <Route
-                  path="/viewhistory"
+                  path="/viewresults"
                   exact
-                  render={() => (auth ? <ViewHistory /> : <Redirect to="/login" />)}
+                  render={() => (auth ? <ViewResults /> : <Redirect to="/login" />)}
                 />
                 <Route
-                  path="/viewhistory/:mode/:rid"
+                  path="/viewresults/:mode/:rid"
                   exact
                   render={() => (auth ? <Report /> : <Redirect to="/login" />)}
                 />

@@ -40,17 +40,16 @@ export default function Diagnosis(props) {
 
   const btnList = [
     {
-      title: "Back to Home",
-      destination: "/",
+      title: "Go to View Results",
+      destination: "/viewresults",
     },
     {
       title: "Create New Diagnosis",
       destination: "/diagnosis",
     },
-    ,
     {
-      title: "Go to View History",
-      destination: "/viewhistory",
+      title: "Back to Home",
+      destination: "/",
     },
   ];
 

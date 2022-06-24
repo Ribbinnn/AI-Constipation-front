@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Table, Tooltip, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
 import { DownloadOutlined ,EditOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import {viewHistory, deleteReport} from "../api/viewHistory"
+import {deleteReport} from "../api/viewHistory"
 import { useHistory, useLocation } from "react-router-dom";
 import * as moment from "moment";
 import Contexts from "../utils/Contexts";
@@ -12,7 +12,7 @@ const LoadingIcon = (
 
 const { Option } = Select;
 
-export default function ViewHistory(props) {
+export default function ViewResults(props) {
     function useQuery() {
     const { search } = useLocation();
     return new URLSearchParams(search);
@@ -430,7 +430,7 @@ export default function ViewHistory(props) {
                     columns={columns} 
                     dataSource={uploadedItem} 
                     size="small"
-                    className="view-history-table"
+                    className="view-results-table"
                     pagination={
                         uploadedItem.length > 20 && {
                             size: "small",
