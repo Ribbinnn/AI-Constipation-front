@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Table, Tooltip, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
 import {
-    EditOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
+    EyeOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
     InfoCircleOutlined, CheckOutlined, CloseOutlined, MinusOutlined
 } from '@ant-design/icons';
-import { viewResults } from "../api/reports";
+import { viewResults, deleteReport } from "../api/reports";
 import { useHistory, useLocation } from "react-router-dom";
 import * as moment from "moment";
 import Contexts from "../utils/Contexts";
@@ -25,6 +25,7 @@ export default function ViewResults(props) {
 
     const history = useHistory();
     const queryString = useQuery();
+    const role = JSON.parse(sessionStorage.getItem("user")).role;
 
     const [uploadedItem, setUploadedItem] = useState([])
     const [status, setStatus] = useState([]);
@@ -202,47 +203,38 @@ export default function ViewResults(props) {
             dataIndex: "action",
             render: (_, report) => {
                 return(
-                    // report.status === "waiting" || report.status === "in progress" ?
-                    // <EditOutlined className="clickable-icon" /> :
-                    // null :
+                    report.status === "waiting" || report.status === "in progress" ? null :
                     <div className="center-div">
-                        {/* {report.status === "canceled" ?
+                        {report.status === "canceled" ?
                             null : 
-                            <EditOutlined
+                            <EyeOutlined
                                 className="clickable-icon"
-                                // style={{marginLeft: "8px"}}
-                                // onClick={() => {
-                                //     let role = JSON.parse(sessionStorage.getItem("user")).role;
-                                //     // console.log(
-                                //     // JSON.parse(sessionStorage.getItem("user")).role,
-                                //     // report
-                                //     // );
-                                //     // SHOW REPORT
-                                //     history.push(
-                                //     `/viewhistory/${role === "clinician" ? "view" : "edit"}/${
-                                //         report.pred_result_id
-                                //     }/?${queryString}`
-                                //     );
-                                // }}
-                            />} */}
-                        <Popconfirm
+                                onClick={() => {
+                                    history.push(`/viewresults/${role === "clinician" ? "edit" : "view"}/${report._id}/?${queryString}`);
+                                }}
+                            />}
+                        {role === "clinician" && <Popconfirm
                             title="Delete this result?"
-                            // onConfirm={() => {
-                            //     setLoaded(false);
-                            //     deleteReport(report.pred_result_id).then((res) => {
-                            //         window.location.reload();
-                            //     }).catch((err) => {
-                            //         console.log(err);
-                            //     })
-                            // }}
+                            onConfirm={() => {
+                                setLoaded(false);
+                                deleteReport(report._id)
+                                .then((res) => {
+                                    // window.location.reload();
+                                    reload === "" ? setReload("reload") : setReload("")
+                                    setLoaded(false);
+                                }).catch((err) => {
+                                    console.log(err.response);
+                                })
+                            }}
+                            placement="topRight"
                             okButtonProps={{ className: "primary-btn popconfirm" }}
                             cancelButtonProps={{ style: { display: "none" } }}
                         >
                             <DeleteOutlined
                                 className="clickable-icon"
-                                // style={{ marginLeft: report.status === "canceled" ? 0 : "8px" }}
+                                style={{ marginLeft: report.status === "canceled" ? 0 : "8px" }}
                             />
-                        </Popconfirm>
+                        </Popconfirm>}
                     </div>
                 );
             },
@@ -296,11 +288,11 @@ export default function ViewResults(props) {
             filter_data.sort((a, b) =>
                 ((a.status === "waiting" || b.status === "waiting" || a.status === "in progress" || b.status === "in progress")
                 && shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown)) // change to expert annotated ?
-                // || new Date(b.date) - new Date(a.date) // created at
+                || new Date(b.date) - new Date(a.date) // created at -> update at ?
             );
             // add key & adjust data
             for (const i in filter_data) {
-                filter_data[i]["key"] = (parseInt(i) + 1).toString();
+                filter_data[i].key = (parseInt(i) + 1).toString();
                 if (filter_data[i].label === null) {
                     filter_data[i].label = "-";
                     filter_data[i].evaluation = null;
@@ -319,19 +311,29 @@ export default function ViewResults(props) {
     return (
         <div className="content">
             <Form layout="inline">
-                <Form.Item name="patient_HN" label="Patient's HN" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="patient_HN"
+                    key="patient_HN"
+                    label="Patient's HN"
+                    initialValue={queryString.get("patient_HN")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("patient_HN")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("patient_HN") : queryString.set("patient_HN", item.target.value);
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="status" label="Status" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>                
+                <Form.Item
+                    name="status"
+                    key="status"
+                    label="Status"
+                    initialValue={queryString.get("status") === null ? "All" : queryString.get("status")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >                
                     <Select
                         className="search-component"
-                        defaultValue={queryString.get("status") === null ? "All" : queryString.get("status")}
                         onChange={(value) => {
                             value === "all" ? queryString.delete("status") : queryString.set("status", value);
                         }}>
@@ -342,10 +344,15 @@ export default function ViewResults(props) {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item name="hospital" label="Hospital" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>                
+                <Form.Item
+                    name="hospital"
+                    key="hospital"
+                    label="Hospital"
+                    initialValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >                
                     <Select
                         className="search-component"
-                        defaultValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
                         onChange={(value) => {
                             value === "All" ? queryString.delete("hospital") : queryString.set("hospital", value);
                         }}>
@@ -356,10 +363,15 @@ export default function ViewResults(props) {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item name="clinician" label="Clinician" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="clinician"
+                    key="clinician"
+                    label="Clinician"
+                    initialValue={queryString.get("clinician")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("clinician")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("clinician") : queryString.set("clinician", item.target.value);
                         }}
@@ -367,26 +379,41 @@ export default function ViewResults(props) {
                 </Form.Item>
             </Form>
             <Form layout="inline">
-                <Form.Item name="no" label="No." style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="no"
+                    key="no"
+                    label="No."
+                    initialValue={queryString.get("no")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("no")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("no") : queryString.set("no", item.target.value);
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="from" label="From" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>   
+                <Form.Item
+                    name="from"
+                    key="from"
+                    label="From"
+                    initialValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >   
                     <DatePicker
-                        defaultValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
                         onChange={(date) => {
                             date === null ? queryString.delete("from") : queryString.set("from", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="to" label="To" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="to"
+                    key="to"
+                    label="To"
+                    initialValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <DatePicker
-                        defaultValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
                         onChange={(date) => {
                             date === null ? queryString.delete("to") : queryString.set("to", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
@@ -423,6 +450,7 @@ export default function ViewResults(props) {
                                 className="clickable-label"
                                 style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
                                 onClick={() => {
+                                    // window.location.reload();
                                     reload === "" ? setReload("reload") : setReload("")
                                     setLoaded(false);
                                 }}>
@@ -443,7 +471,7 @@ export default function ViewResults(props) {
                     columns={columns} 
                     dataSource={uploadedItem} 
                     size="small"
-                    className="view-results-table clickable-table"
+                    className="view-results-table"
                     pagination={
                         uploadedItem.length > 20 && {
                             size: "small",

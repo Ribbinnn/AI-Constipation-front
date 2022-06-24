@@ -1099,6 +1099,11 @@ hr {
   height: 700px;
 }
 
+.preview-question-modal .ant-modal-body {
+  padding: 30px 40px 35px 40px;
+  height: 800px;
+}
+
 .webcam-modal .ant-modal-body {
   text-align: center;
   padding: 25px;
@@ -1163,7 +1168,11 @@ hr {
 
 .ant-popover-message-title {
   color: black;
-  font-weight: 500;
+  /* font-weight: 500; */
+}
+
+.ant-popover-message > .anticon {
+  color: #e9c869;
 }
 
 /* table ------------------------- */
@@ -1375,6 +1384,10 @@ table tr td.ant-table-selection-column {
   border: 3px solid #c4c4c4;
 }
 
+.ant-card.preview-card {
+  border: 4px solid #c4c4c4;
+}
+
 .selected-card,
 .ant-card:hover {
   box-shadow: none;
@@ -1450,6 +1463,10 @@ table tr td.ant-table-selection-column {
   font-size: 40px;
 }
 
+.rating.smaller {
+  font-size: 30px;
+}
+
 /* ----- pagination --------*/ /* edit soon */
 .ant-pagination-item a,
 .ant-pagination-options-quick-jumper{
@@ -1503,8 +1520,8 @@ table tr td.ant-table-selection-column {
   border-radius: 8px;
 }
 
-.rno-badge .ant-badge-count{
-  margin-left: 10px;
+.rno-badge .ant-badge-count {
+  margin-left: 15px;
   background: #e9c869;
   font-weight: bold;
 }

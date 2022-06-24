@@ -1,68 +1,41 @@
-// import React, { useEffect, useState, useContext } from "react";
-// import { useParams, useHistory } from "react-router-dom";
-// import {
-//   Collapse,
-//   Popover,
-//   Button,
-//   Row,
-//   Col,
-//   Image,
-//   Spin,
-//   Tag,
-//   Modal,
-//   Badge
-// } from "antd";
-// import Info from "../component/Info";
-// import {
-//   InfoCircleOutlined,
-//   CloudDownloadOutlined,
-//   LoadingOutlined,
-// } from "@ant-design/icons";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button } from "antd";
+import { LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
+import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
+import { getReport } from "../api/reports";
 // import Contexts from "../utils/Contexts";
-// import AnnotationModal from "./annotate/AnnotationModal";
-// import ProjectInfo from "../component/ProjectInfo";
-// import ResultsTable from "./ResultsTable";
-// import { getGradCam } from "../api/image";
-// import { getReport } from "../api/report";
-// import { saveAs } from "file-saver";
-// const { Panel } = Collapse;
 
-// const LoadingIcon = (
-//   <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
-// );
+const LoadingIcon = (
+  <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
+);
 
-// export default function Report(props) {
+export default function Report(props) {
 //   const { currentActivity } = useContext(Contexts).active;
-//   const { globalProject } = useContext(Contexts).project;
-//   const { mode, rid } = useParams();
-//   const history = useHistory();
-//   const [loaded, setLoaded] = useState(false);
-//   const [info, setInfo] = useState();
-//   const [gradCam, setGradCam] = useState();
-//   useEffect(() => {
-//     getReport(rid)
-//       .then((res) => {
-//         // console.log(res.data);
-//         setInfo(res.data);
-//         setLoaded(true);
-//       })
-//       .catch((err) => {
-//         return Modal.error({ title: "Report not Found", onOk:  () => history.push("/viewhistory")});
-//       });
-//   }, []);
+    const { mode, rid } = useParams();
+    const history = useHistory();
+    const [loaded, setLoaded] = useState(false);
+    const [info, setInfo] = useState();
+    const [gradCam, setGradCam] = useState();
 
-//   useEffect(() => {
-//     if(currentActivity.enablePageChange && info && info.result.project_id._id !== globalProject.projectId){
-//       history.push("/viewhistory")
-//     }
-//   }, [globalProject]);
+    const ratingDesc = [
+        "ไม่มั่นใจ", "มั่นใจเล็กน้อย", "มั่นใจปานกลาง", "ค่อนข้างมั่นใจ", "มั่นใจมาก"
+    ];
+    const ratingScore = [0, 25, 50, 75, 100];
 
-//   const downloadImage = () => {
-//     saveAs(
-//       getGradCam(rid, gradCam),
-//       `${info.result.project_id.name}_${gradCam}.png`
-//     ); // Put your image url here.
-//   };
+    const [previewQuestionVisible, setPreviewQuestionVisible] = useState(false);
+
+    useEffect(() => {
+        getReport(rid)
+        .then((res) => {
+            console.log(res.data);
+            setInfo(res.data);
+            setLoaded(true);
+        })
+        .catch((err) => {
+            return Modal.error({ content: "Report not Found.", onOk: () => history.push("/viewresults")});
+        });
+    }, []);
 
 //   const updateTimestamp = (updatedAt, updated_by) => {
 //     setInfo({
@@ -71,224 +44,164 @@
 //     });
 //   };
 
-//   return (
-//     <div className="content">
-//       {!loaded && (
-//         <div style={{ textAlign: "center", marginTop: "20%" }}>
-//           <Spin indicator={LoadingIcon} />
-//           <br />
-//           <br />
-//           <span style={{ fontSize: "medium", color: "#9772fb" }}>
-//             Loading ...
-//           </span>
-//         </div>
-//       )}
-//       {loaded && (
-//         <ReportHeader
-//           HN={info.result.hn}
-//           rno={info.no}
-//           patient_name={info.result.patient_name}
-//           patient={info.patient}
-//           status={info.result.status}
-//           medrec={info.record}
-//           project={info.result.project_id}
-//           created_at={info.result.createdAt}
-//           created_by={info.result.created_by}
-//           updated_by={info.result.updated_by}
-//           updated_at={info.result.updatedAt}
-//         />
-//       )}
-//       {loaded && (
-//         <Row justify="center" align="top" style={{ marginBottom: "10px" }}>
-//           <Col xs={24} sm={24} md={24} lg={12} xl={12} align="middle">
-//             <label style={{ fontWeight: "bold" }}> Original Image </label>
-//             <div>
-//               <Image height={400} src={getGradCam(rid, "original")} />
-//             </div>
-//               <AnnotationModal
-//                 accession_no={info.result.image_id.accession_no}
-//                 gradCamList={info.classes.reduce((current, item) => {
-//                   if (!info.gradCam.includes(item.finding)) return current;
-//                   return [
-//                     ...current,
-//                     {
-//                       finding: item.finding,
-//                       isPositive: item.isPositive,
-//                     },
-//                   ];
-//                 }, [])}
-//                 labelList={info.classes.map((item) => {
-//                   return item.finding;
-//                 })}
-//                 displayText="Annotate"
-//                 mode={info.result.status === "finalized" || mode !== "edit" ? "view-only":"editable"}
-//                 updateTimestamp={updateTimestamp}
-//               />
-//           </Col>
-//           {gradCam && (
-//             <Col xs={24} sm={24} md={24} lg={12} xl={12} align="center">
-//               <label style={{ fontWeight: "bold" }}> Gradcam Image </label>
-//               <div
-//                 style={{
-//                   height: "400px",
-//                   textAlign: "center",
-//                 }}
-//               >
-//                 <Image height={400} src={getGradCam(rid, gradCam)} />
-//               </div>
-//               <Button
-//                 type="link"
-//                 style={{
-//                   color: "#9772fb",
-//                   fontSize: "medium",
-//                   visibility: gradCam ? "visible" : "hidden",
-//                   fontWeight: "bold",
-//                   stroke: "#9772fb",
-//                   strokeWidth: 30,
-//                 }}
-//                 onClick={downloadImage}
-//                 icon={<CloudDownloadOutlined className="clickable-icon" />}
-//               >
-//                 Download
-//               </Button>
-//             </Col>
-//           )}
-//         </Row>
-//       )}
-//       {loaded && (
-//         <ResultsTable
-//           rate={info.result.rating} //
-//           head={info.result.project_id.head} //
-//           rid={rid}
-//           HN={info.result.hn}
-//           gradCam={gradCam}
-//           setGradCam={setGradCam}
-//           classes={info.classes} //
-//           mode={mode}
-//           status={info.result.status} //
-//           gradCamList={info.gradCam} //
-//           note={info.result.note} //
-//           updateTimestamp={updateTimestamp}
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
-// const ReportHeader = (props) => {
-//   return (
-//     <div>
-//       <div
-//         style={{
-//           display: "flex",
-//           flexDirection: "row",
-//           alignItems: "center",
-//           marginBottom: "10px",
-//         }}
-//       >
-//         <label
-//           style={{
-//             display: "block",
-//             color: "#58595B",
-//             fontWeight: "bold",
-//             fontSize: "x-large",
-//           }}
-//         >
-//           Report
-//         </label>
-//         <Badge count={`No. ${props.rno}`} className="rno-badge"/>
-//         <Tag
-//           color={
-//             props.status === "annotated"
-//               ? "warning"
-//               : props.status === "reviewed"
-//               ? "error"
-//               : "success"
-//           }
-//           style={{ marginLeft: "10px" }}
-//         >
-//           {props.status === "annotated"
-//             ? "2 AI-Annotated"
-//             : props.status === "reviewed"
-//             ? "3 Human-Annotated"
-//             : "4 Finalized"}
-//         </Tag>
-//       </div>
-//       <label
-//         style={{
-//           display: "block",
-//           color: "#A3A3A3",
-//           marginBottom: "10px",
-//           fontSize: "medium",
-//           textAlign: "left",
-//         }}
-//       >
-//         <i>
-//           {" "}
-//           Created Date Time: {new Date(props.created_at).toLocaleString()}
-//           <br />
-//           Created By:{" "}
-//           {`${props.created_by.first_name} ${props.created_by.last_name}`}
-//         </i>
-//         {props.status !== "annotated" && (
-//           <i>
-//             <br />
-//             Last Updated: {new Date(props.updated_at).toLocaleString()}
-//             <br />
-//             Updated By:{" "}
-//             {`${props.updated_by.first_name} ${props.updated_by.last_name}`}
-//           </i>
-//         )}
-//       </label>
-//       <label
-//         style={{
-//           display: "block",
-//           color: "#58595b",
-//           marginBottom: "5px"
-//         }}
-//       >
-//         Project: {props.project.name}{" "}
-//         <Popover
-//           className="proj-popover"
-//           placement="rightTop"
-//           content={<ProjectInfo notChange={true} collapse={true} />}
-//           style={{ margin: "0 30px 30px 30px" }}
-//         >
-//           <Button type="link" icon={<InfoCircleOutlined />} />
-//         </Popover>
-//       </label>
-//       {props.HN && <label
-//         style={{
-//           display: "block",
-//           color: "#9772fb",
-//           marginBottom: "5px"
-//         }}
-//       >
-//         Patient's HN: {props.HN}
-//       </label>}
-//       {props.patient_name && <label
-//         style={{
-//           display: "block",
-//         }}
-//       >
-//         Patient's Name: {props.patient_name}
-//       </label>}
-//       <Row>
-//         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-//           <Collapse defaultActiveKey={["1"]} expandIconPosition="right" ghost>
-//             <Panel key="1" header="Patient information">
-//               <Info Data={props.patient} />
-//             </Panel>
-//           </Collapse>
-//         </Col>
-//         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-//           <Collapse defaultActiveKey={["1"]} expandIconPosition="right" ghost>
-//             <Panel key="1" header="Medical Records">
-//               <Info Data={props.medrec} />
-//             </Panel>
-//           </Collapse>
-//         </Col>
-//       </Row>
-//     </div>
-//   );
-// };
+    return (
+        <div className="content">
+            {!loaded && (
+                <div style={{ textAlign: "center", marginTop: "20%" }}>
+                <Spin indicator={LoadingIcon} />
+                <br />
+                <br />
+                <span style={{ fontSize: "medium", color: "#9772fb" }}>
+                    Loading ...
+                </span>
+                </div>
+            )}
+            {loaded && (
+                <Row>
+                    <Col span={info.task === "questionnaire" ? 24 : 12}>
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "10px" }}>
+                            <label style={{ color: "#9772fb", fontSize: "28px", fontWeight: 500 }}>
+                                Report
+                            </label>
+                            <Badge count={`No. ${info.index}`} className="rno-badge"/>
+                            <Tag
+                                color={info.status === "annotated" ? "warning" : "success"}
+                                style={{ fontSize: "small", marginLeft: "10px" }}
+                            >
+                                {info.status === "annotated" ? "2 AI-Annotated" : "3 Expert-Annotated"}
+                            </Tag>
+                        </div>
+                        <Row style={{ marginBottom: "30px" }}>
+                            <label style={{ color: "#a3a3a3", textAlign: "left" }}>
+                                <i>
+                                    Created Date: {new Date(info.createdAt).toLocaleString()}
+                                    <br />
+                                    Created By:{" "}
+                                    {`${info.created_by.first_name} ${info.created_by.last_name}`}
+                                </i>
+                            </label>
+                            {info.status !== "annotated" &&
+                                <label style={{ color: "#a3a3a3", textAlign: "left" }}>
+                                    <i>
+                                        Last Updated: {new Date(info.updatedAt).toLocaleString()}
+                                        <br />
+                                        Updated By:{" "}
+                                        {`${info.updated_by.first_name} ${info.updated_by.last_name}`}
+                                    </i>
+                                </label>}
+                        </Row>
+                    </Col>
+                    {/* <Col span={12}>
+                        {gradCam}
+                    </Col> */}
+                </Row>
+            )}
+            {loaded && (
+                <Row>
+                    <Col span={12}>
+                        <Space direction="vertical" size={10} style={{ width: "100%" }}>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>Hospital:</label>
+                                </Col>
+                                <Col span={12}>
+                                    <label>{info.personal_info_id.hospital}</label>
+                                </Col>
+                            </Row>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>HN:</label>
+                                </Col>
+                                <Col span={12}>
+                                    <label>{info.personal_info_id.hn}</label>
+                                </Col>
+                            </Row>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>Name:</label>
+                                </Col>
+                                <Col span={12}>
+                                    <label>{info.personal_info_id.name}</label>
+                                </Col>
+                            </Row>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>Gender:</label>
+                                </Col>
+                                <Col span={12}>
+                                    <label>{info.personal_info_id.gender === "F" ? "Female" : "Male"}</label>
+                                </Col>
+                            </Row>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>Age:</label>
+                                </Col>
+                                <Col span={12}>
+                                    <label>{info.personal_info_id.age}</label>
+                                </Col>
+                            </Row>
+                            <Row style={{ alignItems: "baseline" }}>
+                                <Col span={12}>
+                                    <label>ความมั่นใจในการวินิจฉัย <br /> Dyssynergic defecation (DD):</label>
+                                </Col>
+                                <Col span={12}>
+                                    <Rate
+                                        className="rating smaller"
+                                        disabled
+                                        tooltips={ratingDesc}
+                                        defaultValue={ratingScore.indexOf(info.personal_info_id.DD_confidence) + 1}
+                                    />
+                                </Col>
+                            </Row>
+                        </Space>
+                    </Col>
+                    <Col span={12}>
+                        <Row style={{ height: "100%" }}>
+                            <Col span={12} style={{ padding: "20px" }}>
+                                {(info.task === "questionnaire" || info.task === "integrated") &&
+                                    <Button
+                                        type="link"
+                                        className="label-btn"
+                                        style={{ width: "100%" }}
+                                        onClick={() => setPreviewQuestionVisible(true)}
+                                    >
+                                        <Card
+                                            hoverable={true}
+                                            className="preview-card"
+                                            bodyStyle={{ textAlign: "center" }}
+                                        >
+                                            <div>
+                                                <label className="clickable-label" style={{ marginBottom: "20px" }}>
+                                                    Symptom Questionnaire
+                                                </label>
+                                                <br />
+                                                <SnippetsOutlined style={{ fontSize: "60px", color: "#999", marginBottom: "10px" }} />
+                                            </div>
+                                        </Card>
+                                    </Button>}
+                            </Col>
+                            <Col span={12} style={{ padding: "20px" }}>
+                                {(info.task === "image" || info.task === "integrated") &&
+                                    <label>image card</label>}
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            )}
+            <Modal
+                centered
+                destroyOnClose
+                visible={previewQuestionVisible}
+                onCancel={() => setPreviewQuestionVisible(false)}
+                footer={null}
+                width="800px"
+                className="preview-question-modal"
+                // style={{ top: 10 }}
+            >
+                <div style={{ height: "100%", overflow: "scroll" }}>
+                    <PreviewQuestionnaire question={info ? info.question_id : null} />
+                </div>
+            </Modal>
+        </div>
+    );
+}

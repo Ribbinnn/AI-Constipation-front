@@ -9,14 +9,14 @@ export const viewResults = async () => {
     }
 }
 
-// export const getReport = async (reportId) => {
-//     try {
-//         const response = (await instance.get("/report/" + reportId));
-//         return response.data
-//     } catch (e) {
-//         throw e
-//     }
-// }
+export const getReport = async (report_id) => {
+    try {
+        const response = (await instance.get("/reports/" + report_id));
+        return response.data
+    } catch (e) {
+        throw e
+    }
+}
 
 // export const updateReport = async (report_id, note, user_id, label, rating) => {
 //     try {
@@ -26,3 +26,12 @@ export const viewResults = async () => {
 //         throw e
 //     }
 // }
+
+export const deleteReport = async (report_id) => {
+    try {
+        const response = (await instance.delete("/reports/delete/" + report_id));
+        return response.data
+    } catch (e) {
+        throw e
+    }
+}

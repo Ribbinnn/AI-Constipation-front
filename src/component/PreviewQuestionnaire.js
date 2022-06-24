@@ -38,7 +38,7 @@ export default function PreviewQuestionnaire(props) {
             </div>
             <div style={{ marginLeft: "35px" }}>
                 <label>{questions[1]}</label><br/>
-                {printAnswer(props.question.DistSev === 0 ? "-" : three_choice[props.question.DistSev + 1])}
+                {printAnswer(props.question.DistSev === 0 ? "-" : three_choice[props.question.DistSev - 1])}
             </div>
             <div style={{ marginLeft: "35px" }}>
                 <label>{questions[2]}</label><br/>
@@ -48,12 +48,26 @@ export default function PreviewQuestionnaire(props) {
                 <label>{questions[3]}</label><br/>
                 {printAnswer(`${props.question.FreqStool} ครั้ง`)}
             </div>
-            {Object.keys(props.question).slice(4,9).map((q, i) => (
-                <div>
-                    <label>{questions[i+4]}</label><br/>
-                    {printAnswer(two_choice[props.question[q]])}
-                </div>
-            ))}
+            <div>
+                <label>{questions[4]}</label><br/>
+                {printAnswer(two_choice[props.question.Incomplete])}
+            </div>
+            <div>
+                <label>{questions[5]}</label><br/>
+                {printAnswer(two_choice[props.question.Strain])}
+            </div>
+            <div>
+                <label>{questions[6]}</label><br/>
+                {printAnswer(two_choice[props.question.Hard])}
+            </div>
+            <div>
+                <label>{questions[7]}</label><br/>
+                {printAnswer(two_choice[props.question.Block])}
+            </div>
+            <div>
+                <label>{questions[8]}</label><br/>
+                {printAnswer(two_choice[props.question.Digit])}
+            </div>
             <div>
                 <label>{questions[9]}</label><br/>
                 {printAnswer(seven_choice[props.question.BloatFreq])}
