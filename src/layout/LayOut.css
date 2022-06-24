@@ -219,6 +219,7 @@
   > .ant-steps-item-content
   > .ant-steps-item-title {
   color: #9772fb;
+  font-weight: 500;
 }
 
 /* div ----------------------- */
@@ -248,8 +249,13 @@
 }
 
 .steps-content-diagnosis {
-  padding: 60px 40px 30px 40px;
+  padding: 60px 45px 30px 45px;
   height: 79%;
+}
+
+.steps-content-diagnosis.preview {
+  padding: 45px 35px;
+  height: auto;
 }
 
 .steps-action {

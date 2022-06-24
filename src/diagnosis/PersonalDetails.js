@@ -106,8 +106,8 @@ const PersonalDetails = forwardRef((props, ref) => {
                                 },
                             ]}>
                                 <Radio.Group>
-                                    <Radio key="female" value="female" style={{ color: "#58595b" }}>Female</Radio>
-                                    <Radio key="male" value="male" style={{ color: "#58595b" }}>Male</Radio>
+                                    <Radio key="female" value="female">Female</Radio>
+                                    <Radio key="male" value="male">Male</Radio>
                                 </Radio.Group>
                         </Form.Item>
                     </Col>

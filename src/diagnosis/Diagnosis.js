@@ -7,7 +7,7 @@ import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
 import Completed from "../component/Completed";
-import PreviewEdit from "./PreviewEdit";
+import BeginDiagnosis from "./BeginDiagnosis";
 import { infer } from "../api/report";
 import Contexts from "../utils/Contexts";
 const { Step } = Steps;
@@ -138,7 +138,7 @@ export default function Diagnosis(props) {
         ))}
       </Steps>
       {/* ----- add content below -------- */}
-      <div className="steps-content-diagnosis">
+      <div className={current === 3 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
         {current === 0 && (
           <PersonalDetails
             ref={personalDetailsRef}
@@ -163,13 +163,9 @@ export default function Diagnosis(props) {
           />
         )}
         {current === 3 && (
-          <PreviewEdit
-            // HN={HN}
-            // Patient={Patient}
-            // MedRec={MedRec}
-            // setMedRec={setMedRec}
-            // AccessionNo={accessionNo}
-            // projectReq={globalProject.projectReq}
+          <BeginDiagnosis
+            question={question}
+            image={image}
           />
         )}
         {current === stepsTitle.length - 1 && ( // edit soon
