@@ -544,6 +544,28 @@ ol {
   margin-right: 8px;
 }
 
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 9px;
+  width: 5px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(40deg);
+  -ms-transform: rotate(40deg);
+  transform: rotate(40deg);
+}
+
 .checkbox-container input:checked ~ .checkmark,
 .ant-checkbox-checked .ant-checkbox-inner,
 .ant-checkbox-checked .ant-checkbox-inner:hover,
@@ -575,32 +597,9 @@ ol {
   border-color: #9772fb;
 }
 
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.checkbox-container .checkmark:after {
-  left: 6px;
-  top: 9px;
-  width: 5px;
-  height: 11px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  -webkit-transform: rotate(40deg);
-  -ms-transform: rotate(40deg);
-  transform: rotate(40deg);
-}
-
 .ant-checkbox-wrapper {
-  color: #58595b; /* edit soon */
+  color: black;
   font-size: medium;
-  font-weight: bold;
 }
 
 .ant-radio-inner,
@@ -1384,8 +1383,18 @@ table tr td.ant-table-selection-column {
   border: 3px solid #c4c4c4;
 }
 
-.ant-card.preview-card {
+.preview-card {
   border: 4px solid #c4c4c4;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.preview-card .ant-card-body {
+  padding: 20px;
 }
 
 .selected-card,

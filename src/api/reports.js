@@ -18,14 +18,20 @@ export const getReport = async (report_id) => {
     }
 }
 
-// export const updateReport = async (report_id, note, user_id, label, rating) => {
-//     try {
-//         const res = (await instance.patch("/report/", {report_id, note, user_id, label, rating}))
-//         return res.data;
-//     } catch (e) {
-//         throw e
-//     }
-// }
+export const updateReport = async (
+    report_id, label, final_diag, ctt_result, anorectal_structural_abnormality,
+    IBS, cormorbidity, surgical_history, surgical_history_note, comments
+) => {
+    try {
+        const res = (await instance.patch("/reports/", {
+            report_id, label, final_diag, ctt_result, anorectal_structural_abnormality,
+            IBS, cormorbidity, surgical_history, surgical_history_note, comments
+        }))
+        return res.data;
+    } catch (e) {
+        throw e
+    }
+}
 
 export const deleteReport = async (report_id) => {
     try {

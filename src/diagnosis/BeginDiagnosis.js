@@ -6,7 +6,7 @@ export default function BeginDiagnosis(props) {
 
   return (
     <div>
-      <label style={{ marginBottom: "25px", fontWeight: 500 }}>Please review your answers</label>
+      <label style={{ marginBottom: "25px", fontWeight: "bold" }}>Please review your answers</label>
       <Row>
         <Col span={props.image ? 17 : 24} style={{ paddingLeft: "15px" }}>
           <PreviewQuestionnaire question={props.question} />

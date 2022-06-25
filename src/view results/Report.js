@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button } from "antd";
 import { LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
+import ResultsPanel from "./ResultsPanel";
 import { getReport } from "../api/reports";
 // import Contexts from "../utils/Contexts";
 
@@ -11,12 +12,11 @@ const LoadingIcon = (
 );
 
 export default function Report(props) {
-//   const { currentActivity } = useContext(Contexts).active;
+    // const { currentActivity } = useContext(Contexts).active;
     const { mode, rid } = useParams();
     const history = useHistory();
     const [loaded, setLoaded] = useState(false);
     const [info, setInfo] = useState();
-    const [gradCam, setGradCam] = useState();
 
     const ratingDesc = [
         "ไม่มั่นใจ", "มั่นใจเล็กน้อย", "มั่นใจปานกลาง", "ค่อนข้างมั่นใจ", "มั่นใจมาก"
@@ -24,6 +24,19 @@ export default function Report(props) {
     const ratingScore = [0, 25, 50, 75, 100];
 
     const [previewQuestionVisible, setPreviewQuestionVisible] = useState(false);
+
+    const printResult = (field, value) => {
+        return(
+            <Row style={{ alignItems: "baseline" }}>
+                <Col span={12}>
+                    <label>{field}</label>
+                </Col>
+                <Col span={12}>
+                    <label>{value}</label>
+                </Col>
+            </Row>
+        );
+    }
 
     useEffect(() => {
         getReport(rid)
@@ -36,13 +49,6 @@ export default function Report(props) {
             return Modal.error({ content: "Report not Found.", onOk: () => history.push("/viewresults")});
         });
     }, []);
-
-//   const updateTimestamp = (updatedAt, updated_by) => {
-//     setInfo({
-//       ...info,
-//       result: { ...info.result, status: info.result.status === "annotated" ? "reviewed" : info.result.status, updatedAt: updatedAt, updated_by: updated_by },
-//     });
-//   };
 
     return (
         <div className="content">
@@ -57,89 +63,46 @@ export default function Report(props) {
                 </div>
             )}
             {loaded && (
-                <Row>
-                    <Col span={info.task === "questionnaire" ? 24 : 12}>
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "10px" }}>
-                            <label style={{ color: "#9772fb", fontSize: "28px", fontWeight: 500 }}>
-                                Report
-                            </label>
-                            <Badge count={`No. ${info.index}`} className="rno-badge"/>
-                            <Tag
-                                color={info.status === "annotated" ? "warning" : "success"}
-                                style={{ fontSize: "small", marginLeft: "10px" }}
-                            >
-                                {info.status === "annotated" ? "2 AI-Annotated" : "3 Expert-Annotated"}
-                            </Tag>
-                        </div>
-                        <Row style={{ marginBottom: "30px" }}>
-                            <label style={{ color: "#a3a3a3", textAlign: "left" }}>
-                                <i>
-                                    Created Date: {new Date(info.createdAt).toLocaleString()}
-                                    <br />
-                                    Created By:{" "}
-                                    {`${info.created_by.first_name} ${info.created_by.last_name}`}
-                                </i>
-                            </label>
+                <div>
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "10px" }}>
+                        <label style={{ color: "#9772fb", fontSize: "28px", fontWeight: 500 }}>
+                            Final Diagnosis
+                        </label>
+                        <Badge count={`No. ${info.index}`} className="rno-badge"/>
+                        <Tag
+                            color={info.status === "annotated" ? "warning" : "success"}
+                            style={{ fontSize: "small", marginLeft: "10px" }}
+                        >
+                            {info.status === "annotated" ? "2 AI-Annotated" : "3 Expert-Annotated"}
+                        </Tag>
+                    </div>
+                        <label style={{ color: "#a3a3a3", textAlign: "left", marginBottom: "30px" }}>
+                            <i>
+                                Created Date: {new Date(info.createdAt).toLocaleString()}
+                                <br />
+                                Created By:{" "}
+                                {`${info.created_by.first_name} ${info.created_by.last_name}`}
+                            </i>
                             {info.status !== "annotated" &&
-                                <label style={{ color: "#a3a3a3", textAlign: "left" }}>
-                                    <i>
-                                        Last Updated: {new Date(info.updatedAt).toLocaleString()}
-                                        <br />
-                                        Updated By:{" "}
-                                        {`${info.updated_by.first_name} ${info.updated_by.last_name}`}
-                                    </i>
-                                </label>}
-                        </Row>
-                    </Col>
-                    {/* <Col span={12}>
-                        {gradCam}
-                    </Col> */}
-                </Row>
+                                <i>
+                                    <br />
+                                    Last Updated: {new Date(info.updatedAt).toLocaleString()}
+                                    <br />
+                                    Updated By:{" "}
+                                    {`${info.updated_by.first_name} ${info.updated_by.last_name}`}
+                                </i>}
+                        </label>
+                </div>
             )}
             {loaded && (
-                <Row>
+                <Row style={{ marginBottom: "30px" }}>
                     <Col span={12}>
                         <Space direction="vertical" size={10} style={{ width: "100%" }}>
-                            <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
-                                    <label>Hospital:</label>
-                                </Col>
-                                <Col span={12}>
-                                    <label>{info.personal_info_id.hospital}</label>
-                                </Col>
-                            </Row>
-                            <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
-                                    <label>HN:</label>
-                                </Col>
-                                <Col span={12}>
-                                    <label>{info.personal_info_id.hn}</label>
-                                </Col>
-                            </Row>
-                            <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
-                                    <label>Name:</label>
-                                </Col>
-                                <Col span={12}>
-                                    <label>{info.personal_info_id.name}</label>
-                                </Col>
-                            </Row>
-                            <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
-                                    <label>Gender:</label>
-                                </Col>
-                                <Col span={12}>
-                                    <label>{info.personal_info_id.gender === "F" ? "Female" : "Male"}</label>
-                                </Col>
-                            </Row>
-                            <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
-                                    <label>Age:</label>
-                                </Col>
-                                <Col span={12}>
-                                    <label>{info.personal_info_id.age}</label>
-                                </Col>
-                            </Row>
+                            {printResult("Hospital:", info.personal_info_id.hospital)}
+                            {printResult("HN:", info.personal_info_id.hn)}
+                            {printResult("Name:", info.personal_info_id.name)}
+                            {printResult("Gender:", info.personal_info_id.gender === "F" ? "Female" : "Male")}
+                            {printResult("Age:", info.personal_info_id.age)}
                             <Row style={{ alignItems: "baseline" }}>
                                 <Col span={12}>
                                     <label>ความมั่นใจในการวินิจฉัย <br /> Dyssynergic defecation (DD):</label>
@@ -156,39 +119,42 @@ export default function Report(props) {
                         </Space>
                     </Col>
                     <Col span={12}>
-                        <Row style={{ height: "100%" }}>
-                            <Col span={12} style={{ padding: "20px" }}>
+                        <Row justify="center" style={{ height: "100%" }}>
+                            {/* <Col span={12} style={{ padding: "20px" }}> */}
                                 {(info.task === "questionnaire" || info.task === "integrated") &&
                                     <Button
                                         type="link"
                                         className="label-btn"
-                                        style={{ width: "100%" }}
                                         onClick={() => setPreviewQuestionVisible(true)}
                                     >
                                         <Card
                                             hoverable={true}
                                             className="preview-card"
-                                            bodyStyle={{ textAlign: "center" }}
                                         >
                                             <div>
-                                                <label className="clickable-label" style={{ marginBottom: "20px" }}>
-                                                    Symptom Questionnaire
+                                                <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                                    Symptom <br /> Questionnaire
                                                 </label>
                                                 <br />
-                                                <SnippetsOutlined style={{ fontSize: "60px", color: "#999", marginBottom: "10px" }} />
+                                                <SnippetsOutlined style={{ fontSize: "55px", color: "#999" }} />
                                             </div>
                                         </Card>
                                     </Button>}
-                            </Col>
-                            <Col span={12} style={{ padding: "20px" }}>
+                            {/* </Col> */}
+                            {/* <Col span={12} style={{ padding: "20px" }}> */}
                                 {(info.task === "image" || info.task === "integrated") &&
                                     <label>image card</label>}
-                            </Col>
+                            {/* </Col> */}
                         </Row>
                     </Col>
                 </Row>
             )}
-            <Modal
+            {loaded &&
+                <ResultsPanel
+                    mode={mode}
+                    info={info}
+                />}
+            {loaded && <Modal
                 centered
                 destroyOnClose
                 visible={previewQuestionVisible}
@@ -199,9 +165,9 @@ export default function Report(props) {
                 // style={{ top: 10 }}
             >
                 <div style={{ height: "100%", overflow: "scroll" }}>
-                    <PreviewQuestionnaire question={info ? info.question_id : null} />
+                    <PreviewQuestionnaire question={info.question_id} />
                 </div>
-            </Modal>
+            </Modal>}
         </div>
     );
 }
