@@ -314,6 +314,13 @@ ol {
   min-width: 100px;
 }
 
+.primary-btn.cancel,
+.primary-btn.cancel:hover,
+.primary-btn.cancel:focus,
+.primary-btn.cancel:active {
+  background-color: #c4c4c4;
+}
+
 .primary-btn.smaller {
   height: 45px;
 }
@@ -333,12 +340,34 @@ ol {
   opacity: 0;
 }
 
+.ant-btn-icon-only {
+  vertical-align: -1.7px;
+}
+
 /* .ant-btn-link,
 .ant-btn-link:hover,
 .ant-btn-link:active,
 .ant-btn-link:focus {
   color: #58595b;
 } */
+
+.label-btn,
+.label-btn:hover,
+.label-btn:focus,
+.label-btn:active {
+  background-color: white;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  height: 0px;
+  text-align: left;
+}
+
+.label-btn:hover,
+.label-btn:focus,
+.label-btn:active {
+  background-color: #fafafa;
+}
 
 /* input ----------------------- */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -411,6 +440,53 @@ ol {
   box-shadow: none;
 } */
 
+.ant-input-number,
+.ant-input-number:hover,
+.ant-input-number:focus {
+  color: black;
+  background: #fafafa;
+  border: 1px solid #c4c4c4;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.ant-input-number.bigger,
+.ant-input-number.bigger:hover,
+.ant-input-number.bigger:focus {
+  border-radius: 5px;
+  font-size: medium;
+  width: 270px;
+}
+
+.ant-input-number-input {
+  height: 35px;
+}
+
+.ant-input-number.bigger .ant-input-number-input {
+  height: 45px;
+}
+
+.ant-input-number-handler {
+  border-left: 1px solid #c4c4c4;
+}
+
+.ant-input-number-handler-down {
+  border-top: 1px solid #c4c4c4;
+}
+
+.ant-input-number-handler:hover .ant-input-number-handler-up-inner,
+.ant-input-number-handler:hover .ant-input-number-handler-down-inner {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-input-number.bigger .ant-input-number-handler-wrap {
+  border-radius: 0 5px 5px 0;
+}
+
+.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  color: #f32424;
+}
+
 .ant-form-item-has-error
   :not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
 .ant-form-item-has-error
@@ -423,6 +499,19 @@ ol {
 
 .ant-form-item-explain.ant-form-item-explain-error {
   color: #f32424;
+}
+
+.ant-form-vertical .ant-form-item.form-item-force-inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.ant-form-vertical .ant-form-item.form-item-force-inline .ant-form-item-control {
+  padding-bottom: 8px;
+}
+
+.children-form-item {
+  padding-left: 50px;
 }
 
 .checkbox-container {
@@ -514,6 +603,7 @@ ol {
 .ant-radio-input:focus + .ant-radio-inner,
 .ant-radio-checked .ant-radio-inner {
   border-color: #c4c4c4;
+  background-color: #fafafa;
 }
 
 .ant-radio-input:focus + .ant-radio-inner {
@@ -638,8 +728,7 @@ hr {
 }
 
 .ant-select-arrow {
-  color: #c4c4c4;
-  font-weight: bold;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .ant-select-disabled .ant-select-arrow {
@@ -923,7 +1012,7 @@ hr {
 }
 
 .ant-picker-suffix {
-  color: #c4c4c4;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .ant-picker-cell:not(.ant-picker-cell-in-view) .ant-picker-cell-inner{
@@ -982,9 +1071,31 @@ hr {
 
 .ant-modal-title,
 .ant-modal-body {
-  text-align: center;
+  /* text-align: center; */
   font-size: large;
   color: black;
+}
+
+.upload-image-modal .ant-modal-header {
+  padding: 30px;
+}
+
+.upload-image-modal .ant-modal-body {
+  padding: 10px 40px 30px 40px;
+}
+
+.fill-question-modal .ant-modal-header {
+  padding: 30px 30px 25px 30px;
+}
+
+.fill-question-modal .ant-modal-body {
+  padding: 0 30px 30px 30px;
+  height: 700px;
+}
+
+.webcam-modal .ant-modal-body {
+  text-align: center;
+  padding: 25px;
 }
 
 .ant-modal-confirm-warning .ant-modal-body,
@@ -993,12 +1104,12 @@ hr {
 }
 
 .ant-modal-confirm .ant-modal-confirm-body > .anticon {
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .ant-modal-confirm-warning .ant-modal-confirm-body > .anticon,
 .ant-modal-confirm-success .ant-modal-confirm-body > .anticon {
-  font-size: 30px;
+  /* font-size: 30px; */
   margin-right: 23px;
 }
 
@@ -1009,15 +1120,6 @@ hr {
 
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn,
 .ant-modal-confirm .ant-modal-confirm-btns .ant-btn:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn:hover {
-  background-color: #9772fb;
-  border: none;
-  border-radius: 8px;
-  font-size: medium;
-  font-weight: bold;
-}
-
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn,
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn:hover {
   background-color: #9772fb;
@@ -1028,11 +1130,7 @@ hr {
 }
 
 .ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn,
-.ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn[disabled],
-.save-2-pacs-modal .ant-modal-footer .ant-btn + .ant-btn[disabled]:hover,
-.save-2-pacs-modal .ant-modal-footer .ant-btn,
-.save-2-pacs-modal .ant-modal-footer .ant-btn:hover  {
+.ant-modal-confirm-confirm .ant-modal-confirm-btns .ant-btn:hover {
   background-color: #c4c4c4;
   border: none;
   border-radius: 8px;
@@ -1047,8 +1145,8 @@ hr {
 }
 
 .ant-modal-confirm-body .ant-modal-confirm-title {
-  font-size: large;
   color: black;
+  font-size: large;
 }
 
 /* popconfirm -------------------- */
@@ -1325,6 +1423,16 @@ table tr td.ant-table-selection-column {
   background-color: #9772fb;
 }
 
+.ant-slider-dot,
+.ant-slider-dot-active {
+  background-color: #9772fb;
+  border-color: #9772fb;
+}
+
+.ant-slider-mark {
+  top: 16px;
+}
+
 /* checkbox ------- */
 .annotation-gc-checkbox{
   font-size: small;
@@ -1404,4 +1512,24 @@ table tr td.ant-table-selection-column {
   margin-left: 10px;
   background: #e9c869;
   font-weight: bold;
+}
+
+/* cropper ------------------------ */
+.crop-container {
+  position: relative;
+  width: 100%;
+  height: 330px;
+  background: #333;
+}
+
+/* .cropButton {
+  width: 100%;
+  margin-top: 20px;
+} */
+
+.controls {
+  padding: 22px 18px;
+  /* display: flex;
+  flex-direction: column;
+  align-items: stretch; */
 }

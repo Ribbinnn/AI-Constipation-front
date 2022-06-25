@@ -22,9 +22,14 @@ const LoadingIcon = (
 export default function Diagnosis(props) {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [loading, setLoading] = useState(false);
-  const [model, setModel] = useState(null);
-  const [HN, setHN] = useState("1234567"); // edit soon
   const [current, setCurrent] = useState(0);
+  const personalDetailsRef = useRef();
+
+  const [details, setDetails] = useState(null);
+  const [model, setModel] = useState(null);
+  const [question, setQuestion] = useState({});
+  const [image, setImage] = useState(null);
+
   const stepsTitle = [
     "Personal Details",
     "Select Model",
@@ -51,6 +56,11 @@ export default function Diagnosis(props) {
 
   const next = () => {
     /** add condition for each step to go next step here */
+    if (current === 0) {
+      personalDetailsRef.current.setPersonalDetails();
+    } else {
+      setCurrent(current + 1);
+    }
     // if (current === 0 && globalProject.projectReq.length === 0) {
     //   setCurrent(2);
     //   setCurrentActivity({ ...currentActivity, enablePageChange: false });
@@ -81,7 +91,7 @@ export default function Diagnosis(props) {
     //       });
     //   } else {
     //     if (current === 0) setCurrentActivity({ ...currentActivity, enablePageChange: false });
-        setCurrent(current + 1);
+    //     setCurrent(current + 1);
     //   }
     // }
   };
@@ -130,7 +140,12 @@ export default function Diagnosis(props) {
       {/* ----- add content below -------- */}
       <div className="steps-content-diagnosis">
         {current === 0 && (
-          <PersonalDetails />
+          <PersonalDetails
+            ref={personalDetailsRef}
+            details={details}
+            setDetails={setDetails}
+            setCurrent={setCurrent}
+          />
         )}
         {current === 1 && (
           <SelectModel
@@ -141,6 +156,10 @@ export default function Diagnosis(props) {
         {current === 2 && (
           <InsertInput
             model={model}
+            question={question}
+            setQuestion={setQuestion}
+            image={image}
+            setImage={setImage}
           />
         )}
         {current === 3 && (
@@ -169,8 +188,13 @@ export default function Diagnosis(props) {
             Back
           </Button>
         )}
-        {(current !== 1 && current < stepsTitle.length - 1 || current === 1 && model) && (
-          <Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
+        {(current === 0
+          ||current === 1 && model
+          || current === 2 && (
+            model === "questionnaire" && Object.keys(question).length !== 0
+            || model === "image" && image)
+          || current === 3)
+          && (<Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
             Next
           </Button>
         )}
