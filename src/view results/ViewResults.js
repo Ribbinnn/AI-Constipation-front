@@ -198,6 +198,17 @@ export default function ViewResults(props) {
             showSorterTooltip: false,
         },
         {
+            title: "Hospital",
+            dataIndex: "hospital",
+            key: "hospital",
+            align: "center",
+            sorter: {
+                compare: (a, b) => a.hospital.localeCompare(b.hospital)
+            },
+            showSorterTooltip: false,
+            width: 150,
+        },
+        {
             // title: "Action",
             key: "action",
             dataIndex: "action",
