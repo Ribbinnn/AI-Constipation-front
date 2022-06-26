@@ -160,6 +160,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}>
                                         <Radio.Group style={{ padding: "0 10px" }}>
@@ -175,6 +176,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}>
                                         <Checkbox.Group options={final_diag_option} style={{ padding: "0 10px" }} />
@@ -187,6 +189,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}>
                                         <Radio.Group style={{ padding: "0 10px" }}>
@@ -203,6 +206,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}>
                                         <Radio.Group style={{ padding: "0 10px" }}>
@@ -220,6 +224,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}>
                                         <Radio.Group style={{ padding: "0 10px" }}>
@@ -235,6 +240,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}
                                 >
@@ -255,6 +261,7 @@ export default function ResultsPanel(props) {
                                         rules={[
                                             {
                                                 required: true,
+                                                message: "please answer this question",
                                             },
                                         ]}>
                                             <Radio.Group
@@ -272,6 +279,7 @@ export default function ResultsPanel(props) {
                                         rules={[
                                             {
                                                 required: true,
+                                                message: "please answer this question",
                                             },
                                         ]}
                                     >
@@ -291,6 +299,7 @@ export default function ResultsPanel(props) {
                                     rules={[
                                         {
                                             required: true,
+                                            message: "please answer this question",
                                         },
                                     ]}
                                 >

@@ -43,6 +43,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 },
                             ]}>
                                 <Select>
@@ -67,6 +68,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 },
                             ]}>
                                 <Input className="input-text fixed-size" />
@@ -85,6 +87,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 },
                             ]}>
                                 <Input className="input-text fixed-size" />
@@ -103,6 +106,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 },
                             ]}>
                                 <Radio.Group>
@@ -124,6 +128,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 },
                             ]}>
                                 <InputNumber
@@ -147,11 +152,13 @@ const PersonalDetails = forwardRef((props, ref) => {
                             rules={[
                                 {
                                     required: true,
+                                    message: "please answer this question",
                                 }
                             ]}>
                                 <Rate
                                     className="rating"
                                     tooltips={ratingDesc}
+                                    allowClear={false}
                                 />
                         </Form.Item>
                     </Col>
