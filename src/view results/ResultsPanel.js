@@ -90,10 +90,10 @@ export default function ResultsPanel(props) {
     const printResult = (field, value) => {
         return(
             <Row style={{ alignItems: "baseline" }}>
-                <Col span={12}>
+                <Col span={17}>
                     <label /*style={{ color: "#9772fb", fontWeight: 500 }}*/>{field}</label>
                 </Col>
-                <Col span={12}>
+                <Col span={7}>
                     <label /*style={{ color: "#9772fb", fontWeight: 500 }}*/>{value}</label>
                 </Col>
             </Row>
@@ -121,22 +121,28 @@ export default function ResultsPanel(props) {
 
     return (
         <div>
-            <Row>
-                <Col span={12}>
-                    {/* <Space
-                        direction="vertical"
-                        size={10}
-                        style={{ width: "100%", marginBottom: "35px", background: "#f5f5f5", padding: "15px 20px" }}
-                    >
-                        <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
-                        {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
-                        {printResult("Threshold:", threshold.toFixed(2))}
-                        {printResult(props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD", null)}
-                    </Space> */}
+            <Row style={{ marginBottom: "35px" }}>
+                <Col span={6}>
                     <Space
                         direction="vertical"
                         size={10}
-                        style={{ width: "100%", marginBottom: "25px", background: "#f5f5f5", padding: "15px 20px" }}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px"/*, marginBottom: "40px"*/ }}
+                    >
+                        <label style={{ /*color: "#9772fb",*/ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
+                        {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
+                        {printResult("Threshold:", threshold.toFixed(2))}
+                        <label style={{ color: "#9772fb", fontWeight: "bold", marginTop: "10px" }}>
+                            {props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD"}
+                        </label>
+                    </Space>
+                    {/* {gradCam} */}
+                </Col>
+                <Col span={1} />
+                <Col span={17}>
+                    <Space
+                        direction="vertical"
+                        size={10}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px" }}
                     >
                         <label style={{ fontWeight: "bold", marginBottom: "10px" }}>Expert Final Diagnosis</label>
                         {props.mode === "view" && props.info.status === "annotated" && // 1 time finalized
@@ -240,7 +246,7 @@ export default function ResultsPanel(props) {
                                         />
                                 </Form.Item>
                                 <div>
-                                    <Form.Item // if yes change margin bottom
+                                    <Form.Item
                                         name="surgical_history"
                                         key="surgical_history"
                                         label={question[5]}
@@ -298,7 +304,7 @@ export default function ResultsPanel(props) {
                             </Space>
                         </Form>}
                         {props.info.status === "reviewed" &&
-                            <Space direction="vertical" size={10} style={{ marginBottom: "2px" }}>
+                            <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
                                     {printAnswer(question[0], props.info.final_diag)}
                                     {printAnswer(question[1], props.info.ctt_result)}
@@ -310,24 +316,8 @@ export default function ResultsPanel(props) {
                             </Space>}
                     </Space>
                 </Col>
-                <Col span={1} />
-                <Col span={11}>
-                    <Space
-                        direction="vertical"
-                        size={10}
-                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "40px" /* edit margin soon */ }}
-                    >
-                        <label style={{ /*color: "#9772fb",*/ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
-                        {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
-                        {printResult("Threshold:", threshold.toFixed(2))}
-                        <label style={{ color: "#9772fb", fontWeight: "bold", marginTop: "10px" }}>
-                            {props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD"}
-                        </label>
-                    </Space>
-                    {/* {gradCam} */}
-                </Col>
             </Row>
-            <Row justify="end">
+            <Row justify={props.mode === "edit" && props.info.status !== "reviewed" ? "space-between" : "end"}>
                 <Button
                     className={
                         props.mode === "view" || props.info.status === "reviewed" ?
@@ -336,9 +326,8 @@ export default function ResultsPanel(props) {
                 >
                     Back
                 </Button>
-                {(props.mode === "edit" && props.info.status !== "reviewed") && <Button
+                {props.mode === "edit" && props.info.status !== "reviewed" && <Button
                     className="primary-btn smaller"
-                    style={{ marginLeft: "15px" }}
                     onClick={async () => {
                         try {
                             const data = await form.validateFields();

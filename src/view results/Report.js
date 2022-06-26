@@ -95,7 +95,7 @@ export default function Report(props) {
                 </div>
             )}
             {loaded && (
-                <Row style={{ marginBottom: "30px" }}>
+                <Row style={{ marginBottom: "35px" }}>
                     <Col span={12}>
                         <Space direction="vertical" size={10} style={{ width: "100%" }}>
                             {printResult("Hospital:", info.personal_info_id.hospital)}
