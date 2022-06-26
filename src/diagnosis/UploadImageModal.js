@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Modal, Row, Col, Button, Image, Slider, InputNumber } from "antd";
 import { CameraOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import Cropper from 'react-easy-crop'
@@ -9,6 +9,7 @@ import { WebcamCapture } from "../component/WebcamCapture";
 function UploadImageModal(props) {
     const [imageName, setImageName] = useState(null);
     const [webcamVisible, setWebcamVisible] = useState(false);
+    const [activity, setActivity] = useState(null);
 
     const onOK = () => {
         props.setVisible(false);
@@ -17,10 +18,11 @@ function UploadImageModal(props) {
     }
 
     const onCancel = () => {
-        if (imageSrc) {
+        // console.log(activity);
+        if (imageSrc && activity) {
             return Modal.confirm({
                 icon: <ExclamationCircleOutlined />,
-                content: "Image will not be saved.",
+                content: "Image modification will not be saved.",
                 onOk: onOK,
                 zIndex: 3000,
             });
@@ -44,6 +46,7 @@ function UploadImageModal(props) {
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
+        // setActivity("cropped");
     }, []);
 
     // const showCroppedImage = useCallback(async () => {
@@ -74,6 +77,7 @@ function UploadImageModal(props) {
             }
 
             setImageSrc(imageDataUrl)
+            setActivity("file change");
         }
     }
 
@@ -85,11 +89,22 @@ function UploadImageModal(props) {
         })
     }
 
+    useEffect(() => {
+        setActivity(null);
+        if (props.image) {
+            // console.log(props.image);
+            setImageSrc(props.image.originalImage);
+            setImageName(props.image.originalImageName);
+        } else if (document.getElementById("input-file")) {
+            document.getElementById("input-file").value = "";
+        }
+    }, [props.visible]);
+
     return(
         <div>
             <Modal
                 // centered
-                destroyOnClose
+                // destroyOnClose
                 maskClosable={false}
                 keyboard={false}
                 visible={props.visible}
@@ -162,11 +177,15 @@ function UploadImageModal(props) {
                                                 crop={crop}
                                                 rotation={rotation}
                                                 zoom={zoom}
+                                                maxZoom={2}
                                                 aspect={4 / 5}
                                                 onCropChange={setCrop}
                                                 onRotationChange={setRotation}
                                                 onCropComplete={onCropComplete}
-                                                onZoomChange={setZoom}
+                                                onZoomChange={(zoom) => {
+                                                    setZoom(zoom);
+                                                    setActivity("zoom");
+                                                }}
                                             />
                                         </div>
                                     </Col>
@@ -191,9 +210,12 @@ function UploadImageModal(props) {
                                             <Slider
                                                 value={typeof zoom === "number" ? zoom : 0}
                                                 min={1}
-                                                max={3}
+                                                max={2}
                                                 step={0.01}
-                                                onChange={(zoom) => setZoom(zoom)}
+                                                onChange={(zoom) => {
+                                                    setZoom(zoom);
+                                                    setActivity("zoom");
+                                                }}
                                             />
                                         </Col>
                                         <Col span={4}>
@@ -201,9 +223,12 @@ function UploadImageModal(props) {
                                                 // className="input-text"
                                                 value={zoom.toFixed(2)}
                                                 min={1}
-                                                max={3}
+                                                max={2}
                                                 step={0.01}
-                                                onChange={(zoom) => setZoom(zoom)}
+                                                onChange={(zoom) => {
+                                                    setZoom(zoom);
+                                                    setActivity("zoom");
+                                                }}
                                             />
                                         </Col>
                                     </Row>
@@ -217,7 +242,10 @@ function UploadImageModal(props) {
                                                 min={0}
                                                 max={360}
                                                 step={1}
-                                                onChange={(rotation) => setRotation(rotation)}
+                                                onChange={(rotation) => {
+                                                    setRotation(rotation);
+                                                    setActivity("rotation");
+                                                }}
                                             />
                                         </Col>
                                         <Col span={4}>
@@ -227,7 +255,10 @@ function UploadImageModal(props) {
                                                 min={0}
                                                 max={360}
                                                 step={1}
-                                                onChange={(rotation) => setRotation(rotation)}
+                                                onChange={(rotation) => {
+                                                    setRotation(rotation);
+                                                    setActivity("rotation");
+                                                }}
                                             />
                                         </Col>
                                     </Row>
@@ -245,18 +276,26 @@ function UploadImageModal(props) {
                         </Button>
                         <Button
                             className="primary-btn smaller"
-                            onClick={() => {
+                            onClick={async () => {
                                 // showCroppedImage();
-                                let croppedImage = null;
                                 if (imageSrc) {
-                                    croppedImage = getCroppedImg(
+                                    const croppedImageURL = await getCroppedImg(
                                         imageSrc,
                                         croppedAreaPixels,
                                         rotation
-                                    );
+                                    )
+                                    // let croppedImage = await fetch(url)
+                                        // .then(r => r.blob())
+                                        // .then(b => b.arrayBuffer());
+                                    props.setImage({
+                                        originalImage: imageSrc,
+                                        originalImageName: imageName,
+                                        croppedImage: croppedImageURL,
+                                    });
+                                    onOK();
+                                } else {
+                                    return Modal.warning({ content: "No image to save." });
                                 }
-                                props.setImage(croppedImage);
-                                onOK();
                             }}
                         >
                             Process
@@ -269,6 +308,7 @@ function UploadImageModal(props) {
                 setVisible={setWebcamVisible}
                 setImage={setImageSrc}
                 setImageName={setImageName}
+                setActivity={setActivity}
             />
         </div>
     );

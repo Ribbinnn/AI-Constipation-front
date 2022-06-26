@@ -6,6 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
+import UploadImageModal from "./UploadImageModal";
 import Completed from "../component/Completed";
 import BeginDiagnosis from "./BeginDiagnosis";
 import { questionnaire } from "../api/infer";
@@ -24,6 +25,7 @@ export default function Diagnosis(props) {
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const personalDetailsRef = useRef();
+  const [uploadImageVisible, setUploadImageVisible] = useState(false);
 
   const [details, setDetails] = useState(null);
   const [model, setModel] = useState(null);
@@ -151,7 +153,7 @@ export default function Diagnosis(props) {
         ))}
       </Steps>
       {/* ----- add content below -------- */}
-      <div className={current === 3 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
+      <div className={current === 3 && Object.keys(question).length !== 0 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
         {current === 0 && (
           <PersonalDetails
             ref={personalDetailsRef}
@@ -164,6 +166,8 @@ export default function Diagnosis(props) {
           <SelectModel
             model={model}
             setModel={setModel}
+            setQuestion={setQuestion}
+            setImage={setImage}
           />
         )}
         {current === 2 && (
@@ -173,6 +177,7 @@ export default function Diagnosis(props) {
             setQuestion={setQuestion}
             image={image}
             setImage={setImage}
+            setUploadImageVisible={setUploadImageVisible}
           />
         )}
         {current === 3 && (
@@ -185,6 +190,12 @@ export default function Diagnosis(props) {
           <Completed btnList={btnList} title="Diagnosis Started" />
         )}
       </div>
+      <UploadImageModal
+        visible={uploadImageVisible}
+        setVisible={setUploadImageVisible}
+        image={image}
+        setImage={setImage}
+      />
       {/* ----- add content above -------- */}
       <div className={`steps-action${current === 0 ? " steps-action-1" : ""}`}>
         {current > 0 && current < stepsTitle.length - 1 && (
@@ -201,7 +212,8 @@ export default function Diagnosis(props) {
           ||current === 1 && model
           || current === 2 && (
             model === "questionnaire" && Object.keys(question).length !== 0
-            || model === "image" && image)
+            || model === "image" && image
+            || model === "integrated" && Object.keys(question).length !== 0 && image)
           || current === 3)
           && (<Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
             Next

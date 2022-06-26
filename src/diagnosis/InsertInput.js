@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Row, Col, Button } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
-// import { getPatientData } from "../api/pacs"
-import UploadImageModal from "./UploadImageModal";
+// import UploadImageModal from "./UploadImageModal";
 import FillQuestionnaireModal from "./FillQuestionnaireModal";
-// import * as moment from "moment";
 // import Contexts from '../utils/Contexts';
 
 function InsertInput(props) {
-    const [uploadImageVisible, setUploadImageVisible] = useState(false);
+    // const [uploadImageVisible, setUploadImageVisible] = useState(false);
     const [fillQuestionVisible, setFillQuestionVisible] = useState(false);
 
     const hasQuestion = Object.keys(props.question).length !== 0;
@@ -58,7 +56,7 @@ function InsertInput(props) {
                     type="link"
                     className="label-btn"
                     style={{ width: "100%" }}
-                    onClick={() => setUploadImageVisible(true)}
+                    onClick={() => props.setUploadImageVisible(true)}
                 >
                     <Card
                         // style={{ marginBottom: "25px" }}
@@ -73,12 +71,12 @@ function InsertInput(props) {
                         </div>
                     </Card>
                 </Button>}
-            <UploadImageModal
+            {/* <UploadImageModal
                 visible={uploadImageVisible}
                 setVisible={setUploadImageVisible}
                 image={props.image}
                 setImage={props.setImage}
-            />
+            /> */}
             <FillQuestionnaireModal
                 visible={fillQuestionVisible}
                 setVisible={setFillQuestionVisible}

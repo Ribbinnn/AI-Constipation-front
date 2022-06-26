@@ -19,6 +19,11 @@ function SelectModel(props) {
                     className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
                     onClick={() => {
                         props.setModel(item.name);
+                        if (item.name === "questionnaire") {
+                            props.setImage(null);
+                        } else if (item.name === "image") {
+                            props.setQuestion({});
+                        }
                     }}
                 >
                     <div style={{ width: "100%", cursor: "pointer" }}>
