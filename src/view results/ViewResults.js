@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Table, Tooltip, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
-import { DownloadOutlined ,EditOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import {viewHistory, deleteReport} from "../api/viewHistory"
+import {
+    EyeOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
+    InfoCircleOutlined, CheckOutlined, CloseOutlined, MinusOutlined
+} from '@ant-design/icons';
+import { viewResults, deleteReport } from "../api/reports";
 import { useHistory, useLocation } from "react-router-dom";
 import * as moment from "moment";
 import Contexts from "../utils/Contexts";
@@ -12,12 +15,7 @@ const LoadingIcon = (
 
 const { Option } = Select;
 
-export default function ViewHistory(props) {
-    function useQuery() {
-    const { search } = useLocation();
-    return new URLSearchParams(search);
-    }
-
+export default function ViewResults(props) {
     const [loaded, setLoaded] = useState(false);
 
     function useQuery() {
@@ -27,33 +25,33 @@ export default function ViewHistory(props) {
 
     const history = useHistory();
     const queryString = useQuery();
+    const role = JSON.parse(sessionStorage.getItem("user")).role;
+
     const [uploadedItem, setUploadedItem] = useState([])
     const [status, setStatus] = useState([]);
     const shownStatus = {
         "all": {shown: "All", color: ""},
-        "canceled": {shown: "Canceled", color: "default", desc: "Image inference has been canceled because of server errors."},
-        "waiting": {shown: "0 Waiting", color: "purple", desc: "Image inference is waiting in queue before being in progress"},
-        "in progress": {shown: "1 In Progress", color: "processing", desc: "Image inference is still in progress."},
-        "annotated": {shown: "2 AI-Annotated", color: "warning", desc: "Image inference succeeds, the results are saved as report."},
-        "reviewed": {shown: "3 Human-Annotated", color: "error", desc: "Report has been edited by radiologists."},
-        "finalized": {shown: "4 Finalized", color: "success", desc: "Report has been saved to PACS and cannot be edited."}
+        "canceled": {shown: "Canceled", color: "default", desc: "Diagnosis has been canceled because of server errors."},
+        "waiting": {shown: "0 Waiting", color: "processing", desc: "Diagnosis is waiting in queue before being in progress"},
+        "in progress": {shown: "1 Not Labeled", color: "error", desc: "Diagnosis is still in progress."},
+        "annotated": {shown: "2 AI-Annotated", color: "warning", desc: "Diagnosis succeeds with the result annotated by AI."},
+        "reviewed": {shown: "3 Expert-Annotated", color: "success", desc: "The result is finalized by experts."},
     }
-    // const [findings, setFindings] = useState([]);
-    const hospitalMockUp = ["all", "hospital1", "hospital2", "hospital3"]; // edit alphabet case soon
+    const [hospitals, setHospitals] = useState([]);
     const [reload, setReload] = useState("");
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
 
     const columns = [
         {
             title: "No.",
-            dataIndex: "no",
-            key: "no",
+            dataIndex: "index",
+            key: "index",
             align: "center",
             // ellipsis: {
             //     showTitle: false
             // },
             sorter: {
-                compare: (a, b) => a.key.localeCompare(b.key)
+                compare: (a, b) => a.index.localeCompare(b.index)
             },
             showSorterTooltip: false,
             // render: (no) => (
@@ -72,12 +70,12 @@ export default function ViewHistory(props) {
                             <span onClick={(e) => e.stopPropagation()}>
                                 {Object.keys(shownStatus).splice(Object.keys(shownStatus).indexOf("canceled"), 6).map((key) => (
                                     <Row style={{marginTop: key === "canceled" ? 0 : "10px"}}>
-                                        <Col span={10}>
-                                            <Tag color={shownStatus[key].color} style={{marginTop: "5px", fontSize: "small"}}>
+                                        <Col span={9}>
+                                            <Tag color={shownStatus[key].color} style={{marginTop: "2px", fontSize: "small"}}>
                                                 {shownStatus[key].shown}
                                             </Tag>
                                         </Col>
-                                        <Col span={14}>
+                                        <Col span={15}>
                                             <span>{shownStatus[key].desc}</span>
                                         </Col>
                                     </Row>
@@ -86,7 +84,7 @@ export default function ViewHistory(props) {
                         }
                         trigger="hover"
                     >
-                        <Button type="link" icon={<InfoCircleOutlined />} style={{color: "white"}} />
+                        <Button type="link" icon={<InfoCircleOutlined />} style={{color: "black"}} />
                     </Popover>
                 </span>,
             dataIndex: "status",
@@ -106,122 +104,140 @@ export default function ViewHistory(props) {
         },
         {
             title: "HN",
-            dataIndex: "hn",
-            key: "hn",
+            dataIndex: "HN",
+            key: "HN",
             align: "center",
             sorter: {
                 compare: (a, b) => {
-                    if (a.hn == null) {
-                        a.hn = "";
-                    } if (b.hn == null) {
-                        b.hn = "";
-                    }
-                    return a.hn.toString().localeCompare(b.hn.toString());
+                    // if (a.HN == null) {
+                    //     a.HN = "";
+                    // } if (b.HN == null) {
+                    //     b.HN = "";
+                    // }
+                    return a.HN.toString().localeCompare(b.HN.toString());
                 }
             },
             showSorterTooltip: false,
         },
         {
             title: "Name",
-            dataIndex: "patient_name",
-            key: "patient_name",
+            dataIndex: "name",
+            key: "name",
             align: "center",
             sorter: {
                 compare: (a, b) => {
-                    if (a.patient_name == null) {
-                        a.patient_name = "";
-                    } if (b.patient_name == null) {
-                        b.patient_name = "";
-                    }
-                    return a.patient_name.localeCompare(b.patient_name);
+                    // if (a.name == null) {
+                    //     a.name = "";
+                    // } if (b.name == null) {
+                    //     b.name = "";
+                    // }
+                    return a.name.localeCompare(b.name);
                 }
             },
             showSorterTooltip: false,
         },
         {
-            title: "Findings",
-            dataIndex: "finding",
-            key: "finding",
+            title: "Label",
+            dataIndex: "label",
+            key: "label",
+            align: "center",
+            // sorter: {
+            //     compare: (a, b) => a.finding.localeCompare(b.finding)
+            // },
+            showSorterTooltip: false,
+        },
+        {
+            title: "Prediction",
+            dataIndex: "prediction",
+            key: "prediction",
             align: "center",
             sorter: {
-                compare: (a, b) => a.finding.localeCompare(b.finding)
+                compare: (a, b) => a.prediction.localeCompare(b.prediction)
             },
             showSorterTooltip: false,
         },
         {
-            title: "Created Date Time",
-            dataIndex: "createdAt",
-            key: "createdAt",
+            title: "Evaluation",
+            dataIndex: "evaluation",
+            key: "evaluation",
             align: "center",
-            sorter: {
-                compare: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-            },
+            // sorter: {
+            //     compare: (a, b) => a.finding.localeCompare(b.finding)
+            // },
             showSorterTooltip: false,
+            render: (e) => {
+                switch (e) {
+                    case true:
+                        return <CheckOutlined />;
+                    case false:
+                        return <CloseOutlined />;
+                    default:
+                        return <MinusOutlined />;
+                }
+            },
         },
         {
-            title: "Last Modified",
-            dataIndex: "updatedAt",
-            key: "updatedAt",
+            title: "Date",
+            dataIndex: "date",
+            key: "date",
             align: "center",
             sorter: {
-                compare: (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)
+                compare: (a, b) => new Date(a.date) - new Date(b.date)
             },
             showSorterTooltip: false,
+            width: 150,
         },
         {
             title: "Clinician",
-            dataIndex: "clinician_name",
-            key: "clinician_name",
+            dataIndex: "clinician",
+            key: "clinician",
             align: "center",
             sorter: {
-                compare: (a, b) => a.clinician_name.localeCompare(b.clinician_name)
+                compare: (a, b) => a.clinician.localeCompare(b.clinician)
             },
             showSorterTooltip: false,
         },
         {
-            title: "Action",
+            title: "Hospital",
+            dataIndex: "hospital",
+            key: "hospital",
+            align: "center",
+            sorter: {
+                compare: (a, b) => a.hospital.localeCompare(b.hospital)
+            },
+            showSorterTooltip: false,
+            width: 150,
+        },
+        {
+            // title: "Action",
             key: "action",
             dataIndex: "action",
             render: (_, report) => {
                 return(
-                    report.status === "waiting" || report.status === "in progress" ?
-                    // <EditOutlined className="clickable-icon" /> :
-                    null :
+                    report.status === "waiting" || report.status === "in progress" ? null :
                     <div className="center-div">
-                        {/* <ImageModal
-                            AccessionNo={report.accession_no}
-                            // ProcDescription=""
-                            ReportID={report.pred_result_id}
-                            StudyDateTime=" " />
                         {report.status === "canceled" ?
                             null : 
-                            <EditOutlined
+                            <EyeOutlined
                                 className="clickable-icon"
-                                // style={{marginLeft: "8px"}}
-                                // onClick={() => {
-                                //     let role = JSON.parse(sessionStorage.getItem("user")).role;
-                                //     // console.log(
-                                //     // JSON.parse(sessionStorage.getItem("user")).role,
-                                //     // report
-                                //     // );
-                                //     // SHOW REPORT
-                                //     history.push(
-                                //     `/viewhistory/${role === "clinician" ? "view" : "edit"}/${
-                                //         report.pred_result_id
-                                //     }/?${queryString}`
-                                //     );
-                                // }}
-                            />} */}
-                        <Popconfirm
-                            title="Delete this report?"
+                                onClick={() => {
+                                    history.push(`/viewresults/${role === "clinician" ? "edit" : "view"}/${report._id}/?${queryString}`);
+                                }}
+                            />}
+                        {role === "clinician" && <Popconfirm
+                            title="Delete this result?"
                             onConfirm={() => {
                                 setLoaded(false);
-                                deleteReport(report.pred_result_id).then((res) => {
-                                    window.location.reload();
+                                deleteReport(report._id)
+                                .then((res) => {
+                                    // window.location.reload();
+                                    reload === "" ? setReload("reload") : setReload("")
+                                    setLoaded(false);
                                 }).catch((err) => {
-                                    console.log(err);
+                                    console.log(err.response);
                                 })
                             }}
+                            placement="topRight"
                             okButtonProps={{ className: "primary-btn popconfirm" }}
                             cancelButtonProps={{ style: { display: "none" } }}
                         >
@@ -229,96 +245,106 @@ export default function ViewHistory(props) {
                                 className="clickable-icon"
                                 style={{ marginLeft: report.status === "canceled" ? 0 : "8px" }}
                             />
-                        </Popconfirm>
+                        </Popconfirm>}
                     </div>
                 );
+            },
+            align: "center",
         },
-        align: "center",
-    },
     ];
 
     useEffect(() => {
-    // setLoaded(false);
-    // viewHistory(props.project.projectId)
-    //   .then((response) => {
-    //     // console.log(response);
-    //     // add status, findings list
-    //     const status = ["all"];
-    //     const findings = ["all"];
-    //     for (const i in response.data) {
-    //         if (!status.includes(response.data[i]["status"])) {
-    //             status.push(response.data[i]["status"]);
-    //         }
-    //         if (response.data[i]["finding"] !== "") {
-    //             if (!findings.includes(response.data[i]["finding"])) {
-    //                 findings.push(response.data[i]["finding"]);
-    //             }
-    //         }
-    //     }
-    //     // filter data by search query params
-    //     let filter_data = response.data.filter(
-    //       (item, i) =>
-    //         (queryString.get("patient_HN") === null
-    //           ? true
-    //           : (item.hn !== null) && (item.hn.includes(queryString.get("patient_HN")))) &&
-    //         (queryString.get("status") === null
-    //           ? true
-    //           : item.status === queryString.get("status")) &&
-    //         (queryString.get("hospital") === null
-    //           ? true
-    //           : item.hospital === queryString.get("hospital")) &&
-    //         (queryString.get("clinician") === null
-    //           ? true
-    //           : item.clinician_name.toLowerCase().includes(queryString.get("clinician").toLowerCase())) &&
-    //         (queryString.get("no") === null
-    //           ? true
-    //           : item.no.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
-    //         (queryString.get("from") === null
-    //           ? true
-    //           : new Date(item.createdAt) >=
-    //             new Date(queryString.get("from"))) &&
-    //         (queryString.get("to") === null
-    //           ? true
-    //           : new Date(item.createdAt) <= new Date(queryString.get("to")))
-    //     );
-    //     // default sort
-    //     filter_data.sort((a, b) =>
-    //         ((a.status === "waiting" || b.status === "waiting" || a.status === "in progress" || b.status === "in progress")
-    //         && shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown))
-    //         || new Date(b.updatedAt) - new Date(a.updatedAt));
-    //     // add key to each row & change date-time
-    //     for (const i in filter_data) {
-    //       filter_data[i]["key"] = (parseInt(i) + 1).toString();
-    //       filter_data[i].createdAt = new Date(
-    //         filter_data[i].createdAt
-    //       ).toLocaleString("sv-SE");
-    //       filter_data[i].updatedAt = new Date(
-    //         filter_data[i].updatedAt
-    //       ).toLocaleString("sv-SE");
-    //     }
-    //         setUploadedItem(filter_data);
-    //         setStatus(status);
-    //         setFindings(findings);
+        setLoaded(false);
+        viewResults()
+        .then((response) => {
+            console.log(response);
+            // add status, hospitals list
+            const status = ["all"];
+            const hospitals = ["All"];
+            for (const i in response.data) {
+                if (!status.includes(response.data[i]["status"])) {
+                    status.push(response.data[i]["status"]);
+                }
+                if (!hospitals.includes(response.data[i]["hospital"])) {
+                    hospitals.push(response.data[i]["hospital"]);
+                }
+            }
+            // filter data by search query params
+            let filter_data = response.data.filter(
+                (item, i) =>
+                (queryString.get("patient_HN") === null
+                    ? true
+                    : (item.HN !== null) && (item.HN.includes(queryString.get("patient_HN")))) &&
+                (queryString.get("status") === null
+                    ? true
+                    : item.status === queryString.get("status")) &&
+                (queryString.get("hospital") === null
+                    ? true
+                    : item.hospital === queryString.get("hospital")) &&
+                (queryString.get("clinician") === null
+                    ? true
+                    : item.clinician.toLowerCase().includes(queryString.get("clinician").toLowerCase())) &&
+                (queryString.get("no") === null
+                    ? true
+                    : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
+                (queryString.get("from") === null
+                    ? true
+                    : new Date(item.date) >=
+                    new Date(queryString.get("from"))) &&
+                (queryString.get("to") === null
+                    ? true
+                    : new Date(item.date) <= new Date(queryString.get("to")))
+            );
+            // default sort
+            filter_data.sort((a, b) =>
+                ((a.status === "waiting" || b.status === "waiting" || a.status === "in progress" || b.status === "in progress")
+                && shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown)) // change to expert annotated ?
+                || new Date(b.date) - new Date(a.date) // created at -> update at ?
+            );
+            // add key & adjust data
+            for (const i in filter_data) {
+                filter_data[i].key = (parseInt(i) + 1).toString();
+                if (filter_data[i].label === null) {
+                    filter_data[i].label = "-";
+                    filter_data[i].evaluation = null;
+                }
+                filter_data[i].date = new Date(
+                    filter_data[i].date
+                ).toLocaleString("sv-SE");
+            }
+            setUploadedItem(filter_data);
+            setStatus(status);
+            setHospitals(hospitals);
             setLoaded(true);
-        // }).catch((err) => console.log(err.response));
+        }).catch((err) => console.log(err.response));
     }, [reload, props])
 
     return (
         <div className="content">
             <Form layout="inline">
-                <Form.Item name="patient_HN" label="Patient's HN" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="patient_HN"
+                    key="patient_HN"
+                    label="Patient's HN"
+                    initialValue={queryString.get("patient_HN")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("patient_HN")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("patient_HN") : queryString.set("patient_HN", item.target.value);
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="status" label="Status" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>                
+                <Form.Item
+                    name="status"
+                    key="status"
+                    label="Status"
+                    initialValue={queryString.get("status") === null ? "All" : queryString.get("status")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >                
                     <Select
                         className="search-component"
-                        defaultValue={queryString.get("status") === null ? "All" : queryString.get("status")}
                         onChange={(value) => {
                             value === "all" ? queryString.delete("status") : queryString.set("status", value);
                         }}>
@@ -329,24 +355,34 @@ export default function ViewHistory(props) {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item name="hospital" label="Hospital" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>                
+                <Form.Item
+                    name="hospital"
+                    key="hospital"
+                    label="Hospital"
+                    initialValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >                
                     <Select
                         className="search-component"
-                        defaultValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
                         onChange={(value) => {
-                            value === "all" ? queryString.delete("hospital") : queryString.set("hospital", value);
+                            value === "All" ? queryString.delete("hospital") : queryString.set("hospital", value);
                         }}>
-                            {hospitalMockUp.map((hospital, i) => (
+                            {hospitals.map((hospital, i) => (
                                 <Option key={i} value={hospital}>
-                                    {hospital.charAt(0).toUpperCase() + hospital.slice(1).split("_").join(" ")}
+                                    {hospital}
                                 </Option>
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item name="clinician" label="Clinician" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="clinician"
+                    key="clinician"
+                    label="Clinician"
+                    initialValue={queryString.get("clinician")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("clinician")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("clinician") : queryString.set("clinician", item.target.value);
                         }}
@@ -354,26 +390,41 @@ export default function ViewHistory(props) {
                 </Form.Item>
             </Form>
             <Form layout="inline">
-                <Form.Item name="no" label="No." style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="no"
+                    key="no"
+                    label="No."
+                    initialValue={queryString.get("no")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <Input
                         className="input-text"
-                        defaultValue={queryString.get("no")}
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("no") : queryString.set("no", item.target.value);
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="from" label="From" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>   
+                <Form.Item
+                    name="from"
+                    key="from"
+                    label="From"
+                    initialValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >   
                     <DatePicker
-                        defaultValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
                         onChange={(date) => {
                             date === null ? queryString.delete("from") : queryString.set("from", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
                         style={{width:"200px"}} />
                 </Form.Item>
-                <Form.Item name="to" label="To" style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+                <Form.Item
+                    name="to"
+                    key="to"
+                    label="To"
+                    initialValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >
                     <DatePicker
-                        defaultValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
                         onChange={(date) => {
                             date === null ? queryString.delete("to") : queryString.set("to", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
@@ -384,7 +435,7 @@ export default function ViewHistory(props) {
                         className="primary-btn smaller"
                         style={{marginTop:"32px"}}
                         onClick={() => {
-                            history.push(`/viewhistory/?${queryString}`);
+                            history.push(`/viewresults/?${queryString}`);
                             // window.location.reload();
                             reload === "" ? setReload("reload") : setReload("");
                             setLoaded(false);
@@ -393,7 +444,7 @@ export default function ViewHistory(props) {
                     </Button>
                 </Form.Item>
             </Form>
-            {/* {!loaded && (
+            {!loaded && (
                 <div style={{ textAlign: "center", marginTop: "20%" }}>
                 <Spin indicator={LoadingIcon} />
                 <br />
@@ -404,12 +455,13 @@ export default function ViewHistory(props) {
                 </div>
             )}
             {loaded &&
-                <Row style={{margin: "30px 0 8px 0"}}>
+                <Row style={{margin: "40px 0 8px 0"}}>
                     <Col span={12}>
                             <label
                                 className="clickable-label"
-                                style={{color: "#9772fb", display: "flex", alignItems: "center"}}
+                                style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
                                 onClick={() => {
+                                    // window.location.reload();
                                     reload === "" ? setReload("reload") : setReload("")
                                     setLoaded(false);
                                 }}>
@@ -419,7 +471,7 @@ export default function ViewHistory(props) {
                     </Col>
                     <Col span={12}>
                         <div style={{float: "right", marginRight: "5px"}}>
-                            <label>
+                            <label style={{ fontWeight: 500 }}>
                                 {`${uploadedItem.length} report(s)`}
                             </label>
                         </div>
@@ -430,7 +482,7 @@ export default function ViewHistory(props) {
                     columns={columns} 
                     dataSource={uploadedItem} 
                     size="small"
-                    className="view-history-table"
+                    className="view-results-table"
                     pagination={
                         uploadedItem.length > 20 && {
                             size: "small",
@@ -451,7 +503,7 @@ export default function ViewHistory(props) {
                             position: ["bottomRight"],
                         }
                         }
-                />} */}
+                />}
         </div>
     )
 }
