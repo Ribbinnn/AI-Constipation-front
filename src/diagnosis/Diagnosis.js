@@ -1,14 +1,14 @@
 import React, { useState, useRef, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Steps, Button, Form, Input, Row, Col, Modal, Spin } from "antd";
+import { Steps, Button, Row, Col, Modal, Spin } from "antd";
 import "antd/dist/antd.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
 import Completed from "../component/Completed";
-import PreviewEdit from "./PreviewEdit";
-import { infer } from "../api/report";
+import BeginDiagnosis from "./BeginDiagnosis";
+import { questionnaire } from "../api/infer";
 import Contexts from "../utils/Contexts";
 const { Step } = Steps;
 
@@ -40,17 +40,16 @@ export default function Diagnosis(props) {
 
   const btnList = [
     {
-      title: "Back to Home",
-      destination: "/",
+      title: "Go to View Results",
+      destination: "/viewresults",
     },
     {
       title: "Create New Diagnosis",
       destination: "/diagnosis",
     },
-    ,
     {
-      title: "Go to View History",
-      destination: "/viewhistory",
+      title: "Back to Home",
+      destination: "/",
     },
   ];
 
@@ -58,6 +57,20 @@ export default function Diagnosis(props) {
     /** add condition for each step to go next step here */
     if (current === 0) {
       personalDetailsRef.current.setPersonalDetails();
+    } else if (current === 3) {
+      // setLoading(true);
+      if (model === "questionnaire") {
+        questionnaire(question, details)
+        .then((res) => {
+          console.log(res);
+          setCurrent(current + 1);
+          // setLoading(false);
+        }).catch((err) => {
+          console.log(err.response);
+          Modal.error({ content: err.response.data.message });
+          // setLoading(false);
+        });
+      }
     } else {
       setCurrent(current + 1);
     }
@@ -138,7 +151,7 @@ export default function Diagnosis(props) {
         ))}
       </Steps>
       {/* ----- add content below -------- */}
-      <div className="steps-content-diagnosis">
+      <div className={current === 3 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
         {current === 0 && (
           <PersonalDetails
             ref={personalDetailsRef}
@@ -163,13 +176,9 @@ export default function Diagnosis(props) {
           />
         )}
         {current === 3 && (
-          <PreviewEdit
-            // HN={HN}
-            // Patient={Patient}
-            // MedRec={MedRec}
-            // setMedRec={setMedRec}
-            // AccessionNo={accessionNo}
-            // projectReq={globalProject.projectReq}
+          <BeginDiagnosis
+            question={question}
+            image={image}
           />
         )}
         {current === stepsTitle.length - 1 && ( // edit soon

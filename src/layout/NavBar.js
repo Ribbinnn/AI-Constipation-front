@@ -46,7 +46,7 @@ export default function NavBar() {
         // case "myrecord":
         //   contentText = "Unsaved changes will be lost.";
         //   break;
-        case "viewhistory":
+        case "viewresults":
           contentText = "All changes made will be lost.";
           break;
         default:
@@ -106,14 +106,15 @@ export default function NavBar() {
             Diagnosis
           </Menu.Item>
         <Menu.Item
-          key="viewhistory"
+          key="viewresults"
           className="menuitem"
           icon={<ClockCircleOutlined />}
-          onClick={() => selectMenu("/viewhistory")}
+          onClick={() => selectMenu("/viewresults")}
         >
-          View History
+          View Results
         </Menu.Item>
         <Menu.Item
+          key="resources"
           className="menuitem"
           icon={<BookOutlined />}
         >

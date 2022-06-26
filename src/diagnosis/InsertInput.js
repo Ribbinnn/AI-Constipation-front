@@ -25,6 +25,7 @@ function InsertInput(props) {
                         >
                             <Card
                                 hoverable={true}
+                                className={hasQuestion ? "selected-card" : ""}
                             >
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     {hasQuestion && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
@@ -39,7 +40,10 @@ function InsertInput(props) {
                         <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>OR</label>
                     </Col>
                     <Col span={11}>
-                        <Card hoverable={true}>
+                        <Card
+                            hoverable={true}
+                            className={hasQuestion ? "selected-card" : ""}
+                        >
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 {hasQuestion && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
                                 <label className="clickable-label" style={{ color: hasQuestion ? "#45c01a" : "black", fontWeight: hasQuestion ? 500 : 400 }}>
@@ -59,6 +63,7 @@ function InsertInput(props) {
                     <Card
                         // style={{ marginBottom: "25px" }}
                         hoverable={true}
+                        className={props.image ? "selected-card" : ""}
                     >
                         <div style={{ display: "flex", alignItems: "center" }}>
                             {props.image && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
