@@ -284,9 +284,6 @@ function UploadImageModal(props) {
                                         croppedAreaPixels,
                                         rotation
                                     )
-                                    // let croppedImage = await fetch(url)
-                                        // .then(r => r.blob())
-                                        // .then(b => b.arrayBuffer());
                                     props.setImage({
                                         originalImage: imageSrc,
                                         originalImageName: imageName,

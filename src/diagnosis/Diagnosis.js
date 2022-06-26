@@ -9,7 +9,7 @@ import InsertInput from "./InsertInput";
 import UploadImageModal from "./UploadImageModal";
 import Completed from "../component/Completed";
 import BeginDiagnosis from "./BeginDiagnosis";
-import { questionnaire } from "../api/infer";
+import { questionnaireInfer, imageInfer } from "../api/infer";
 import Contexts from "../utils/Contexts";
 const { Step } = Steps;
 
@@ -62,7 +62,7 @@ export default function Diagnosis(props) {
     } else if (current === 3) {
       // setLoading(true);
       if (model === "questionnaire") {
-        questionnaire(question, details)
+        questionnaireInfer(question, details)
         .then((res) => {
           console.log(res);
           setCurrent(current + 1);
@@ -72,6 +72,22 @@ export default function Diagnosis(props) {
           Modal.error({ content: err.response.data.message });
           // setLoading(false);
         });
+      } else if (model === "image") {
+        // fetch(image.croppedImage)
+        // .then(r => r.blob())
+        // .then(b => b.arrayBuffer())
+        // .then(croppedImage => {
+          imageInfer(image.croppedImage, JSON.stringify(details))
+          .then((res) => {
+            console.log(res);
+            setCurrent(current + 1);
+            // setLoading(false);
+          }).catch((err) => {
+            console.log(err.response);
+            Modal.error({ content: err.response.data.message });
+            // setLoading(false);
+          });
+        // });
       }
     } else {
       setCurrent(current + 1);

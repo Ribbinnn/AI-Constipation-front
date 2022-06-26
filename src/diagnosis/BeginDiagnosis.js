@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Row, Col } from "antd";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 
 export default function BeginDiagnosis(props) {
   const hasQuestion = Object.keys(props.question).length !== 0;
+  const [image, setImage] = useState(null);
+
+  function readFile(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
+  }
+
+  useEffect(() => {
+    if (props.image) {
+      readFile(props.image.croppedImage)
+      .then(imageURL => setImage(imageURL))
+    }
+  }, []);
 
   return (
     <div>
@@ -16,7 +32,7 @@ export default function BeginDiagnosis(props) {
           <Image
             preview={false}
             height={380}
-            src={props.image.croppedImage}
+            src={image}
           />
         </Col>}
       </Row>
