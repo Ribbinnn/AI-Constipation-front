@@ -13,7 +13,7 @@ function InsertInput(props) {
 
     return(
         <div>
-            {(props.model === "questionnaire" || props.model === "integrated") && <Row style={{ marginBottom: "25px" }}>
+            {(props.model === "questionnaire" || props.model === "integrate") && <Row style={{ marginBottom: "25px" }}>
                     <Col span={11}>
                         <Button
                             type="link"
@@ -51,7 +51,7 @@ function InsertInput(props) {
                         </Card>
                     </Col>
                 </Row>}
-            {(props.model === "image" || props.model === "integrated") &&
+            {(props.model === "image" || props.model === "integrate") &&
                 <Button
                     type="link"
                     className="label-btn"

@@ -6,7 +6,7 @@ function SelectModel(props) {
     const modelList = [
         {name: "questionnaire", desc: "Symptom Questionnaire"},
         {name: "image", desc: "X-Ray Image"},
-        {name: "integrated", desc: "Symptom Questionnaire + X-Ray Image"},
+        {name: "integrate", desc: "Symptom Questionnaire + X-Ray Image"},
     ]
 
     return(
