@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox } from "antd";
+import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { updateReport } from "../api/reports";
+import { updateReport, getImage } from "../api/reports";
 import Contexts from "../utils/Contexts";
 
 const { TextArea } = Input;
-// const GradCamStyle = { fontSize: "x-large" };
 
 export default function ResultsPanel(props) {
     // const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
@@ -87,6 +86,20 @@ export default function ResultsPanel(props) {
 //       .catch((err) => console.log(err.response));
 //   };
 
+    useEffect(() => {
+        if (props.info.task === "image" || props.info.task === "integrate") {
+            getImage(props.rid, "gradcam")
+            .then((res) => {
+                // console.log(res);
+                let url = URL.createObjectURL(res);
+                setGradCam(url);
+            }).catch((err) => {
+                console.log(err.response);
+                return Modal.error({ content: err.response.data.message, onOk: () => props.history.push("/viewresults")});
+            });
+        }
+    }, [props.loaded]);
+
     const printResult = (field, value) => {
         return(
             <Row style={{ alignItems: "baseline" }}>
@@ -126,7 +139,7 @@ export default function ResultsPanel(props) {
                     <Space
                         direction="vertical"
                         size={10}
-                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px"/*, marginBottom: "40px"*/ }}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "40px" }}
                     >
                         <label style={{ /*color: "#9772fb",*/ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
                         {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
@@ -135,7 +148,14 @@ export default function ResultsPanel(props) {
                             {props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD"}
                         </label>
                     </Space>
-                    {/* {gradCam} */}
+                    {(props.info.task === "image" || props.info.task === "integrate") &&
+                        <div style={{ textAlign: "center" }}>
+                            <Image
+                                // preview={false}
+                                height={350}
+                                src={gradCam}
+                            />
+                        </div>}
                 </Col>
                 <Col span={1} />
                 <Col span={17}>

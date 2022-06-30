@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button } from "antd";
-import { LoadingOutlined, SnippetsOutlined } from "@ant-design/icons";
+import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
+import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 import ResultsPanel from "./ResultsPanel";
-import { getReport } from "../api/reports";
+import { getReport, getImage } from "../api/reports";
 // import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
@@ -17,6 +17,7 @@ export default function Report(props) {
     const history = useHistory();
     const [loaded, setLoaded] = useState(false);
     const [info, setInfo] = useState();
+    const [originalImage, setOriginalImage] = useState(null);
 
     const ratingDesc = [
         "ไม่มั่นใจ", "มั่นใจเล็กน้อย", "มั่นใจปานกลาง", "ค่อนข้างมั่นใจ", "มั่นใจมาก"
@@ -24,6 +25,7 @@ export default function Report(props) {
     const ratingScore = [0, 25, 50, 75, 100];
 
     const [previewQuestionVisible, setPreviewQuestionVisible] = useState(false);
+    const [previewImageVisible, setPreviewImageVisible] = useState(false);
 
     const printResult = (field, value) => {
         return(
@@ -43,10 +45,21 @@ export default function Report(props) {
         .then((res) => {
             console.log(res.data);
             setInfo(res.data);
-            setLoaded(true);
+            if (res.data.task === "image" || res.data.task === "integrate") {
+                getImage(rid, "original")
+                .then((res) => {
+                    // console.log(res);
+                    let url = URL.createObjectURL(res);
+                    setOriginalImage(url);
+                    setLoaded(true);
+                })
+            } else {
+                setLoaded(true);
+            }
         })
         .catch((err) => {
-            return Modal.error({ content: "Report not Found.", onOk: () => history.push("/viewresults")});
+            console.log(err.response);
+            return Modal.error({ content: err.response.data.message, onOk: () => history.push("/viewresults")});
         });
     }, []);
 
@@ -120,11 +133,11 @@ export default function Report(props) {
                     </Col>
                     <Col span={12}>
                         <Row justify="center" style={{ height: "100%" }}>
-                            {/* <Col span={12} style={{ padding: "20px" }}> */}
-                                {(info.task === "questionnaire" || info.task === "integrated") &&
+                                {(info.task === "questionnaire" || info.task === "integrate") &&
                                     <Button
                                         type="link"
                                         className="label-btn"
+                                        style={{ marginRight: "20px" }}
                                         onClick={() => setPreviewQuestionVisible(true)}
                                     >
                                         <Card
@@ -136,22 +149,45 @@ export default function Report(props) {
                                                     Symptom <br /> Questionnaire
                                                 </label>
                                                 <br />
-                                                <SnippetsOutlined style={{ fontSize: "55px", color: "#999" }} />
+                                                <SnippetsOutlined />
                                             </div>
                                         </Card>
                                     </Button>}
-                            {/* </Col> */}
-                            {/* <Col span={12} style={{ padding: "20px" }}> */}
-                                {(info.task === "image" || info.task === "integrated") &&
-                                    <label>image card</label>}
-                            {/* </Col> */}
+                                {/* {(info.task === "image" || info.task === "integrate") &&
+                                    <Image
+                                        // preview={false}
+                                        height={230}
+                                        src={originalImage}
+                                    />} */}
+                                {(info.task === "image" || info.task === "integrate") &&
+                                    <Button
+                                        type="link"
+                                        className="label-btn"
+                                        onClick={() => setPreviewImageVisible(true)}
+                                    >
+                                        <Card
+                                            hoverable={true}
+                                            className="preview-card"
+                                        >
+                                            <div>
+                                                <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                                    X-Ray Image
+                                                </label>
+                                                <br />
+                                                <PictureOutlined />
+                                            </div>
+                                        </Card>
+                                    </Button>}
                         </Row>
                     </Col>
                 </Row>
             )}
             {loaded &&
                 <ResultsPanel
+                    rid={rid}
                     mode={mode}
+                    history={history}
+                    loaded={loaded}
                     info={info}
                 />}
             {loaded && <Modal
@@ -167,6 +203,22 @@ export default function Report(props) {
                 <div style={{ height: "100%", overflow: "scroll" }}>
                     <PreviewQuestionnaire question={info.question_id} />
                 </div>
+            </Modal>}
+            {loaded && <Modal
+                // centered
+                destroyOnClose
+                visible={previewImageVisible}
+                onCancel={() => setPreviewImageVisible(false)}
+                footer={null}
+                width="750px"
+                bodyStyle={{ textAlign: "center" }}
+                style={{ top: 20 }}
+            >
+                <Image
+                    preview={false}
+                    height={700}
+                    src={originalImage}
+                />
             </Modal>}
         </div>
     );
