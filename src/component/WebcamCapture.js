@@ -81,6 +81,7 @@ export const WebcamCapture = (props) => {
                                 props.setImage(image);
                                 document.getElementById("input-file").value = "";
                                 props.setImageName(null);
+                                props.setActivity("take photo");
                                 props.setVisible(false);
                                 setImage('');
                             }}

@@ -1,23 +1,41 @@
-import React from "react";
-import { Modal, Image, Row, Col } from "antd";
+import React, { useState, useEffect } from "react";
+import { Image, Row, Col } from "antd";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 
 export default function BeginDiagnosis(props) {
+  const hasQuestion = Object.keys(props.question).length !== 0;
+  const [image, setImage] = useState(null);
+
+  function readFile(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => resolve(reader.result), false)
+      reader.readAsDataURL(file)
+    })
+  }
+
+  useEffect(() => {
+    if (props.image) {
+      readFile(props.image.croppedImage)
+      .then(imageURL => setImage(imageURL))
+    }
+  }, []);
 
   return (
     <div>
       <label style={{ marginBottom: "25px", fontWeight: "bold" }}>Please review your answers</label>
       <Row>
-        <Col span={props.image ? 17 : 24} style={{ paddingLeft: "15px" }}>
+        {hasQuestion && <Col span={props.image ? 16 : 24} style={{ paddingLeft: "15px" }}>
           <PreviewQuestionnaire question={props.question} />
-        </Col>
+        </Col>}
+        {props.image && <Col span={hasQuestion ? 8 : 24} style={{ paddingLeft: "15px", paddingTop: "10px" }}>
+          <Image
+            preview={false}
+            height={380}
+            src={image}
+          />
+        </Col>}
       </Row>
-      {/* <Image
-          preview={false}
-          height={300}
-          src={props.image}
-      /> */}
-      {/* <img src={props.image} alt="Cropped" style={{ maxWidth: "80%", maxHeight: "80%" }} /> */}
     </div>
   );
 }

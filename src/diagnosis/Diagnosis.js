@@ -1,15 +1,17 @@
 import React, { useState, useRef, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Steps, Button, Row, Col, Modal, Spin } from "antd";
+import { Steps, Button, Modal, Spin } from "antd";
 import "antd/dist/antd.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
+import UploadImageModal from "./UploadImageModal";
 import Completed from "../component/Completed";
 import BeginDiagnosis from "./BeginDiagnosis";
-import { questionnaire } from "../api/infer";
+import { questionnaireInfer, imageInfer, integrateInfer } from "../api/infer";
 import Contexts from "../utils/Contexts";
+
 const { Step } = Steps;
 
 const LoadingIcon = (
@@ -19,11 +21,12 @@ const LoadingIcon = (
   />
 );
 
-export default function Diagnosis(props) {
+export default function Diagnosis() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const personalDetailsRef = useRef();
+  const [uploadImageVisible, setUploadImageVisible] = useState(false);
 
   const [details, setDetails] = useState(null);
   const [model, setModel] = useState(null);
@@ -60,7 +63,34 @@ export default function Diagnosis(props) {
     } else if (current === 3) {
       // setLoading(true);
       if (model === "questionnaire") {
-        questionnaire(question, details)
+        questionnaireInfer(question, details)
+        .then((res) => {
+          console.log(res);
+          setCurrent(current + 1);
+          // setLoading(false);
+        }).catch((err) => {
+          console.log(err.response);
+          Modal.error({ content: err.response.data.message });
+          // setLoading(false);
+        });
+      } else if (model === "image") {
+        // fetch(image.croppedImage)
+        // .then(r => r.blob())
+        // .then(b => b.arrayBuffer())
+        // .then(croppedImage => {
+          imageInfer(image.croppedImage, JSON.stringify(details))
+          .then((res) => {
+            console.log(res);
+            setCurrent(current + 1);
+            // setLoading(false);
+          }).catch((err) => {
+            console.log(err.response);
+            Modal.error({ content: err.response.data.message });
+            // setLoading(false);
+          });
+        // });
+      } else {
+        integrateInfer(JSON.stringify(question), image.croppedImage, JSON.stringify(details))
         .then((res) => {
           console.log(res);
           setCurrent(current + 1);
@@ -74,47 +104,10 @@ export default function Diagnosis(props) {
     } else {
       setCurrent(current + 1);
     }
-    // if (current === 0 && globalProject.projectReq.length === 0) {
-    //   setCurrent(2);
-    //   setCurrentActivity({ ...currentActivity, enablePageChange: false });
-    // } else if (current === 1) {
-    //   selectMedicalRecordRef.current.setMedicalRecord();
-    //   setCurrentActivity({ ...currentActivity, enablePageChange: false });
-    // } else if (current === 2 && accessionNo === null) {
-    //   Modal.warning({ content: "Please select X-Ray Image." });
-    // } else {
-    //   if (current === 3) {
-    //     setLoading(true);
-    //     infer(
-    //       accessionNo,
-    //       globalProject.projectId,
-    //       MedRec,
-    //       JSON.parse(sessionStorage.getItem("user")).id
-    //     )
-    //       .then((res) => {
-    //         // console.log(res);
-    //         setCurrent(current + 1);
-    //         setLoading(false);
-    //         setCurrentActivity({ ...currentActivity, enablePageChange: true });
-    //       })
-    //       .catch((err) => {
-    //         console.log(err.response);
-    //         Modal.error({ content: err.response.data.message });
-    //         setLoading(false);
-    //       });
-    //   } else {
-    //     if (current === 0) setCurrentActivity({ ...currentActivity, enablePageChange: false });
-    //     setCurrent(current + 1);
-    //   }
-    // }
   };
 
   const prev = () => {
-    // if (current === 2 && globalProject.projectReq.length === 0) {
-    //   setCurrent(0);
-    // } else {
-      setCurrent(current - 1);
-    // }
+    setCurrent(current - 1);
   };
 
   // useHotkeys(
@@ -151,7 +144,7 @@ export default function Diagnosis(props) {
         ))}
       </Steps>
       {/* ----- add content below -------- */}
-      <div className={current === 3 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
+      <div className={current === 3 && Object.keys(question).length !== 0 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
         {current === 0 && (
           <PersonalDetails
             ref={personalDetailsRef}
@@ -164,6 +157,8 @@ export default function Diagnosis(props) {
           <SelectModel
             model={model}
             setModel={setModel}
+            setQuestion={setQuestion}
+            setImage={setImage}
           />
         )}
         {current === 2 && (
@@ -173,6 +168,7 @@ export default function Diagnosis(props) {
             setQuestion={setQuestion}
             image={image}
             setImage={setImage}
+            setUploadImageVisible={setUploadImageVisible}
           />
         )}
         {current === 3 && (
@@ -185,6 +181,12 @@ export default function Diagnosis(props) {
           <Completed btnList={btnList} title="Diagnosis Started" />
         )}
       </div>
+      <UploadImageModal
+        visible={uploadImageVisible}
+        setVisible={setUploadImageVisible}
+        image={image}
+        setImage={setImage}
+      />
       {/* ----- add content above -------- */}
       <div className={`steps-action${current === 0 ? " steps-action-1" : ""}`}>
         {current > 0 && current < stepsTitle.length - 1 && (
@@ -201,7 +203,8 @@ export default function Diagnosis(props) {
           ||current === 1 && model
           || current === 2 && (
             model === "questionnaire" && Object.keys(question).length !== 0
-            || model === "image" && image)
+            || model === "image" && image
+            || model === "integrate" && Object.keys(question).length !== 0 && image)
           || current === 3)
           && (<Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
             Next

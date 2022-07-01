@@ -126,6 +126,7 @@ function UserForm() {
                             rules={[
                                 {
                                     required: mode === "createuser" ? true : false,
+                                    message: "'confirm password' is required",
                                 },
                             ]}
                             style={{display: "inline-block"}}
@@ -141,6 +142,7 @@ function UserForm() {
                             rules={[
                                 {
                                     required: true,
+                                    message: "'first name' is required",
                                 },
                             ]}
                             style={{display: "inline-block", marginRight: "30px"}}
@@ -154,6 +156,7 @@ function UserForm() {
                             rules={[
                                 {
                                     required: true,
+                                    message: "'last name' is required",
                                 },
                             ]}
                             style={{display: "inline-block"}}

@@ -295,10 +295,6 @@ ol {
   margin-left: 50px;
 }
 
-.report-image-ctn {
-  margin-top: 10px;
-}
-
 .label-tag .anticon {
   margin-right: 8px;
   position: relative;
@@ -1377,6 +1373,11 @@ table tr td.ant-table-selection-column {
   width: auto;
 }
 
+.ant-image-mask-info {
+  display: flex;
+  align-items: center;
+}
+
 /* card ------------ */
 .ant-card {
   border-radius: 9px;
@@ -1395,6 +1396,15 @@ table tr td.ant-table-selection-column {
 
 .preview-card .ant-card-body {
   padding: 20px;
+}
+
+.preview-card .anticon {
+  color: #999;
+  font-size: 55px;
+}
+
+.preview-card:hover .anticon {
+  color: #9772fb;
 }
 
 .selected-card,
@@ -1476,63 +1486,51 @@ table tr td.ant-table-selection-column {
   font-size: 30px;
 }
 
-/* ----- pagination --------*/ /* edit soon */
-.ant-pagination-item a,
-.ant-pagination-options-quick-jumper{
-  font-size: medium;
-  color: #58595b;
+/* badge ------------------------- */
+.rno-badge .ant-badge-count {
+  margin-left: 15px;
+  background: #e9c869;
+  font-weight: bold;
 }
 
-.ant-pagination.mini .ant-pagination-item:not(.ant-pagination-item-active),
-.ant-pagination-prev button, .ant-pagination-next button{
-  color: #58595b;
+/* ----- pagination --------*/
+.ant-pagination-prev .ant-pagination-item-link:hover, 
+.ant-pagination-next .ant-pagination-item-link:hover{
+  color: black;
+}
+
+.ant-pagination-disabled .ant-pagination-item-link,
+.ant-pagination-disabled:hover .ant-pagination-item-link,
+.ant-pagination-disabled:focus-visible .ant-pagination-item-link,
+.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis, 
+.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis {
+  color: #d9d9d9;
+}
+
+.ant-pagination-item:focus-visible,
+.ant-pagination-item:hover {
+  color: black;
+  transition: none;
+}
+
+.ant-pagination-item a,
+.ant-pagination-item a:hover,
+.ant-pagination-options-quick-jumper{
+  color: black;
 }
 
 .ant-pagination-item-active{
   background-color: #9772fb;
-  font-weight: bold;
   color: white;
   border: none;
   border-radius: 5px;
 }
 
-.ant-pagination-prev .ant-pagination-item-link:hover, 
-.ant-pagination-next .ant-pagination-item-link:hover{
-  color: #9772fb;
-}
-
-.ant-pagination-disabled .ant-pagination-item-link, 
-.ant-pagination-disabled .ant-pagination-item-link:hover,
-.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis, 
-.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis {
-  color: #c4c4c4;
-}
-
-.ant-pagination-options > .ant-select > .ant-select-selector{
-  width: 125px;
-  font-size: medium;
-  text-align: center;
-} 
-
-.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-link-icon, 
-.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-link-icon {
-  color: #9772fb;
-}
-
-.ant-pagination-options-quick-jumper input:focus, 
-.ant-pagination-options-quick-jumper input-focused,
-.ant-pagination.mini .ant-pagination-options-quick-jumper input{
-  font-size: medium;
-  color: #58595b;
-  box-shadow: none;
-  border-color: #58595b;
-  border-radius: 8px;
-}
-
-.rno-badge .ant-badge-count {
-  margin-left: 15px;
-  background: #e9c869;
-  font-weight: bold;
+.ant-pagination-item-active:focus-visible,
+.ant-pagination-item-active:hover,
+.ant-pagination-item-active a,
+.ant-pagination-item-active a:hover {
+  color: white;
 }
 
 /* cropper ------------------------ */

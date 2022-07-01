@@ -41,3 +41,13 @@ export const deleteReport = async (report_id) => {
         throw e
     }
 }
+
+export const getImage = async (report_id, finding) => {
+    const params = { report_id, finding }
+    try {
+        const response = (await instance.get("/reports/image", { params: params, responseType: 'blob' }));
+        return response.data
+    } catch (e) {
+        throw e
+    }
+}

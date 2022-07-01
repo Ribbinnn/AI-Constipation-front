@@ -6,7 +6,7 @@ function SelectModel(props) {
     const modelList = [
         {name: "questionnaire", desc: "Symptom Questionnaire"},
         {name: "image", desc: "X-Ray Image"},
-        {name: "integrated", desc: "Symptom Questionnaire + X-Ray Image"},
+        {name: "integrate", desc: "Symptom Questionnaire + X-Ray Image"},
     ]
 
     return(
@@ -19,6 +19,11 @@ function SelectModel(props) {
                     className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
                     onClick={() => {
                         props.setModel(item.name);
+                        if (item.name === "questionnaire") {
+                            props.setImage(null);
+                        } else if (item.name === "image") {
+                            props.setQuestion({});
+                        }
                     }}
                 >
                     <div style={{ width: "100%", cursor: "pointer" }}>
