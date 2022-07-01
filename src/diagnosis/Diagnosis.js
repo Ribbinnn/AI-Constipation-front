@@ -1,29 +1,22 @@
 import React, { useState, useRef, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Steps, Button, Modal, Spin } from "antd";
+import { Steps, Button, Modal } from "antd";
 import "antd/dist/antd.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
 import UploadImageModal from "./UploadImageModal";
-import Completed from "../component/Completed";
+import Result from "./Result";
 import BeginDiagnosis from "./BeginDiagnosis";
 import { questionnaireInfer, imageInfer, integrateInfer } from "../api/infer";
 import Contexts from "../utils/Contexts";
 
 const { Step } = Steps;
 
-const LoadingIcon = (
-  <LoadingOutlined
-    style={{ fontSize: 30, color: "#9772fb", marginRight: 5 }}
-    spin
-  />
-);
-
 export default function Diagnosis() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const personalDetailsRef = useRef();
   const [uploadImageVisible, setUploadImageVisible] = useState(false);
@@ -32,6 +25,7 @@ export default function Diagnosis() {
   const [model, setModel] = useState(null);
   const [question, setQuestion] = useState({});
   const [image, setImage] = useState(null);
+  const [reportId, setReportId] = useState(null);
 
   const stepsTitle = [
     "Personal Details",
@@ -66,6 +60,7 @@ export default function Diagnosis() {
         questionnaireInfer(question, details)
         .then((res) => {
           console.log(res);
+          setReportId(res.data.report_id);
           setCurrent(current + 1);
           // setLoading(false);
         }).catch((err) => {
@@ -81,6 +76,7 @@ export default function Diagnosis() {
           imageInfer(image.croppedImage, JSON.stringify(details))
           .then((res) => {
             console.log(res);
+            setReportId(res.data.report_id);
             setCurrent(current + 1);
             // setLoading(false);
           }).catch((err) => {
@@ -93,6 +89,7 @@ export default function Diagnosis() {
         integrateInfer(JSON.stringify(question), image.croppedImage, JSON.stringify(details))
         .then((res) => {
           console.log(res);
+          setReportId(res.data.report_id);
           setCurrent(current + 1);
           // setLoading(false);
         }).catch((err) => {
@@ -137,7 +134,7 @@ export default function Diagnosis() {
   // );
 
   return (
-    <div className={loading ? "content diagnosis loading" : "content diagnosis"}>
+    <div className={/*loading ? "content diagnosis loading" :*/ "content diagnosis"}>
       <Steps progressDot current={current}>
         {stepsTitle.map((item) => (
           <Step key={item} title={item} />
@@ -178,7 +175,12 @@ export default function Diagnosis() {
           />
         )}
         {current === stepsTitle.length - 1 && ( // edit soon
-          <Completed btnList={btnList} title="Diagnosis Started" />
+          <Result
+            btnList={btnList}
+            title="Diagnosis is processing"
+            model={model}
+            reportId={reportId}
+          />
         )}
       </div>
       <UploadImageModal

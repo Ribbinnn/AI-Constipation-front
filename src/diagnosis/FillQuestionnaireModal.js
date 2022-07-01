@@ -353,6 +353,7 @@ function FillQuestionnaireModal(props) {
                                     onOK();
                                 } catch (errInfo) {
                                     console.log('Validate Failed:', errInfo);
+                                    Modal.error({content: "Some field(s) are missing.", zIndex: 3000});
                                 }
                             }}
                         >

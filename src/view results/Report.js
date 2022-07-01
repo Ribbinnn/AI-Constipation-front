@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
 import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
@@ -15,6 +15,11 @@ export default function Report(props) {
     // const { currentActivity } = useContext(Contexts).active;
     const { mode, rid } = useParams();
     const history = useHistory();
+    function useQuery() {
+      const { search } = useLocation();
+      return new URLSearchParams(search);
+    }
+    const queryString = useQuery();
     const [loaded, setLoaded] = useState(false);
     const [info, setInfo] = useState();
     const [originalImage, setOriginalImage] = useState(null);
@@ -133,51 +138,51 @@ export default function Report(props) {
                     </Col>
                     <Col span={12}>
                         <Row justify="center" style={{ height: "100%" }}>
-                                {(info.task === "questionnaire" || info.task === "integrate") &&
-                                    <Button
-                                        type="link"
-                                        className="label-btn"
-                                        style={{ marginRight: "20px" }}
-                                        onClick={() => setPreviewQuestionVisible(true)}
+                            {(info.task === "questionnaire" || info.task === "integrate") &&
+                                <Button
+                                    type="link"
+                                    className="label-btn"
+                                    style={{ marginRight: "20px" }}
+                                    onClick={() => setPreviewQuestionVisible(true)}
+                                >
+                                    <Card
+                                        hoverable={true}
+                                        className="preview-card"
                                     >
-                                        <Card
-                                            hoverable={true}
-                                            className="preview-card"
-                                        >
-                                            <div>
-                                                <label className="clickable-label" style={{ marginBottom: "15px" }}>
-                                                    Symptom <br /> Questionnaire
-                                                </label>
-                                                <br />
-                                                <SnippetsOutlined />
-                                            </div>
-                                        </Card>
-                                    </Button>}
-                                {/* {(info.task === "image" || info.task === "integrate") &&
-                                    <Image
-                                        // preview={false}
-                                        height={230}
-                                        src={originalImage}
-                                    />} */}
-                                {(info.task === "image" || info.task === "integrate") &&
-                                    <Button
-                                        type="link"
-                                        className="label-btn"
-                                        onClick={() => setPreviewImageVisible(true)}
+                                        <div>
+                                            <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                                Symptom <br /> Questionnaire
+                                            </label>
+                                            <br />
+                                            <SnippetsOutlined />
+                                        </div>
+                                    </Card>
+                                </Button>}
+                            {/* {(info.task === "image" || info.task === "integrate") &&
+                                <Image
+                                    // preview={false}
+                                    height={230}
+                                    src={originalImage}
+                                />} */}
+                            {(info.task === "image" || info.task === "integrate") &&
+                                <Button
+                                    type="link"
+                                    className="label-btn"
+                                    onClick={() => setPreviewImageVisible(true)}
+                                >
+                                    <Card
+                                        hoverable={true}
+                                        className="preview-card"
                                     >
-                                        <Card
-                                            hoverable={true}
-                                            className="preview-card"
-                                        >
-                                            <div>
-                                                <label className="clickable-label" style={{ marginBottom: "15px" }}>
-                                                    X-Ray Image
-                                                </label>
-                                                <br />
-                                                <PictureOutlined />
-                                            </div>
-                                        </Card>
-                                    </Button>}
+                                        <div>
+                                            <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                                X-Ray Image
+                                            </label>
+                                            <br />
+                                            <PictureOutlined />
+                                        </div>
+                                    </Card>
+                                </Button>}
                         </Row>
                     </Col>
                 </Row>
@@ -187,6 +192,7 @@ export default function Report(props) {
                     rid={rid}
                     mode={mode}
                     history={history}
+                    queryString={queryString}
                     loaded={loaded}
                     info={info}
                 />}

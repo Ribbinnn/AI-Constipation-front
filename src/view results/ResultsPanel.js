@@ -32,11 +32,15 @@ export default function ResultsPanel(props) {
             return Modal.confirm({
                 icon: <ExclamationCircleOutlined />,
                 content: "Changes will not be saved.",
-                onOk: () => window.history.back(),
+                onOk: () => {
+                    // window.history.back()
+                    props.history.push(`/viewresults/?${props.queryString}`);
+                },
                 zIndex: 3000,
             });
         } else {
-            window.history.back();
+            // window.history.back();
+            props.history.push(`/viewresults/?${props.queryString}`);
         }
     };
 
@@ -382,6 +386,7 @@ export default function ResultsPanel(props) {
                             });
                         } catch (errInfo) {
                             console.log('Validate Failed:', errInfo);
+                            Modal.error({content: "Some field(s) are missing."});
                         }
                     }}
                 >
