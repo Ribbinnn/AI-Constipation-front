@@ -1,5 +1,6 @@
 import React, { useContext, forwardRef, useImperativeHandle } from "react";
-import { Form, Input, Select, Row, Col, Radio, InputNumber, Rate } from "antd";
+import { Form, Input, Select, Row, Col, Radio, InputNumber, Rate, Popover, Button } from "antd";
+import { InfoCircleOutlined } from '@ant-design/icons';
 // import Contexts from '../utils/Contexts';
 
 const { Option } = Select;
@@ -142,7 +143,18 @@ const PersonalDetails = forwardRef((props, ref) => {
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
                     <Col span={7}>
-                        <label>ความมั่นใจในการวินิจฉัย <br /> Dyssynergic defecation (DD):</label>
+                        <label>ความน่าจะเป็นในการเป็น <br /> Dyssynergic defecation <br /> ของผู้ป่วยรายนี้ (DD probability):</label>
+                        <Popover
+                            placement="topLeft"
+                            content={
+                                <span onClick={(e) => e.stopPropagation()}>
+                                    3 ดาวขึ้นไป คือ น่าจะเป็น DD
+                                </span>
+                            }
+                            trigger="hover"
+                        >
+                            <Button type="link" icon={<InfoCircleOutlined />} style={{color: "#9772fb", fontWeight: 500}} />
+                        </Popover>
                     </Col>
                     <Col span={17}>
                         <Form.Item

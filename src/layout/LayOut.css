@@ -1101,7 +1101,7 @@ hr {
 
 .preview-question-modal .ant-modal-body {
   padding: 30px 40px 35px 40px;
-  height: 800px;
+  max-height: 800px;
 }
 
 .webcam-modal .ant-modal-body {

@@ -123,7 +123,7 @@ export default function Report(props) {
                             {printResult("Age:", info.personal_info_id.age)}
                             <Row style={{ alignItems: "baseline" }}>
                                 <Col span={12}>
-                                    <label>ความมั่นใจในการวินิจฉัย <br /> Dyssynergic defecation (DD):</label>
+                                    <label>ความน่าจะเป็นในการเป็น <br /> Dyssynergic defecation <br /> ของผู้ป่วยรายนี้ (DD probability):</label>
                                 </Col>
                                 <Col span={12}>
                                     <Rate
