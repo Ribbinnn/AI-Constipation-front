@@ -1314,9 +1314,9 @@ table tr td.ant-table-selection-column {
   text-align: center;
 } */
 
-.view-results-table .ant-table-thead > tr > th {
+/* .view-results-table .ant-table-thead > tr > th {
   line-height: 35px;
-}
+} */
 
 /* .view-results-table .ant-table-thead > tr > th:first-child,
 .view-results-table .ant-table-tbody > tr > td:first-child {

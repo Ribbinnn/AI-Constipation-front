@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Table, Tooltip, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
+import { Table, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
 import {
     EyeOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
-    InfoCircleOutlined, CheckOutlined, CloseOutlined, MinusOutlined
+    InfoCircleOutlined, CheckOutlined, CloseOutlined
 } from '@ant-design/icons';
 import { viewResults, deleteReport } from "../api/reports";
 import { useHistory, useLocation } from "react-router-dom";
@@ -11,6 +11,14 @@ import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
+);
+
+const CheckIcon = (
+    <CheckOutlined style={{ color: "#45c01a", fontWeight: 2000 }} />
+);
+
+const CloseIcon = (
+    <CloseOutlined style={{ color: "#f32424", fontWeight: 500 }} />
 );
 
 const { Option } = Select;
@@ -32,10 +40,10 @@ export default function ViewResults(props) {
     const shownStatus = {
         "all": {shown: "All", color: ""},
         "canceled": {shown: "Canceled", color: "default", desc: "Diagnosis has been canceled because of server errors."},
-        "waiting": {shown: "0 Waiting", color: "processing", desc: "Diagnosis is waiting in queue before being in progress"},
-        "in progress": {shown: "1 Not Labeled", color: "error", desc: "Diagnosis is still in progress."},
-        "annotated": {shown: "2 AI-Annotated", color: "warning", desc: "Diagnosis succeeds with the result annotated by AI."},
-        "reviewed": {shown: "3 Expert-Annotated", color: "success", desc: "The result is finalized by experts."},
+        "waiting": {shown: "Waiting", color: "processing", desc: "Diagnosis is waiting in queue before being processed"},
+        "in progress": {shown: "Not Labeled", color: "error", desc: "Diagnosis is still processing."},
+        "annotated": {shown: "AI-Annotated", color: "warning", desc: "Diagnosis succeeds with a result annotated by AI."},
+        "reviewed": {shown: "Expert-Annotated", color: "success", desc: "The result has been reviewed by experts."},
     }
     const [hospitals, setHospitals] = useState([]);
     const [reload, setReload] = useState("");
@@ -47,18 +55,10 @@ export default function ViewResults(props) {
             dataIndex: "index",
             key: "index",
             align: "center",
-            // ellipsis: {
-            //     showTitle: false
-            // },
             sorter: {
                 compare: (a, b) => a.index.localeCompare(b.index)
             },
             showSorterTooltip: false,
-            // render: (no) => (
-            //     <Tooltip placement="topLeft" title={no}>
-            //         {no}
-            //     </Tooltip>
-            // ),
         },
         {
             title: 
@@ -137,17 +137,24 @@ export default function ViewResults(props) {
             showSorterTooltip: false,
         },
         {
-            title: "Label",
+            title: "Final Diagnosis",
             dataIndex: "label",
             key: "label",
             align: "center",
-            // sorter: {
-            //     compare: (a, b) => a.finding.localeCompare(b.finding)
-            // },
             showSorterTooltip: false,
+            render: (label) => {
+                switch (label) {
+                    case "non-DD":
+                        return <label style={{ color: "#45c01a", fontWeight: 500 }}>{label}</label>
+                    case "DD":
+                        return <label style={{ color: "#f32424", fontWeight: 500 }}>{label}</label>
+                    default:
+                        return "?";
+                }
+            },
         },
         {
-            title: "Prediction",
+            title: "AI Prediction",
             dataIndex: "prediction",
             key: "prediction",
             align: "center",
@@ -155,24 +162,72 @@ export default function ViewResults(props) {
                 compare: (a, b) => a.prediction.localeCompare(b.prediction)
             },
             showSorterTooltip: false,
+            render: (p) => {
+                switch (p) {
+                    case "non-DD":
+                        return <label style={{ color: "#45c01a", fontWeight: 500 }}>{p}</label>
+                    case "DD":
+                        return <label style={{ color: "#f32424", fontWeight: 500 }}>{p}</label>
+                }
+            },
         },
         {
-            title: "Evaluation",
+            title: 
+                <span>
+                    Eval
+                    <Popover
+                        placement="right"
+                        content={
+                            <span onClick={(e) => e.stopPropagation()}>
+                                Comparison between <br /> Final Diagnosis and AI Prediction
+                                <Row style={{marginTop: "10px"}}>
+                                    <Col span={1} />
+                                    <Col span={5}>
+                                        {CheckIcon}
+                                    </Col>
+                                    <Col span={18}>
+                                        <span>Same result</span>
+                                    </Col>
+                                </Row>
+                                <Row style={{marginTop: "10px"}}>
+                                    <Col span={1} />
+                                    <Col span={5}>
+                                        {CloseIcon}
+                                    </Col>
+                                    <Col span={18}>
+                                        <span>Different result</span>
+                                    </Col>
+                                </Row>
+                                <Row style={{marginTop: "10px"}}>
+                                    <Col span={1} />
+                                    <Col span={5}>
+                                        <span style={{paddingLeft: "3px"}}>?</span>
+                                    </Col>
+                                    <Col span={18}>
+                                        <span>Unknown</span>
+                                    </Col>
+                                </Row>
+                            </span>
+                        }
+                        trigger="hover"
+                    >
+                        <Button type="link" icon={<InfoCircleOutlined />} style={{color: "black"}} />
+                    </Popover>
+                </span>,
             dataIndex: "evaluation",
             key: "evaluation",
             align: "center",
-            // sorter: {
-            //     compare: (a, b) => a.finding.localeCompare(b.finding)
-            // },
             showSorterTooltip: false,
+            width: 80,
             render: (e) => {
                 switch (e) {
                     case true:
-                        return <CheckOutlined />;
+                        return CheckIcon;
                     case false:
-                        return <CloseOutlined />;
+                        return CloseIcon;
                     default:
-                        return <MinusOutlined />;
+                        // return <MinusOutlined />;
+                        return "?";
                 }
             },
         },
@@ -305,7 +360,7 @@ export default function ViewResults(props) {
             for (const i in filter_data) {
                 filter_data[i].key = (parseInt(i) + 1).toString();
                 if (filter_data[i].label === null) {
-                    filter_data[i].label = "-";
+                    // filter_data[i].label = "?";
                     filter_data[i].evaluation = null;
                 }
                 filter_data[i].date = new Date(

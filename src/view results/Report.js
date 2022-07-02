@@ -91,7 +91,7 @@ export default function Report(props) {
                             color={info.status === "annotated" ? "warning" : "success"}
                             style={{ fontSize: "small", marginLeft: "10px" }}
                         >
-                            {info.status === "annotated" ? "2 AI-Annotated" : "3 Expert-Annotated"}
+                            {info.status === "annotated" ? "AI-Annotated" : "Expert-Annotated"}
                         </Tag>
                     </div>
                         <label style={{ color: "#a3a3a3", textAlign: "left", marginBottom: "30px" }}>
