@@ -23,7 +23,7 @@ export default function Diagnosis() {
 
   const [details, setDetails] = useState(null);
   const [model, setModel] = useState(null);
-  const [question, setQuestion] = useState({});
+  const [question, setQuestion] = useState(null);
   const [image, setImage] = useState(null);
   const [reportId, setReportId] = useState(null);
 
@@ -141,7 +141,7 @@ export default function Diagnosis() {
         ))}
       </Steps>
       {/* ----- add content below -------- */}
-      <div className={current === 3 && Object.keys(question).length !== 0 ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
+      <div className={current === 3 && question ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
         {current === 0 && (
           <PersonalDetails
             ref={personalDetailsRef}
@@ -204,9 +204,9 @@ export default function Diagnosis() {
         {(current === 0
           ||current === 1 && model
           || current === 2 && (
-            model === "questionnaire" && Object.keys(question).length !== 0
+            model === "questionnaire" && question
             || model === "image" && image
-            || model === "integrate" && Object.keys(question).length !== 0 && image)
+            || model === "integrate" && question && image)
           || current === 3)
           && (<Button className="primary-btn" id="diagnosis-next-btn" onClick={() => next()}>
             Next

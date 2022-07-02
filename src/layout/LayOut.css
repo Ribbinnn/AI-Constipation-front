@@ -512,8 +512,13 @@ ol {
   padding-bottom: 8px;
 }
 
-.children-form-item {
-  padding-left: 50px;
+.questionnaire-form .ant-form-item {
+  margin-bottom: 0;
+  padding: 12px 10px 12px 18px;
+}
+
+.questionnaire-form .ant-form-item:nth-child(odd) {
+  background: #f0f0f0;
 }
 
 .checkbox-container {
@@ -604,7 +609,7 @@ ol {
 .ant-radio-input:focus + .ant-radio-inner,
 .ant-radio-checked .ant-radio-inner {
   border-color: #c4c4c4;
-  background-color: #fafafa;
+  /* background-color: #fafafa; */
 }
 
 .ant-radio-input:focus + .ant-radio-inner {
