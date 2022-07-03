@@ -39,83 +39,114 @@ function AboutUs(props) {
                 </Col>
                 <hr style={{ width: "100%" }} />
             </Row>
-
             <Row>
-                <Image
-                    preview={false}
-                    height={65}
-                    src="/logos/MedCU_Logo.png"
-                />
-                <Image
-                    preview={false}
-                    height={85}
-                    src="/logos/CUNM_Logo.png"
-                />
-            </Row>
-            <Row style={{ color: "#9772fb", fontSize: "16px" }}>
-                <Col span={12}>
-                    ศูนย์เชี่ยวชาญเฉพาะทางด้านระบบประสาทและการเคลื่อนไหวของระบบทางเดินอาหาร <br />ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
-                </Col>
-            </Row>
-            <Row style={{ fontSize: "14px", marginBottom: "15px" }}>
-                <Col span={8}>
-                    10th floor, Bhumisirimangalanusorn Building, <br />King Chulalongkorn Memorial Hospital, Pathumwan, Pathumwan, Bangkok, 10330, Thailand
-                </Col>
-            </Row>
-            <Row justify="space-between" style={{ marginBottom: "35px" }}>
-                <Col>
-                    <Row justify="center">
+                <Col span={12} style={{ paddingRight: "25px" }}>
+                    <Row align="middle" style={{ minHeight: "90px" }}>
                         <Image
                             preview={false}
-                            height={240}
-                            src="/people/อ-สุเทพ-2-2-64.jpg"
+                            height={70}
+                            src="/logos/MedCU_Logo.png"
                         />
-                    </Row>
-                    <Row justify="center" style={{ fontSize: "16px" }}>
-                        <label>ศ.นพ.สุเทพ กลชาญวิทย์</label>
-                    </Row>
-                </Col>
-                <Col>
-                    <Row justify="center">
                         <Image
                             preview={false}
-                            height={240}
-                            src="/people/พ.ฐนิสา.jpg"
+                            height={90}
+                            src="/logos/CUNM_Logo.png"
                         />
                     </Row>
-                    <Row justify="center">
-                        <label>ผศ.(พิเศษ)พญ.ฐนิสา พัชรตระกูล</label>
+                    <Row style={{ color: "#9772fb", fontSize: "16px", minHeight: "51px" }}>
+                        <Col span={24}>
+                            ศูนย์เชี่ยวชาญเฉพาะทางด้านระบบประสาทและการเคลื่อนไหวของระบบทางเดินอาหาร <br />ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
+                        </Col>
+                    </Row>
+                    <Row style={{ fontSize: "14px", marginBottom: "15px", minHeight: "67px" }}>
+                        <Col span={18}>
+                            10th floor, Bhumisirimangalanusorn Building, <br />King Chulalongkorn Memorial Hospital, Pathumwan, Pathumwan, Bangkok, 10330, Thailand
+                        </Col>
+                    </Row>
+                    <Row justify="space-around" style={{ marginBottom: "35px" }}>
+                        <Col span={8}>
+                            <Row justify="center">
+                                <Image
+                                    preview={false}
+                                    height={190}
+                                    src="/people/อ-สุเทพ-2-2-64.jpg"
+                                />
+                            </Row>
+                            <Row justify="center">
+                                ศ.นพ.สุเทพ กลชาญวิทย์
+                            </Row>
+                        </Col>
+                        <Col span={8}>
+                            <Row justify="center">
+                                <Image
+                                    preview={false}
+                                    height={190}
+                                    src="/people/พ.ฐนิสา.jpg"
+                                />
+                            </Row>
+                            <Row justify="center">
+                                ผศ.(พิเศษ)พญ.ฐนิสา พัชรตระกูล
+                            </Row>
+                        </Col>
+                        <Col span={8}>
+                            <Row justify="center">
+                                <Image
+                                    preview={false}
+                                    height={190}
+                                    src="/people/พ.ภัคพล.jpg"
+                                />
+                            </Row>
+                            <Row justify="center">
+                                อ.นพ.ภัคพล รัตนชัยสิทธิ์
+                            </Row>
+                        </Col>
                     </Row>
                 </Col>
-                <Col>
-                    <Row justify="center">
+                <Col span={12} style={{ paddingLeft: "25px" }}>
+                    <Row align="middle" style={{ minHeight: "90px" }}>
                         <Image
                             preview={false}
-                            height={240}
-                            src="/people/พ.ภัคพล.jpg"
+                            height={55}
+                            src="/logos/EngCU_Logo.jpg"
                         />
                     </Row>
-                    <Row justify="center" style={{ fontSize: "16px" }}>
-                        <label>อ.นพ.ภัคพล รัตนชัยสิทธิ์</label>
+                    <Row style={{ color: "#9772fb", fontSize: "16px", minHeight: "51px" }}>
+                        <Col span={24}>
+                            ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
+                        </Col>
                     </Row>
-                </Col>
-                <Col span={6} />
-            </Row>
-            <Row>
-                <Image
-                    preview={false}
-                    height={45}
-                    src="/logos/EngCU_Logo.jpg"
-                />
-            </Row>
-            <Row style={{ color: "#9772fb", fontSize: "16px" }}>
-                <Col span={12}>
-                    ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
-                </Col>
-            </Row>
-            <Row style={{ fontSize: "14px", marginBottom: "10px" }}>
-                <Col span={8}>
-                    17th floor, Engineering 4 Building (Charoenvidsavakham), Phayathai Road, Wang Mai, Pathumwan, Bangkok, 10330, Thailand
+                    <Row style={{ fontSize: "14px", marginBottom: "15px", minHeight: "67px" }}>
+                        <Col span={18}>
+                            17th floor, Engineering 4 Building (Charoenvidsavakham), Phayathai Road, Wang Mai, Pathumwan, Bangkok, 10330, Thailand
+                        </Col>
+                    </Row>
+                    <Row justify="space-around" style={{ marginBottom: "35px" }}>
+                        <Col span={8}>
+                            <Row justify="center">
+                                <Image
+                                    preview={false}
+                                    height={190}
+                                    src="/people/รศ.ดร.พีรพล.jpg"
+                                />
+                            </Row>
+                            <Row justify="center">
+                                รศ. ดร.พีรพล เวทีกูล
+                            </Row>
+                        </Col>
+                        <Col span={8}>
+                            <Row justify="center">
+                                <Image
+                                    preview={false}
+                                    height={190}
+                                    src="/people/sornsiri.jpeg"
+                                />
+                            </Row>
+                            <Row justify="center">
+                                สรณ์สิริ พู่วงศาโรจน์
+                            </Row>
+                        </Col>
+                        <Col span={8} />
+                    </Row>
                 </Col>
             </Row>
         </div>

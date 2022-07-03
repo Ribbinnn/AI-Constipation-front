@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Row, Col, Spin, Image, Space } from 'antd';
+import { Row, Col, Spin, Image, Space, Modal, Card } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
 import Contexts from './utils/Contexts'
+import { getUserById } from "./api/admin";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
@@ -9,12 +10,18 @@ const LoadingIcon = (
 
 function Home() {
     const [loaded, setLoaded] = useState(false);
+    const [questionVisible, setQuestionVisible] = useState(false);
     const user = JSON.parse(sessionStorage.getItem("user"));
+    const [userData, setUserData] = useState({});
 
     // const modelInfoMockUp = [{key: 1, version: "x.x", accuracy: "xx%"}, {key: 2, version: "x.x", accuracy: "xx%"}, {key: 3, version: "x.x", accuracy: "xx%"}]
 
     useEffect(() => {
-        setLoaded(true);
+        getUserById(user.id)
+            .then((res) => {
+                setUserData(res);
+                setLoaded(true);
+            }).catch((err) => console.log(err.response));
     }, [])
 
     return (
@@ -34,10 +41,10 @@ function Home() {
                     <Row>
                         <Col span={16}>
                             <div style={{ fontSize: "25px", marginBottom: "17px" }}>
-                                {`Welcome, ${user.username}.`}
+                                {`Welcome, ${userData.username}.`}
                             </div>
                             <label style={{ marginBottom: "22px" }}>
-                                {`${user.role.substring(0, 1).toUpperCase()}${user.role.substring(1,)}, ${user.first_name}`}
+                                {`${userData.first_name} ${userData.last_name} (${userData.role.substring(0, 1).toUpperCase()}${userData.role.substring(1,)}), ${userData.hospital}`}
                             </label>
                         </Col>
                         <Col span={8}>
@@ -88,6 +95,14 @@ function Home() {
                                 </Row>
                                 <Row>
                                     <dl style={{ fontSize: "medium" }}>
+                                        <dt style={{ color: "#9772fb", fontWeight: "500" }}>การให้คะแนนความรุนแรงของอาการ (<span style={{ fontWeight: "600", textDecoration: "underline" }}>เฉลี่ยในช่วงระยะเวลา 3 เดือนที่ผ่านมา</span>) โดยใช้เกณฑ์ดังนี้</dt>
+                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการเล็กน้อย</span> &nbsp;&nbsp;= มีอาการแต่อาการไม่รบกวนการดำเนินชีวิตประจำวัน</dt>
+                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการปานกลาง</span> = มีอาการรบกวน แต่ไม่ต้องเปลี่ยนแปลงการดำเนินกิจวัตรประจำวันนั้นๆ</dt>
+                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการรุนแรง</span> &emsp;&nbsp;= มีอาการและอาการมีผลกับกิจวัตรประจำวันมากจนต้องเปลี่ยนแปลงการดำเนินชีวิตประจำวัน</dt>
+                                    </dl>
+                                </Row>
+                                <Row>
+                                    <dl style={{ fontSize: "medium" }}>
                                         <dt style={{ color: "#9772fb", fontWeight: "600" }}>Model Accuracy</dt>
                                         <dt style={{ marginBottom: "2px" }}>1. Model 1 Version x.x &emsp;Accuracy: 56.36%</dt>
                                         <dt style={{ marginBottom: "2px" }}>2. Model 2 Version x.x &emsp;Accuracy: 54.90%</dt>
@@ -97,53 +112,6 @@ function Home() {
                             </Space>
                         </Col>
                     </Row>
-                    {/* <Row>
-                        <Col span={12}>
-                        <div style={{ fontSize: "25px", marginBottom: "17px" }}>
-                            {`Welcome, ${user.username}.`}
-                        </div>
-                        <label style={{ marginBottom: "15px" }}>
-                            {"User information ----------------"}
-                        </label>
-                        </Col>
-                        <Col span={12}>
-                            <div style={{ float: "right" }}>
-                                {"TH | EN"}
-                            </div>
-                        </Col>
-                    </Row>
-                    <hr />
-                    {modelInfoMockUp.map((i) => 
-                        <div style={{ marginBottom: "5px" }}>
-                            <i>
-                                <label>{`Model ${i.key} Version ${i.version}`}</label>
-                                <label style={{ marginLeft: "30px" }}>{`Accuracy ${i.accuracy}`}</label>
-                            </i>
-                        </div>)}
-                    <div style={{ color: "#9772fb", fontSize: "20px", margin: "25px 0 20px 0" }}>
-                        HOW TO USE DIAGNOSE DYSSYNERGIC DEFECATION
-                    </div> */}
-                    {/* <div style={{ display: "grid", gridAutoFlow: "row", gridRowGap: "5px" }}>
-                        <div>
-                            Step 1: Go to Diagnosis
-                        </div>
-                        <div>
-                            Step 2: Fill in patient’s personal details
-                        </div>
-                        <div>
-                            <label>Step 3: Fill in</label>&nbsp;
-                            <label style={{ color: "#9772fb" }}>symptom questionnaire</label>&nbsp;
-                            <label>or upload an</label>&nbsp;
-                            <label style={{ color: "#9772fb" }}>X-ray image</label>&nbsp;
-                            <label>(or both)</label>
-                        </div>
-                        <div>
-                            Step 4: Wait for diagnosis result
-                        </div>
-                        <div>
-                            Step 5: Export the result
-                        </div>
-                    </div> */}
                 </div>
             }
         </div>
