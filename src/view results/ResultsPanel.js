@@ -429,10 +429,10 @@ export default function ResultsPanel(props) {
                                 data.anorectal_structural_abnormality_note = undefined;
                             }
                             if (data.comorbidity !== "other") {
-                                data.comorbidity_note = undefined;
+                                data.comorbidity_note = "empty";
                             }
                             if (!data.surgery) {
-                                data.surgery_note = undefined;
+                                data.surgery_note = "empty";
                             }
                             if (data.comments === "") {
                                 data.comments = undefined;
