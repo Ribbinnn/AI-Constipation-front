@@ -120,7 +120,7 @@ function FillQuestionnaireModal(props) {
                 onCancel={onCancel}
                 title={
                     <label style={{ color: "#9772fb", fontSize: "25px" }}>
-                        Fill in symptom questionnaire
+                        Fill in Symptom Questionnaire
                     </label>
                 }
                 footer={null}

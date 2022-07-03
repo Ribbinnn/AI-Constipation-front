@@ -39,3 +39,14 @@ export const integrateInfer = async (questionnaire, file, personalInfo) => {
         throw e
     }
 }
+
+export const downloadTemplate = async () => {
+    try {
+        const response = (
+            await instance.get("/infer/template", { responseType: 'blob' })
+        ).data;
+        return response;
+    } catch (e) {
+        throw e
+    }
+}

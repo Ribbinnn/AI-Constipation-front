@@ -6,6 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
+import UploadQuestionnaireModal from "./UploadQuestionnaireModal";
 import UploadImageModal from "./UploadImageModal";
 import Result from "./Result";
 import BeginDiagnosis from "./BeginDiagnosis";
@@ -19,6 +20,7 @@ export default function Diagnosis() {
   // const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const personalDetailsRef = useRef();
+  const [uploadQuestionVisible, setUploadQuestionVisible] = useState(false);
   const [uploadImageVisible, setUploadImageVisible] = useState(false);
 
   const [details, setDetails] = useState(null);
@@ -165,6 +167,7 @@ export default function Diagnosis() {
             setQuestion={setQuestion}
             image={image}
             setImage={setImage}
+            setUploadQuestionVisible={setUploadQuestionVisible}
             setUploadImageVisible={setUploadImageVisible}
           />
         )}
@@ -183,6 +186,12 @@ export default function Diagnosis() {
           />
         )}
       </div>
+      <UploadQuestionnaireModal
+        visible={uploadQuestionVisible}
+        setVisible={setUploadQuestionVisible}
+        question={question}
+        setQuestion={setQuestion}
+      />
       <UploadImageModal
         visible={uploadImageVisible}
         setVisible={setUploadImageVisible}
