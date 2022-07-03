@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Row, Col, Spin, Image, Space, Modal, Card } from 'antd';
+import { Row, Col, Spin, Image, Space } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
-import Contexts from './utils/Contexts'
+import PreviewQuestionnaireCard from "./component/PreviewQuestionnaireCard";
+import PreviewImageCard from "./component/PreviewImageCard";
 import { getUserById } from "./api/admin";
+import Contexts from './utils/Contexts'
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
@@ -10,15 +12,18 @@ const LoadingIcon = (
 
 function Home() {
     const [loaded, setLoaded] = useState(false);
-    const [questionVisible, setQuestionVisible] = useState(false);
     const user = JSON.parse(sessionStorage.getItem("user"));
     const [userData, setUserData] = useState({});
 
-    // const modelInfoMockUp = [{key: 1, version: "x.x", accuracy: "xx%"}, {key: 2, version: "x.x", accuracy: "xx%"}, {key: 3, version: "x.x", accuracy: "xx%"}]
+    const question = {
+        DistFreq: 3, DistSev: 2, DistDur: 3, FreqStool: 5, Incomplete: 0, Strain: 1, Hard: 1,
+        Block: 1, Digit: 0, BloatFreq: 5, BloatSev: 3, BloatDur: 1, SevScale: 8.5
+    }
 
     useEffect(() => {
         getUserById(user.id)
             .then((res) => {
+                // console.log(res);
                 setUserData(res);
                 setLoaded(true);
             }).catch((err) => console.log(err.response));
@@ -38,12 +43,12 @@ function Home() {
             )}
             {loaded &&
                 <div>
-                    <Row>
+                    <Row style={{ marginBottom: "10px" }}>
                         <Col span={16}>
-                            <div style={{ fontSize: "25px", marginBottom: "17px" }}>
+                            <div style={{ fontSize: "25px", marginBottom: "20px" }}>
                                 {`Welcome, ${userData.username}.`}
                             </div>
-                            <label style={{ marginBottom: "22px" }}>
+                            <label style={{ marginBottom: "18px" }}>
                                 {`${userData.first_name} ${userData.last_name} (${userData.role.substring(0, 1).toUpperCase()}${userData.role.substring(1,)}), ${userData.hospital}`}
                             </label>
                         </Col>
@@ -71,9 +76,9 @@ function Home() {
                     </Row>
                     <Row>
                         <Col span={16}>
-                            <Space direction="vertical" size={25}>
+                            <Space direction="vertical" size={20}>
                                 <Row style={{ marginBottom: "10px" }}>
-                                    <label>
+                                    <label style={{ marginBottom: "5px" }}>
                                         &emsp;&emsp;ระบบปัญญาประดิษฐ์เพื่อวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน โดยใช้ข้อมูลจากภาพเอกซเรย์ช่องท้องและแบบสอบถามอาการระบบทางเดินอาหาร (Artificial intelligence imaging and gastrointestinal symptoms analysis for diagnosis of dyssynergic defecation)
                                     </label>
                                     <label>
@@ -88,7 +93,7 @@ function Home() {
                                         <dt>&emsp;&emsp;- Model 1 แบบสอบถาม </dt>
                                         <dt>&emsp;&emsp;- Model 2 ภาพเอกซเรย์ช่องท้อง </dt>
                                         <dt style={{ marginBottom: "2px" }}>&emsp;&emsp;- Model 3 แบบสอบถามและภาพเอกซเรย์ช่องท้อง </dt>
-                                        <dt style={{ marginBottom: "2px" }}>3. ใส่ข้อมูล<span style={{ color: "#9772fb" }}>แบบสอบถาม</span> และ/หรือ<span style={{ color: "#9772fb" }}>อัปโหลดรูปภาพ</span></dt>
+                                        <dt style={{ marginBottom: "2px" }}>3. ใส่ข้อมูล <span style={{ color: "#9772fb" }}>แบบสอบถาม</span> และ/หรือ <span style={{ color: "#9772fb" }}>อัปโหลดรูปภาพ</span></dt>
                                         <dt style={{ marginBottom: "2px" }}>4. กดวินิจฉัย (diagnosis)</dt>
                                         <dt style={{ marginBottom: "2px" }}>5. ระบบแสดงร้อยละความเชื่อมั่นในการวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน</dt>
                                     </dl>
@@ -110,6 +115,13 @@ function Home() {
                                     </dl>
                                 </Row>
                             </Space>
+                        </Col>
+                        <Col span={8}>
+                            <div style={{ textAlign: "center" }}>
+                                <label style={{ margin: "10px 0 18px 0", color: "#9772fb", fontWeight: 500 }}>Example of input</label>
+                                <PreviewQuestionnaireCard question={question} margin="0 0 20px 0" />
+                                <PreviewImageCard image="/pics/xray_cropped.png" />
+                            </div>
                         </Col>
                     </Row>
                 </div>

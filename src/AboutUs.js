@@ -40,8 +40,8 @@ function AboutUs(props) {
                 <hr style={{ width: "100%" }} />
             </Row>
             <Row>
-                <Col span={12} style={{ paddingRight: "25px" }}>
-                    <Row align="middle" style={{ minHeight: "90px" }}>
+                <Col span={13} style={{ paddingRight: "25px" }}>
+                    <Row align="middle" style={{ marginBottom: "8px", minHeight: "90px" }}>
                         <Image
                             preview={false}
                             height={70}
@@ -53,18 +53,18 @@ function AboutUs(props) {
                             src="/logos/CUNM_Logo.png"
                         />
                     </Row>
-                    <Row style={{ color: "#9772fb", fontSize: "16px", minHeight: "51px" }}>
+                    <Row style={{ color: "#9772fb", marginBottom: "5px", fontSize: "16px", minHeight: "51px" }}>
                         <Col span={24}>
                             ศูนย์เชี่ยวชาญเฉพาะทางด้านระบบประสาทและการเคลื่อนไหวของระบบทางเดินอาหาร <br />ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
                         </Col>
                     </Row>
-                    <Row style={{ fontSize: "14px", marginBottom: "15px", minHeight: "67px" }}>
-                        <Col span={18}>
-                            10th floor, Bhumisirimangalanusorn Building, <br />King Chulalongkorn Memorial Hospital, Pathumwan, Pathumwan, Bangkok, 10330, Thailand
+                    <Row style={{ fontSize: "14px", marginBottom: "18px", minHeight: "67px" }}>
+                        <Col span={16}>
+                            10th floor, Bhumisirimangalanusorn Building, <br />King Chulalongkorn Memorial Hospital, Rama 4 Road, Pathumwan, Pathumwan, Bangkok, 10330, Thailand
                         </Col>
                     </Row>
                     <Row justify="space-around" style={{ marginBottom: "35px" }}>
-                        <Col span={8}>
+                        <Col span={7}>
                             <Row justify="center">
                                 <Image
                                     preview={false}
@@ -88,7 +88,7 @@ function AboutUs(props) {
                                 ผศ.(พิเศษ)พญ.ฐนิสา พัชรตระกูล
                             </Row>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                             <Row justify="center">
                                 <Image
                                     preview={false}
@@ -100,23 +100,24 @@ function AboutUs(props) {
                                 อ.นพ.ภัคพล รัตนชัยสิทธิ์
                             </Row>
                         </Col>
+                        <Col span={2} />
                     </Row>
                 </Col>
-                <Col span={12} style={{ paddingLeft: "25px" }}>
-                    <Row align="middle" style={{ minHeight: "90px" }}>
+                <Col span={11} style={{ paddingLeft: "25px" }}>
+                    <Row align="middle" style={{ marginBottom: "8px", minHeight: "90px" }}>
                         <Image
                             preview={false}
                             height={55}
                             src="/logos/EngCU_Logo.jpg"
                         />
                     </Row>
-                    <Row style={{ color: "#9772fb", fontSize: "16px", minHeight: "51px" }}>
+                    <Row style={{ color: "#9772fb", marginBottom: "5px", fontSize: "16px", minHeight: "51px" }}>
                         <Col span={24}>
                             ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
                         </Col>
                     </Row>
-                    <Row style={{ fontSize: "14px", marginBottom: "15px", minHeight: "67px" }}>
-                        <Col span={18}>
+                    <Row style={{ fontSize: "14px", marginBottom: "18px", minHeight: "67px" }}>
+                        <Col span={20}>
                             17th floor, Engineering 4 Building (Charoenvidsavakham), Phayathai Road, Wang Mai, Pathumwan, Bangkok, 10330, Thailand
                         </Col>
                     </Row>

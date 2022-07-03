@@ -2,7 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
 import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
-import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
+// import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
+import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";
+import PreviewImageCard from "../component/PreviewImageCard";
 import ResultsPanel from "./ResultsPanel";
 import { getReport, getImage } from "../api/reports";
 // import Contexts from "../utils/Contexts";
@@ -29,8 +31,8 @@ export default function Report(props) {
     ];
     const ratingScore = [0, 25, 50, 75, 100];
 
-    const [previewQuestionVisible, setPreviewQuestionVisible] = useState(false);
-    const [previewImageVisible, setPreviewImageVisible] = useState(false);
+    // const [previewQuestionVisible, setPreviewQuestionVisible] = useState(false);
+    // const [previewImageVisible, setPreviewImageVisible] = useState(false);
 
     const printResult = (field, value) => {
         return(
@@ -139,25 +141,33 @@ export default function Report(props) {
                     <Col span={12}>
                         <Row justify="center" style={{ height: "100%" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
-                                <Button
-                                    type="link"
-                                    className="label-btn"
-                                    style={{ marginRight: "20px" }}
-                                    onClick={() => setPreviewQuestionVisible(true)}
-                                >
-                                    <Card
-                                        hoverable={true}
-                                        className="preview-card"
-                                    >
-                                        <div>
-                                            <label className="clickable-label" style={{ marginBottom: "15px" }}>
-                                                Symptom <br /> Questionnaire
-                                            </label>
-                                            <br />
-                                            <SnippetsOutlined />
-                                        </div>
-                                    </Card>
-                                </Button>}
+                                // <Button
+                                //     type="link"
+                                //     className="label-btn"
+                                //     style={{ marginRight: "20px" }}
+                                //     onClick={() => setPreviewQuestionVisible(true)}
+                                // >
+                                //     <Card
+                                //         hoverable={true}
+                                //         className="preview-card"
+                                //     >
+                                //         <div>
+                                //             <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                //                 Symptom <br /> Questionnaire
+                                //             </label>
+                                //             <br />
+                                //             <SnippetsOutlined />
+                                //         </div>
+                                //     </Card>
+                                // </Button>
+                                <PreviewQuestionnaireCard
+                                    question={info.question_id}
+                                    margin="0 20px 0 0"
+                                    noChildren={
+                                        info.question_id.DistFreq === 0 && info.question_id.BloatFreq === 0
+                                    }
+                                />
+                            }
                             {/* {(info.task === "image" || info.task === "integrate") &&
                                 <Image
                                     // preview={false}
@@ -165,24 +175,26 @@ export default function Report(props) {
                                     src={originalImage}
                                 />} */}
                             {(info.task === "image" || info.task === "integrate") &&
-                                <Button
-                                    type="link"
-                                    className="label-btn"
-                                    onClick={() => setPreviewImageVisible(true)}
-                                >
-                                    <Card
-                                        hoverable={true}
-                                        className="preview-card"
-                                    >
-                                        <div>
-                                            <label className="clickable-label" style={{ marginBottom: "15px" }}>
-                                                X-Ray Image
-                                            </label>
-                                            <br />
-                                            <PictureOutlined />
-                                        </div>
-                                    </Card>
-                                </Button>}
+                                // <Button
+                                //     type="link"
+                                //     className="label-btn"
+                                //     onClick={() => setPreviewImageVisible(true)}
+                                // >
+                                //     <Card
+                                //         hoverable={true}
+                                //         className="preview-card"
+                                //     >
+                                //         <div>
+                                //             <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                                //                 X-Ray Image
+                                //             </label>
+                                //             <br />
+                                //             <PictureOutlined />
+                                //         </div>
+                                //     </Card>
+                                // </Button>
+                                <PreviewImageCard image={originalImage} />
+                            }
                         </Row>
                     </Col>
                 </Row>
@@ -196,7 +208,7 @@ export default function Report(props) {
                     loaded={loaded}
                     info={info}
                 />}
-            {loaded && <Modal
+            {/* {loaded && <Modal
                 centered
                 destroyOnClose
                 visible={previewQuestionVisible}
@@ -209,8 +221,8 @@ export default function Report(props) {
                 <div style={{ height: "100%", overflow: "scroll" }}>
                     <PreviewQuestionnaire question={info.question_id} />
                 </div>
-            </Modal>}
-            {loaded && <Modal
+            </Modal>} */}
+            {/* {loaded && <Modal
                 // centered
                 destroyOnClose
                 visible={previewImageVisible}
@@ -225,7 +237,7 @@ export default function Report(props) {
                     height={700}
                     src={originalImage}
                 />
-            </Modal>}
+            </Modal>} */}
         </div>
     );
 }

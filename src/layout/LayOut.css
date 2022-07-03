@@ -1101,7 +1101,12 @@ hr {
 
 .preview-question-modal .ant-modal-body {
   padding: 30px 40px 35px 40px;
-  max-height: 800px;
+  height: 788px;
+}
+
+.preview-question-modal.no-children .ant-modal-body {
+  padding: 30px 40px 35px 40px;
+  height: 655px;
 }
 
 .webcam-modal .ant-modal-body {
