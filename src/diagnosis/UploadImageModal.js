@@ -111,7 +111,7 @@ function UploadImageModal(props) {
                 onCancel={onCancel}
                 title={
                     <label style={{ color: "#9772fb", fontSize: "25px" }}>
-                        Upload X-ray image
+                        Upload X-Ray Image
                     </label>
                 }
                 footer={null}

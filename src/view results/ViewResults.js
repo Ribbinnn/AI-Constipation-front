@@ -363,6 +363,10 @@ export default function ViewResults(props) {
                 if (filter_data[i].label === null) {
                     // filter_data[i].label = "?";
                     filter_data[i].evaluation = null;
+                } else if (filter_data[i].label === filter_data[i].prediction) {
+                    filter_data[i].evaluation = true;
+                } else {
+                    filter_data[i].evaluation = false;
                 }
                 filter_data[i].date = new Date(
                     filter_data[i].date

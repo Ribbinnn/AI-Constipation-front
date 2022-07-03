@@ -1082,12 +1082,18 @@ hr {
   color: black;
 }
 
-.upload-image-modal .ant-modal-header {
+.upload-image-modal .ant-modal-header,
+.upload-question-modal .ant-modal-header {
   padding: 30px;
 }
 
 .upload-image-modal .ant-modal-body {
   padding: 10px 40px 30px 40px;
+}
+
+.upload-question-modal .ant-modal-body {
+  padding: 0 43px 30px 43px;
+  height: 700px;
 }
 
 .fill-question-modal .ant-modal-header {
