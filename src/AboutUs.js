@@ -11,7 +11,7 @@ function AboutUs(props) {
 
     return (
         <div className="content">
-            <Row>
+            <Row style={{ marginBottom: "5px" }}>
                 <Col span={16}>
                     <div style={{ fontSize: "30px", marginBottom: "17px" }}>
                         {`About Us`}
