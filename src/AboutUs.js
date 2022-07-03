@@ -131,7 +131,7 @@ function AboutUs(props) {
                                 />
                             </Row>
                             <Row justify="center">
-                                รศ. ดร.พีรพล เวทีกูล
+                                รศ.ดร.พีรพล เวทีกูล
                             </Row>
                         </Col>
                         <Col span={8}>
