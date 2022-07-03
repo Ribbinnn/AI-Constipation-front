@@ -20,9 +20,10 @@ export default function PreviewQuestionnaire(props) {
         return(
             <div style={{ marginLeft: children ? "35px" : 0 }}>
                 <label>{q}</label><br />
-                {ans === "-" ?
+                {/* {ans === "-" ?
                     <label style={{ marginLeft: "16px" }}>{ans}</label> :
-                    <label style={{ marginLeft: "17px", color: "#9772fb", fontWeight: 500 }}>{ans}</label>}
+                    <label style={{ marginLeft: "17px", color: "#9772fb", fontWeight: 500 }}>{ans}</label>} */}
+                <label style={{ marginLeft: "17px", color: "#9772fb", fontWeight: 500 }}>{ans}</label>
             </div>
         );
     };
@@ -30,17 +31,17 @@ export default function PreviewQuestionnaire(props) {
     return(
         <Space direction="vertical" size={10}>
             {printAnswer(questions[0], seven_choice[props.question.DistFreq], false)}
-            {printAnswer(questions[1], props.question.DistSev === 0 ? "-" : three_choice[props.question.DistSev - 1], true)}
-            {printAnswer(questions[2], props.question.DistDur === 0 ? "-" : `${props.question.DistDur} เดือน`, true)}
-            {printAnswer(questions[3], `${props.question.FreqStool} ครั้ง`, false)}
+            {props.question.DistFreq !== 0 && printAnswer(questions[1], three_choice[props.question.DistSev - 1], true)}
+            {props.question.DistFreq !== 0 && printAnswer(questions[2], `${props.question.DistDur} เดือน`, true)}
+            {printAnswer(questions[3], `${props.question.FreqStool} ครั้ง/สัปดาห์`, false)}
             {printAnswer(questions[4], two_choice[props.question.Incomplete], false)}
             {printAnswer(questions[5], two_choice[props.question.Strain], false)}
             {printAnswer(questions[6], two_choice[props.question.Hard], false)}
             {printAnswer(questions[7], two_choice[props.question.Block], false)}
             {printAnswer(questions[8], two_choice[props.question.Digit], false)}
             {printAnswer(questions[9], seven_choice[props.question.BloatFreq], false)}
-            {printAnswer(questions[10], props.question.BloatSev === 0 ? "-" : three_choice[props.question.BloatSev - 1], true)}
-            {printAnswer(questions[11], props.question.BloatDur === 0 ? "-" : `${props.question.BloatDur} เดือน`, true)}
+            {props.question.BloatFreq !== 0 && printAnswer(questions[10], three_choice[props.question.BloatSev - 1], true)}
+            {props.question.BloatFreq !== 0 && printAnswer(questions[11], `${props.question.BloatDur} เดือน`, true)}
             {printAnswer(questions[12], props.question.SevScale, false)}
         </Space>
     );

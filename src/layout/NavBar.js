@@ -21,10 +21,12 @@ export default function NavBar() {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
-    let key = getTabKey();
-    setTab(key);
-    setCurrentActivity({ menu: key, enablePageChange: true });
-  }, []);
+    return history.listen((location) => { 
+      let key = getTabKey(location.pathname);
+      setTab(key);
+      setCurrentActivity({ menu: key, enablePageChange: true }); 
+    })
+  }, [history]);
 
   function getTabKey(path) {
     path = (path ?? window.location.pathname).slice(1).split("/");

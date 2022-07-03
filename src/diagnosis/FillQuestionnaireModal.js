@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Row, Button, Slider, InputNumber, Form, Radio, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
@@ -65,8 +65,15 @@ function FillQuestionnaireModal(props) {
         />
     );
 
-    const [DistFreq, setDistFreq] = useState(props.question ? props.question.DistFreq : 0);
-    const [BloatFreq, setBloatFreq] = useState(props.question ? props.question.BloatFreq : 0);
+    const [DistFreq, setDistFreq] = useState(0);
+    const [BloatFreq, setBloatFreq] = useState(0);
+
+    useEffect(() => {
+        if (props.question) {
+            setDistFreq(props.question.DistFreq);
+            setBloatFreq(props.question.BloatFreq);
+        }
+    }, [props.visible]);
 
     const onOK = () => {
         props.setVisible(false);
@@ -77,11 +84,20 @@ function FillQuestionnaireModal(props) {
 
     const onCancel = () => {
         const checker = form.getFieldsValue(true);
-        if (Object.keys(checker).length !== 0) {
+        // console.log(props.question, checker);
+        if (checker.DistFreq !== null && checker.BloatFreq !== null) {
+            if (checker.DistFreq === 0) {
+                checker.DistSev = 0;
+                checker.DistDur = 0.0;
+            }
+            if (checker.BloatFreq === 0) {
+                checker.BloatSev = 0;
+                checker.BloatDur = 0.0;
+            }
             checker.DistSevFreq = checker.DistFreq * checker.DistSev;
             checker.BloatSevFreq = checker.BloatFreq * checker.BloatSev;
         }
-        if (_.isEqual(props.question, checker)) {
+        if ((!props.question && Object.values(checker).every(val => val === null)) || (props.question && _.isEqual(props.question, checker))) {
             props.setVisible(false);
         } else {
             return Modal.confirm({
@@ -116,9 +132,10 @@ function FillQuestionnaireModal(props) {
                     <Form
                         form={form}
                         layout="vertical"
-                        style={{ height: "93%", overflow: "scroll", padding: "5px 10px 5px 18px" }}
+                        className="questionnaire-form"
+                        style={{ height: "91%", overflow: "scroll"/*, padding: "5px 10px 5px 18px"*/ }}
                     >
-                        <Space direction="vertical" size={3}>
+                        {/* <Space direction="vertical" size={3} className="questionnaire-space" style={{ width: "100%" }}> */}
                             <Form.Item
                                 name="DistFreq"
                                 key="DistFreq"
@@ -129,24 +146,26 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderSevenChoice("DistFreq")}
                             </Form.Item>
-                            <Form.Item
+                            {DistFreq !== 0 && <Form.Item
                                 name="DistSev"
                                 key="DistSev"
                                 label={questions[1]}
                                 initialValue={props.question ? props.question.DistSev : null}
                                 rules={[
                                     {
-                                        required: DistFreq === 0 ? false : true,
+                                        required: true,
                                         message: "please answer this question",
                                     },
                                 ]}
-                                className="children-form-item">
+                                style={{ background: "#f0f0f0", paddingLeft: "50px" }}
+                            >
                                     {renderThreeChoice()}
-                            </Form.Item>
-                            <Row style={{ alignItems: "baseline" }}>
+                            </Form.Item>}
+                            {DistFreq !== 0 && <Row style={{ alignItems: "baseline", background: "#f0f0f0" }}>
                                 <Form.Item
                                     name="DistDur"
                                     key="DistDur"
@@ -154,16 +173,18 @@ function FillQuestionnaireModal(props) {
                                     initialValue={props.question ? props.question.DistDur : null}
                                     rules={[
                                         {
-                                            required: DistFreq === 0 ? false : true,
+                                            required: true,
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline children-form-item">
+                                    className="form-item-force-inline"
+                                    style={{ paddingLeft: "50px", paddingRight: 0 }}
+                                >
                                         {renderMonthInput()}
                                 </Form.Item>
                                 <label>เดือน</label>
-                            </Row>
-                            <Row style={{ alignItems: "baseline" }}>
+                            </Row>}
+                            <Row style={{ alignItems: "baseline", paddingTop: "5px" }}>
                                 <Form.Item
                                     name="FreqStool"
                                     key="FreqStool"
@@ -175,7 +196,9 @@ function FillQuestionnaireModal(props) {
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline">
+                                    className="form-item-force-inline"
+                                    style={{ background: "white", paddingRight: 0 }}
+                                >
                                         <InputNumber
                                             min={0}
                                             max={100}
@@ -195,7 +218,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderTwoChoice()}
                             </Form.Item>
                             <Form.Item
@@ -208,7 +232,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderTwoChoice()}
                             </Form.Item>
                             <Form.Item
@@ -221,7 +246,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderTwoChoice()}
                             </Form.Item>
                             <Form.Item
@@ -234,7 +260,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderTwoChoice()}
                             </Form.Item>
                             <Form.Item
@@ -247,7 +274,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderTwoChoice()}
                             </Form.Item>
                             <Form.Item
@@ -260,24 +288,26 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     {renderSevenChoice("BloatFreq")}
                             </Form.Item>
-                            <Form.Item
+                            {BloatFreq !== 0 && <Form.Item
                                 name="BloatSev"
                                 key="BloatSev"
                                 label={questions[10]}
                                 initialValue={props.question ? props.question.BloatSev : null}
                                 rules={[
                                     {
-                                        required: BloatFreq === 0 ? false : true,
+                                        required: true,
                                         message: "please answer this question",
                                     },
                                 ]}
-                                className="children-form-item">
+                                style={{ paddingLeft: "50px", background: "white" }}
+                            >
                                     {renderThreeChoice()}
-                            </Form.Item>
-                            <Row style={{ alignItems: "baseline" }}>
+                            </Form.Item>}
+                            {BloatFreq !== 0 && <Row style={{ alignItems: "baseline" }}>
                                 <Form.Item
                                     name="BloatDur"
                                     key="BloatDur"
@@ -285,15 +315,17 @@ function FillQuestionnaireModal(props) {
                                     initialValue={props.question ? props.question.BloatDur : null}
                                     rules={[
                                         {
-                                            required: BloatFreq === 0 ? false : true,
+                                            required: true,
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline children-form-item">
+                                    className="form-item-force-inline"
+                                    style={{ paddingLeft: "50px", background: "white", paddingRight: 0 }}
+                                >
                                         {renderMonthInput()}
                                 </Form.Item>
                                 <label>เดือน</label>
-                            </Row>
+                            </Row>}
                             <Form.Item
                                 name="SevScale"
                                 key="SevScale"
@@ -304,7 +336,8 @@ function FillQuestionnaireModal(props) {
                                         required: true,
                                         message: "please answer this question",
                                     },
-                                ]}>
+                                ]}
+                            >
                                     <Slider
                                         min={0}
                                         max={10}
@@ -320,12 +353,12 @@ function FillQuestionnaireModal(props) {
                                                 label: "10",
                                             },
                                         }}
-                                        style={{ marginLeft: "17px", marginRight: "17px", marginTop: "12px" }}
+                                        style={{ marginLeft: "17px", marginRight: "37px", marginTop: "12px" }}
                                     />
                             </Form.Item>
-                        </Space>
+                        {/* </Space> */}
                     </Form>
-                    <Row justify="end" style={{ marginTop: "5px" }}>
+                    <Row justify="end" style={{ marginTop: "18px" }}>
                         <Button
                             className="primary-btn smaller cancel"
                             style={{ marginRight: "15px" }}
@@ -339,20 +372,27 @@ function FillQuestionnaireModal(props) {
                                 try {
                                     const data = await form.validateFields();
                                     // console.log(data);
-                                    if (data.DistFreq === 0) {
-                                        data.DistSev = 0;
-                                        data.DistDur = 0.0;
+                                    if (data.DistFreq !== 0 && (data.DistSev === 0 || data.DistDur === 0)) {
+                                        Modal.warning({content: "Question 1.1 and/or 1.2 cannot be 0.", zIndex: 3000});
+                                    } else if (data.BloatFreq !== 0 && (data.BloatSev === 0 || data.BloatDur === 0)) {
+                                        Modal.warning({content: "Question 8.1 and/or 8.2 cannot be 0", zIndex: 3000});
+                                    } else {
+                                        if (data.DistFreq === 0) {
+                                            data.DistSev = 0;
+                                            data.DistDur = 0.0;
+                                        }
+                                        if (data.BloatFreq === 0) {
+                                            data.BloatSev = 0;
+                                            data.BloatDur = 0.0;
+                                        }
+                                        data.DistSevFreq = data.DistFreq * data.DistSev;
+                                        data.BloatSevFreq = data.BloatFreq * data.BloatSev;
+                                        props.setQuestion(data);
+                                        onOK();
                                     }
-                                    if (data.BloatFreq === 0) {
-                                        data.BloatSev = 0;
-                                        data.BloatDur = 0.0;
-                                    }
-                                    data.DistSevFreq = data.DistFreq * data.DistSev;
-                                    data.BloatSevFreq = data.BloatFreq * data.BloatSev;
-                                    props.setQuestion(data);
-                                    onOK();
                                 } catch (errInfo) {
                                     console.log('Validate Failed:', errInfo);
+                                    Modal.error({content: "Some field(s) are missing.", zIndex: 3000});
                                 }
                             }}
                         >

@@ -20,10 +20,13 @@ export default function ResultsPanel(props) {
     ]
     const question = [
         "1. Final diagnosis of DD from", "2. CTT results", "3. Anorectal Structural Abnormality",
-        "4. IBS", "5. Cormorbidity", "6. Surgical History", "7. Comments"
+        "4. IBS", "5. Neurological co-morbidity", "6. Abdominal/anorectal surgery", "7. Comments"
     ];
 
-    const [surgicalHistory, setSurgicalHistory] = useState(false);
+    const [anorectal, setAnorectal] = useState(null);
+    const [comorbidity, setComorbidity] = useState(null);
+    const [surgery, setSurgery] = useState(false);
+
     const [gradCam, setGradCam] = useState();
 
     const onBack = () => {
@@ -32,11 +35,15 @@ export default function ResultsPanel(props) {
             return Modal.confirm({
                 icon: <ExclamationCircleOutlined />,
                 content: "Changes will not be saved.",
-                onOk: () => window.history.back(),
+                onOk: () => {
+                    // window.history.back()
+                    props.history.push(`/viewresults/?${props.queryString}`);
+                },
                 zIndex: 3000,
             });
         } else {
-            window.history.back();
+            // window.history.back();
+            props.history.push(`/viewresults/?${props.queryString}`);
         }
     };
 
@@ -139,7 +146,7 @@ export default function ResultsPanel(props) {
                     <Space
                         direction="vertical"
                         size={10}
-                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "40px" }}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "35px" }}
                     >
                         <label style={{ /*color: "#9772fb",*/ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
                         {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
@@ -152,7 +159,7 @@ export default function ResultsPanel(props) {
                         <div style={{ textAlign: "center" }}>
                             <Image
                                 // preview={false}
-                                height={350}
+                                height={320}
                                 src={gradCam}
                             />
                         </div>}
@@ -218,24 +225,49 @@ export default function ResultsPanel(props) {
                                             <Radio key="not done" value="not done">not done</Radio>
                                         </Radio.Group>
                                 </Form.Item>
-                                <Form.Item
-                                    name="anorectal_structural_abnormality"
-                                    key="anorectal_structural_abnormality"
-                                    label={question[2]}
-                                    // initialValue={props.details ? props.details.name : null}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "please answer this question",
-                                        },
-                                    ]}>
-                                        <Radio.Group style={{ padding: "0 10px" }}>
-                                            <Radio key="no" value="no">no</Radio>
-                                            <Radio key="rectocele" value="rectocele">rectocele</Radio>
-                                            <Radio key="intussusception" value="intussusception">intussusception</Radio>
-                                            <Radio key="not assess" value="not assess">not assess</Radio>
-                                        </Radio.Group>
-                                </Form.Item>
+                                <div>
+                                    <Form.Item
+                                        name="anorectal_structural_abnormality"
+                                        key="anorectal_structural_abnormality"
+                                        label={question[2]}
+                                        style={{ marginBottom: anorectal === "other" ? "14px" : "24px" }}
+                                        // initialValue={props.details ? props.details.name : null}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "please answer this question",
+                                            },
+                                        ]}>
+                                            <Radio.Group
+                                                style={{ padding: "0 10px" }}
+                                                onChange={(e) => setAnorectal(e.target.value)}
+                                            >
+                                                <Radio key="no" value="no">no</Radio>
+                                                <Radio key="rectocele" value="rectocele">rectocele</Radio>
+                                                <Radio key="intussusception" value="intussusception">intussusception</Radio>
+                                                <Radio key="not assess" value="not assess">not assess</Radio>
+                                                <Radio key="other" value="other">other</Radio>
+                                            </Radio.Group>
+                                    </Form.Item>
+                                    {anorectal === "other" && <Form.Item
+                                        name="anorectal_structural_abnormality_note"
+                                        key="anorectal_structural_abnormality_note"
+                                        // initialValue={props.details ? props.details.name : null}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "please answer this question",
+                                            },
+                                        ]}
+                                    >
+                                            <TextArea
+                                                className="input-text"
+                                                style={{ marginLeft: "10px", width: "95%" }}
+                                                autoSize={{ minRows: 1, maxRows: 1 }}
+                                                maxLength={50}
+                                            />
+                                    </Form.Item>}
+                                </div>
                                 <Form.Item
                                     name="IBS"
                                     key="IBS"
@@ -252,31 +284,61 @@ export default function ResultsPanel(props) {
                                             <Radio key="no" value={false}>no</Radio>
                                         </Radio.Group>
                                 </Form.Item>
-                                <Form.Item
-                                    name="cormorbidity"
-                                    key="cormorbidity"
-                                    label={question[4]}
-                                    // initialValue={props.details ? props.details.name : null}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "please answer this question",
-                                        },
-                                    ]}
-                                >
-                                        <TextArea
-                                            className="input-text"
-                                            style={{ marginLeft: "10px", width: "95%", height: "45px" }}
-                                            autoSize={{ maxRows: 2 }}
-                                            maxLength={100}
-                                        />
-                                </Form.Item>
                                 <div>
                                     <Form.Item
-                                        name="surgical_history"
-                                        key="surgical_history"
+                                        name="comorbidity"
+                                        key="comorbidity"
+                                        label={question[4]}
+                                        style={{ marginBottom: comorbidity === "other" ? "14px" : "24px" }}
+                                        // initialValue={props.details ? props.details.name : null}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "please answer this question",
+                                            },
+                                        ]}
+                                    >
+                                            {/* <TextArea
+                                                className="input-text"
+                                                style={{ marginLeft: "10px", width: "95%", height: "45px" }}
+                                                autoSize={{ maxRows: 2 }}
+                                                maxLength={100}
+                                            /> */}
+                                            <Radio.Group
+                                                style={{ padding: "0 10px" }}
+                                                onChange={(e) => setComorbidity(e.target.value)}
+                                            >
+                                                <Radio key="stroke" value="stroke">stroke</Radio>
+                                                <Radio key="parkinson" value="parkinson">parkinson</Radio>
+                                                <Radio key="CIPO" value="CIPO">CIPO</Radio>
+                                                <Radio key="other" value="other">other</Radio>
+                                            </Radio.Group>
+                                    </Form.Item>
+                                    {comorbidity === "other" && <Form.Item
+                                        name="comorbidity_note"
+                                        key="comorbidity_note"
+                                        // initialValue={props.details ? props.details.name : null}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "please answer this question",
+                                            },
+                                        ]}
+                                    >
+                                            <TextArea
+                                                className="input-text"
+                                                style={{ marginLeft: "10px", width: "95%" }}
+                                                autoSize={{ minRows: 1, maxRows: 1 }}
+                                                maxLength={50}
+                                            />
+                                    </Form.Item>}
+                                </div>
+                                <div>
+                                    <Form.Item
+                                        name="surgery"
+                                        key="surgery"
                                         label={question[5]}
-                                        style={{ marginBottom:  surgicalHistory ? "14px" : "24px" }}
+                                        style={{ marginBottom: surgery ? "14px" : "24px" }}
                                         // initialValue={props.details ? props.details.name : null}
                                         rules={[
                                             {
@@ -286,15 +348,15 @@ export default function ResultsPanel(props) {
                                         ]}>
                                             <Radio.Group
                                                 style={{ padding: "0 10px" }}
-                                                onChange={(e) => setSurgicalHistory(e.target.value)}
+                                                onChange={(e) => setSurgery(e.target.value)}
                                             >
                                                 <Radio key="yes" value={true}>yes</Radio>
                                                 <Radio key="no" value={false}>no</Radio>
                                             </Radio.Group>
                                     </Form.Item>
-                                    {surgicalHistory && <Form.Item
-                                        name="surgical_history_note"
-                                        key="surgical_history_note"
+                                    {surgery && <Form.Item
+                                        name="surgery_note"
+                                        key="surgery_note"
                                         // initialValue={props.details ? props.details.name : null}
                                         rules={[
                                             {
@@ -316,12 +378,12 @@ export default function ResultsPanel(props) {
                                     key="comments"
                                     label={question[6]}
                                     // initialValue={props.details ? props.details.name : null}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "please answer this question",
-                                        },
-                                    ]}
+                                    // rules={[
+                                    //     {
+                                    //         required: true,
+                                    //         message: "please answer this question",
+                                    //     },
+                                    // ]}
                                 >
                                         <TextArea
                                             className="input-text"
@@ -337,11 +399,14 @@ export default function ResultsPanel(props) {
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
                                     {printAnswer(question[0], props.info.final_diag)}
                                     {printAnswer(question[1], props.info.ctt_result)}
-                                    {printAnswer(question[2], props.info.anorectal_structural_abnormality)}
+                                    {printAnswer(question[2], props.info.anorectal_structural_abnormality === "other" ?
+                                        `${props.info.anorectal_structural_abnormality} (${props.info.anorectal_structural_abnormality_note})` :
+                                        props.info.anorectal_structural_abnormality)}
                                     {printAnswer(question[3], props.info.IBS ? "yes" : "no")}
-                                    {printAnswer(question[4], props.info.cormorbidity === "" ? "-" : props.info.cormorbidity) /* edit */}
-                                    {printAnswer(question[5], props.info.surgical_history ? `yes (${props.info.surgical_history_note})` : "no")}
-                                    {printAnswer(question[6], props.info.comments === "" ? "-" : props.info.comments) /* edit */}
+                                    {printAnswer(question[4], props.info.comorbidity === "other" ?
+                                        `${props.info.comorbidity} (${props.info.comorbidity_note})` : props.info.comorbidity)}
+                                    {printAnswer(question[5], props.info.surgery ? `yes (${props.info.surgery_note})` : "no")}
+                                    {printAnswer(question[6], props.info.comments ? props.info.comments : "-")}
                             </Space>}
                     </Space>
                 </Col>
@@ -360,19 +425,23 @@ export default function ResultsPanel(props) {
                     onClick={async () => {
                         try {
                             const data = await form.validateFields();
-                            if (data.cormorbidity === undefined) {
-                                data.cormorbidity = ""; // required ?
+                            if (data.anorectal_structural_abnormality !== "other") {
+                                data.anorectal_structural_abnormality_note = undefined;
                             }
-                            if (!data.surgical_history) {
-                                data.surgical_history_note = "empty";
+                            if (data.comorbidity !== "other") {
+                                data.comorbidity_note = "empty";
                             }
-                            if (data.comments === undefined) {
-                                data.comments = ""; // required ?
+                            if (!data.surgery) {
+                                data.surgery_note = "empty";
+                            }
+                            if (data.comments === "") {
+                                data.comments = undefined;
                             }
                             // console.log(data);
                             updateReport(
                                 props.info._id, data.label, data.final_diag, data.ctt_result, data.anorectal_structural_abnormality,
-                                data.IBS, data.cormorbidity, data.surgical_history, data.surgical_history_note, data.comments
+                                data.anorectal_structural_abnormality_note, data.IBS, data.comorbidity, data.comorbidity_note,
+                                data.surgery, data.surgery_note, data.comments
                             ).then((res) => {
                                 console.log(res);
                                 window.location.reload();
@@ -382,6 +451,7 @@ export default function ResultsPanel(props) {
                             });
                         } catch (errInfo) {
                             console.log('Validate Failed:', errInfo);
+                            Modal.error({content: "Some field(s) are missing."});
                         }
                     }}
                 >

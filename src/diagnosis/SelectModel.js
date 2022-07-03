@@ -22,7 +22,7 @@ function SelectModel(props) {
                         if (item.name === "questionnaire") {
                             props.setImage(null);
                         } else if (item.name === "image") {
-                            props.setQuestion({});
+                            props.setQuestion(null);
                         }
                     }}
                 >
