@@ -20,12 +20,12 @@ export const getReport = async (report_id) => {
 
 export const updateReport = async (
     report_id, label, final_diag, ctt_result, anorectal_structural_abnormality,
-    IBS, cormorbidity, surgical_history, surgical_history_note, comments
+    anorectal_structural_abnormality_note, IBS, comorbidity, comorbidity_note, surgery, surgery_note, comments
 ) => {
     try {
         const res = (await instance.patch("/reports/", {
             report_id, label, final_diag, ctt_result, anorectal_structural_abnormality,
-            IBS, cormorbidity, surgical_history, surgical_history_note, comments
+            anorectal_structural_abnormality_note, IBS, comorbidity, comorbidity_note, surgery, surgery_note, comments
         }))
         return res.data;
     } catch (e) {

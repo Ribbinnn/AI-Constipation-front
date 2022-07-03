@@ -40,7 +40,7 @@ export default function ViewResults(props) {
     const shownStatus = {
         "all": {shown: "All", color: ""},
         "canceled": {shown: "Canceled", color: "default", desc: "Diagnosis has been canceled because of server errors."},
-        "waiting": {shown: "Waiting", color: "processing", desc: "Diagnosis is waiting in queue before being processed"},
+        // "waiting": {shown: "Waiting", color: "processing", desc: "Diagnosis is waiting in queue before being processed"},
         "in progress": {shown: "Not Labeled", color: "error", desc: "Diagnosis is still processing."},
         "annotated": {shown: "AI-Annotated", color: "warning", desc: "Diagnosis succeeds with a result annotated by AI."},
         "reviewed": {shown: "Expert-Annotated", color: "success", desc: "The result has been reviewed by experts."},
@@ -279,7 +279,7 @@ export default function ViewResults(props) {
                                     history.push(`/viewresults/${role === "clinician" ? "edit" : "view"}/${report._id}/?${queryString}`);
                                 }}
                             />}
-                        {role === "clinician" && <Popconfirm
+                        {/* {role === "clinician" && <Popconfirm
                             title="Delete this result?"
                             onConfirm={() => {
                                 setLoaded(false);
@@ -300,11 +300,12 @@ export default function ViewResults(props) {
                                 className="clickable-icon"
                                 style={{ marginLeft: report.status === "canceled" ? 0 : "8px" }}
                             />
-                        </Popconfirm>}
+                        </Popconfirm>} */}
                     </div>
                 );
             },
             align: "center",
+            width: 40,
         },
     ];
 
@@ -543,18 +544,16 @@ export default function ViewResults(props) {
                             size: "small",
                             hideOnSinglePage: uploadedItem.length <= 20,
                             onChange(page, pageSize) {
-                            setPagination({ page: page, pageSize: pageSize });
+                                setPagination({ page: page, pageSize: pageSize });
                             },
                             showQuickJumper: uploadedItem.length / pagination.pageSize > 12,
                             showSizeChanger: uploadedItem.length > 20,
                             pageSizeOptions: ["10", "20", "50", "100"].reduce(
-                            (current, item) => {
-                                return current.slice(-1) > uploadedItem.length
-                                ? current
-                                : [...current, item];
-                            },
-                            []
-                            ),
+                                (current, item) => {
+                                    return current.slice(-1) > uploadedItem.length
+                                    ? current
+                                    : [...current, item];
+                                }, []),
                             position: ["bottomRight"],
                         }
                         }
