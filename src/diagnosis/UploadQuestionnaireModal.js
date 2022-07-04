@@ -168,7 +168,6 @@ function UploadQuestionnaireModal(props) {
                         </Button>
                         <Button
                             className="primary-btn smaller"
-                            style={{ cursor: hasError ? "not-allowed" : "pointer" }}
                             onClick={async () => {
                                 if (!hasError) {
                                     if (question.DistFreq !== 0 && (question.DistSev === 0 || question.DistDur === 0)) {
@@ -189,6 +188,8 @@ function UploadQuestionnaireModal(props) {
                                         props.setQuestion(question);
                                         onOK();
                                     }
+                                } else {
+                                    Modal.error({content: "Value of some fields are out of range.", zIndex: 3000});
                                 }
                             }}
                         >

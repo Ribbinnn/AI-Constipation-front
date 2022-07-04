@@ -68,7 +68,8 @@ export default function PreviewQuestionnaire(props) {
                 {ans ?
                     <label style={{ marginLeft: "17px", color: "#9772fb", fontWeight: 500 }}>{ans}</label> :
                     <label style={{ marginLeft: "17px", color: "#f32424" }}>
-                        {`data must be in range ${data_range[field].min}-${data_range[field].max}`}
+                        <label style={{ color: "#f32424", textDecoration: "underline" }}>Error</label>
+                        {`: value must be in range ${data_range[field].min}-${data_range[field].max}`}
                     </label>}
             </div>
         );
