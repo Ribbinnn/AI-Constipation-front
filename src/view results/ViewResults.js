@@ -36,7 +36,9 @@ export default function ViewResults(props) {
     const role = JSON.parse(sessionStorage.getItem("user")).role;
 
     const [uploadedItem, setUploadedItem] = useState([])
-    const [status, setStatus] = useState([]);
+    const status = [
+        "all", "canceled", "in progress", "annotated", "reviewed"
+    ];
     const shownStatus = {
         "all": {shown: "All", color: ""},
         "canceled": {shown: "Canceled", color: "default", desc: "Diagnosis has been canceled because of server errors."},
@@ -45,7 +47,15 @@ export default function ViewResults(props) {
         "annotated": {shown: "AI-Annotated", color: "warning", desc: "Diagnosis succeeds with a result annotated by AI."},
         "reviewed": {shown: "Expert-Annotated", color: "success", desc: "The result has been reviewed by experts."},
     }
-    const [hospitals, setHospitals] = useState([]);
+    const hospitals = [
+        "All", "Chulalongkorn University", "Prince of Songkla University", "Thammasat University"
+    ];
+    const model = [
+        {name: "all", shown: "All"},
+        {name: "questionnaire", shown: "Questionnaire"},
+        {name: "image", shown: "X-Ray Image"},
+        {name: "integrate", shown: "Questionnaire + Image"},
+    ];
     const [reload, setReload] = useState("");
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
 
@@ -313,18 +323,7 @@ export default function ViewResults(props) {
         setLoaded(false);
         viewResults()
         .then((response) => {
-            console.log(response);
-            // add status, hospitals list
-            const status = ["all"];
-            const hospitals = ["All"];
-            for (const i in response.data) {
-                if (!status.includes(response.data[i]["status"])) {
-                    status.push(response.data[i]["status"]);
-                }
-                if (!hospitals.includes(response.data[i]["hospital"])) {
-                    hospitals.push(response.data[i]["hospital"]);
-                }
-            }
+            // console.log(response);
             // filter data by search query params
             let filter_data = response.data.filter(
                 (item, i) =>
@@ -349,14 +348,13 @@ export default function ViewResults(props) {
                     new Date(queryString.get("from"))) &&
                 (queryString.get("to") === null
                     ? true
-                    : new Date(item.date) <= new Date(queryString.get("to")))
+                    : new Date(item.date) <= new Date(queryString.get("to"))) &&
+                (queryString.get("model") === null
+                    ? true
+                    : item.model === queryString.get("model"))
             );
             // default sort
-            filter_data.sort((a, b) =>
-                ((a.status === "waiting" || b.status === "waiting" || a.status === "in progress" || b.status === "in progress")
-                && shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown)) // change to expert annotated ?
-                || new Date(b.date) - new Date(a.date) // created at -> update at ?
-            );
+            filter_data.sort((a, b) => new Date(b.date) - new Date(a.date));
             // add key & adjust data
             for (const i in filter_data) {
                 filter_data[i].key = (parseInt(i) + 1).toString();
@@ -373,8 +371,6 @@ export default function ViewResults(props) {
                 ).toLocaleString("sv-SE");
             }
             setUploadedItem(filter_data);
-            setStatus(status);
-            setHospitals(hospitals);
             setLoaded(true);
         }).catch((err) => console.log(err.response));
     }, [reload, props])
@@ -489,6 +485,25 @@ export default function ViewResults(props) {
                             date === null ? queryString.delete("to") : queryString.set("to", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
                         style={{width:"200px"}} />
+                </Form.Item>
+                <Form.Item
+                    name="model"
+                    key="model"
+                    label="Model"
+                    initialValue={queryString.get("model") === null ? "all" : queryString.get("model")}
+                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
+                >                
+                    <Select
+                        className="search-component"
+                        onChange={(value) => {
+                            value === "all" ? queryString.delete("model") : queryString.set("model", value);
+                        }}>
+                            {model.map((m, i) => (
+                                <Option key={i} value={m.name}>
+                                    {m.shown}
+                                </Option>
+                            ))}
+                    </Select>
                 </Form.Item>
                 <Form.Item style={{marginLeft:"20px"}}>
                     <Button
