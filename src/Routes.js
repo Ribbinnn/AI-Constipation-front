@@ -16,28 +16,9 @@ import "./layout/LayOut.css";
 import Contexts from "./utils/Contexts";
 
 function Routes() {
-  // const [globalProject, setGlobalProject] = useState({
-  //   projectId: JSON.parse(sessionStorage.getItem("project"))
-  //     ? JSON.parse(sessionStorage.getItem("project")).projectId
-  //     : "",
-  //   projectName: JSON.parse(sessionStorage.getItem("project"))
-  //     ? JSON.parse(sessionStorage.getItem("project")).projectName
-  //     : "No selected project",
-  //   projectReq: JSON.parse(sessionStorage.getItem("project"))
-  //     ? JSON.parse(sessionStorage.getItem("project")).projectReq
-  //     : [],
-  //   projectHead: JSON.parse(sessionStorage.getItem("project"))
-  //     ? JSON.parse(sessionStorage.getItem("project")).projectHead
-  //     : [],
-  // });
-
   const [currentActivity, setCurrentActivity] = useState({});
 
   const value = {
-    // project: {
-    //   globalProject: globalProject,
-    //   setGlobalProject: setGlobalProject,
-    // },
     active: {
       currentActivity: currentActivity,
       setCurrentActivity: setCurrentActivity,

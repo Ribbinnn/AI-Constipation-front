@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Form, Input, Select, Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import { createUser, updateUser, getAllUsers, getUserById } from "../api/admin";
+import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
@@ -10,9 +11,13 @@ const LoadingIcon = (
 const { Option } = Select;
 
 function UserForm() {
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const { mode } = useParams();
     const [loaded, setLoaded] = useState(false);
     const roles = ["general", "clinician", "admin"];
+    const hospitals = [
+        "Chulalongkorn University", "Prince of Songkla University", "Thammasat University"
+    ];
     const [users, setUsers] = useState([]);
     const [form] = Form.useForm();
     const [submit, setSubmit] = useState(false);
@@ -49,7 +54,13 @@ function UserForm() {
                 </div>
             )}
             {loaded && 
-                <Form form={form} layout="vertical" requiredMark={false} style={{marginTop: "30px"}}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    requiredMark={false}
+                    style={{marginTop: "30px"}}
+                    onFieldsChange={() => setCurrentActivity({ ...currentActivity, enablePageChange: false })}
+                >
                     <div>
                         <Form.Item
                             name="username"
@@ -164,25 +175,46 @@ function UserForm() {
                             <Input className="input-text fixed-size" disabled={submit ? true : false} />
                         </Form.Item>
                     </div>}
-                    {inputVisible && <Form.Item
-                        name="role"
-                        key="role"
-                        label="Role"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        style={{display: "inline-block"}}
-                    >
-                        <Select disabled={submit ? true : false}>
-                            {roles.map((role, i) => (
-                                <Option key={i} value={role}>
-                                    {role.charAt(0).toUpperCase() + role.slice(1)}
-                                </Option>
-                            ))}
-                        </Select>
-                    </Form.Item>}
+                    {inputVisible && <div>
+                        <Form.Item
+                            name="role"
+                            key="role"
+                            label="Role"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                            style={{display: "inline-block", marginRight: "30px"}}
+                        >
+                            <Select disabled={submit ? true : false}>
+                                {roles.map((role, i) => (
+                                    <Option key={i} value={role}>
+                                        {role.charAt(0).toUpperCase() + role.slice(1)}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="hospital"
+                            key="hospital"
+                            label="Hospital"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                            style={{display: "inline-block"}}
+                        >
+                            <Select disabled={submit ? true : false}>
+                                {hospitals.map((hospital, i) => (
+                                    <Option key={i} value={hospital}>
+                                        {hospital}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </div>}
                     {inputVisible && <Form.Item
                         style={{marginTop: "25px"}}
                     >
@@ -207,7 +239,9 @@ function UserForm() {
                                         }
                                         if (checkPassword) {
                                             if (mode === "createuser") {
-                                                createUser(data.username, data.password, data.first_name, data.last_name, data.role, data.email)
+                                                createUser(
+                                                    data.username, data.password, data.first_name, data.last_name,
+                                                    data.role, data.email, data.hospital)
                                                 .then((res) => {
                                                     // console.log(res);
                                                     Modal.success({content: "Create user successfully."});
@@ -217,7 +251,8 @@ function UserForm() {
                                                     Modal.error({ content: err.response.data.message });
                                                 });
                                             } else {
-                                                updateUser(data.username, data.password, data.first_name, data.last_name, data.role, data.email)
+                                                updateUser(data.username, data.password, data.first_name, data.last_name,
+                                                    data.role, data.email, data.hospital)
                                                 .then((res) => {
                                                     // console.log(res);
                                                     Modal.success({content: "Update user successfully."});

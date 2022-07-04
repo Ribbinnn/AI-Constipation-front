@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Card } from "antd";
-// import Contexts from '../utils/Contexts';
 
 function SelectModel(props) {
     const modelList = [

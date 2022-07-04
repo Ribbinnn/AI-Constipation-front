@@ -1,11 +1,13 @@
 import React, { useContext, forwardRef, useImperativeHandle } from "react";
 import { Form, Input, Select, Row, Col, Radio, InputNumber, Rate, Popover, Button } from "antd";
 import { InfoCircleOutlined } from '@ant-design/icons';
-// import Contexts from '../utils/Contexts';
+import Contexts from '../utils/Contexts';
 
 const { Option } = Select;
 
 const PersonalDetails = forwardRef((props, ref) => {
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
+
     const [form] = Form.useForm();
     const hospitals = [
         "Chulalongkorn University", "Prince of Songkla University", "Thammasat University"
@@ -23,6 +25,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                 // console.log(data);
                 props.setDetails(data);
                 await props.setCurrent(1);
+                await setCurrentActivity({ ...currentActivity, enablePageChange: false });
             } catch (errInfo) {
                 console.log('Validate Failed:', errInfo);
             }
@@ -31,7 +34,12 @@ const PersonalDetails = forwardRef((props, ref) => {
 
     return(
         <div>
-            <Form form={form} layout="vertical" requiredMark={false}>
+            <Form
+                form={form}
+                layout="vertical"
+                requiredMark={false}
+                onFieldsChange={() => setCurrentActivity({ ...currentActivity, enablePageChange: false })}
+            >
                 <Row style={{ alignItems: "baseline" }}>
                     <Col span={7}>
                         <label>Hospital:</label>

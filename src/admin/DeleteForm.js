@@ -89,9 +89,7 @@ export default function DeleteForm(props) {
                 showSearch
                 optionFilterProp="children"
                 onChange={(i, j) => {
-                  // console.log(j);
                   setKeyword(j);
-                  // console.log("selected ---> ", i);
                 }}
                 style={{ margin: "8px 20px 0 0" }}
               >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
 import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
@@ -7,14 +7,12 @@ import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";
 import PreviewImageCard from "../component/PreviewImageCard";
 import ResultsPanel from "./ResultsPanel";
 import { getReport, getImage } from "../api/reports";
-// import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
   <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
 );
 
 export default function Report(props) {
-    // const { currentActivity } = useContext(Contexts).active;
     const { mode, rid } = useParams();
     const history = useHistory();
     function useQuery() {
@@ -50,7 +48,7 @@ export default function Report(props) {
     useEffect(() => {
         getReport(rid)
         .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             setInfo(res.data);
             if (res.data.task === "image" || res.data.task === "integrate") {
                 getImage(rid, "original")
@@ -101,7 +99,7 @@ export default function Report(props) {
                                 Created Date: {new Date(info.createdAt).toLocaleString()}
                                 <br />
                                 Created By:{" "}
-                                {`${info.created_by.first_name} ${info.created_by.last_name}`}
+                                {`${info.created_by.first_name} ${info.created_by.last_name} (${info.created_by.hospital})`}
                             </i>
                             {info.status !== "annotated" &&
                                 <i>
@@ -109,7 +107,7 @@ export default function Report(props) {
                                     Last Updated: {new Date(info.updatedAt).toLocaleString()}
                                     <br />
                                     Updated By:{" "}
-                                    {`${info.updated_by.first_name} ${info.updated_by.last_name}`}
+                                    {`${info.updated_by.first_name} ${info.updated_by.last_name} (${info.updated_by.hospital})`}
                                 </i>}
                         </label>
                 </div>

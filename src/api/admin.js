@@ -1,9 +1,9 @@
 import { instance } from '.';
 
-export const createUser = async (username, password, first_name, last_name, role, email) => {
+export const createUser = async (username, password, first_name, last_name, role, email, hospital) => {
     try {
         const res = (
-            await instance.post("/users", {username, password, first_name, last_name, role, email})
+            await instance.post("/users", {username, password, first_name, last_name, role, email, hospital})
         ).data;
         return res;
     } catch (e) {
@@ -11,16 +11,16 @@ export const createUser = async (username, password, first_name, last_name, role
     }
 }
 
-export const updateUser = async (id, password, first_name, last_name, role, email) => {
+export const updateUser = async (id, password, first_name, last_name, role, email, hospital) => {
     try {
         if (password === "") {
             const res = (
-                await instance.patch("/users", {id, first_name, last_name, role, email})
+                await instance.patch("/users", {id, first_name, last_name, role, email, hospital})
             ).data;
             return res;
         } else {
             const res = (
-                await instance.patch("/users", {id, password, first_name, last_name, role, email})
+                await instance.patch("/users", {id, password, first_name, last_name, role, email, hospital})
             ).data;
             return res;
         }

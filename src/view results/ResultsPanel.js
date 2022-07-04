@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { updateReport, getImage } from "../api/reports";
@@ -7,8 +8,9 @@ import Contexts from "../utils/Contexts";
 const { TextArea } = Input;
 
 export default function ResultsPanel(props) {
-    // const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const [form] = Form.useForm();
+    const [activity, setActivity] = useState(false);
 
     const threshold = 0.5; // default
     const final_diag_option = [
@@ -30,8 +32,7 @@ export default function ResultsPanel(props) {
     const [gradCam, setGradCam] = useState();
 
     const onBack = () => {
-        const checker = form.getFieldsValue(true);
-        if (Object.keys(checker).length !== 0) {
+        if (activity) {
             return Modal.confirm({
                 icon: <ExclamationCircleOutlined />,
                 content: "Changes will not be saved.",
@@ -47,53 +48,18 @@ export default function ResultsPanel(props) {
         }
     };
 
-//   const [reportState, setReportState] = useState({
-//     rating: props.rate,
-//     note: props.note,
-//     btnGroup: "back",
-//   });
-
-//   useEffect(() => {
-//     if (reportState.btnGroup === "back" && !currentActivity.enablePageChange) {
-//       setCurrentActivity({ ...currentActivity, enablePageChange: true });
-//     }
-//     if (reportState.btnGroup === "save" && currentActivity.enablePageChange) {
-//       setCurrentActivity({ ...currentActivity, enablePageChange: false });
-//     }
-//   }, [reportState]);
-
-//   const onSaveReport = () => {
-//     /* save report api */
-//     const key = "updatable";
-//     message.loading({ content: "Loading...", key, duration: 0 });
-//     let selected_class = data.reduce((current, item) => {
-//       if (selectedRowKeys.includes(item.key)) return [...current, item.class];
-//       return current;
-//     }, []);
-//     updateReport(
-//       props.rid,
-//       reportState.note,
-//       JSON.parse(sessionStorage.getItem("user")).id,
-//       { finding: selected_class },
-//       reportState.rating
-//     )
-//       .then((res) => {
-//         // console.log(res);
-//         if (res.success) {
-//           setDefaultData({
-//             rating: reportState.rating,
-//             rowKeys: selectedRowKeys,
-//             note: reportState.note,
-//           });
-//           props.updateTimestamp(res.data.updatedAt, res.data.updated_by);
-//           setReportState({ ...reportState, btnGroup: "back" });
-//           message.success({ content: res.message, key, duration: 5 });
-//         } else message.error({ content: res.message, key, duration: 5 });
-//       })
-//       .catch((err) => console.log(err.response));
-//   };
-
     useEffect(() => {
+        if (props.info.anorectal_structural_abnormality) {
+            setAnorectal(props.info.anorectal_structural_abnormality);
+        }
+        if (props.info.comorbidity) {
+            setComorbidity(props.info.comorbidity);
+        }
+        if (props.info.surgery) {
+            setSurgery("yes");
+        } else {
+            setSurgery("no");
+        }
         if (props.info.task === "image" || props.info.task === "integrate") {
             getImage(props.rid, "gradcam")
             .then((res) => {
@@ -111,10 +77,10 @@ export default function ResultsPanel(props) {
         return(
             <Row style={{ alignItems: "baseline" }}>
                 <Col span={17}>
-                    <label /*style={{ color: "#9772fb", fontWeight: 500 }}*/>{field}</label>
+                    <label>{field}</label>
                 </Col>
                 <Col span={7}>
-                    <label /*style={{ color: "#9772fb", fontWeight: 500 }}*/>{value}</label>
+                    <label>{value}</label>
                 </Col>
             </Row>
         );
@@ -139,6 +105,17 @@ export default function ResultsPanel(props) {
         );
     };
 
+    useHotkeys(
+        "shift+b",
+        () => {
+            if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+                onBack();
+            }
+        },
+        {
+            filter: () => true,
+        }, []);
+
     return (
         <div>
             <Row style={{ marginBottom: "35px" }}>
@@ -148,7 +125,7 @@ export default function ResultsPanel(props) {
                         size={10}
                         style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "35px" }}
                     >
-                        <label style={{ /*color: "#9772fb",*/ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
+                        <label style={{ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
                         {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
                         {printResult("Threshold:", threshold.toFixed(2))}
                         <label style={{ color: "#9772fb", fontWeight: "bold", marginTop: "10px" }}>
@@ -172,18 +149,36 @@ export default function ResultsPanel(props) {
                         style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px" }}
                     >
                         <label style={{ fontWeight: "bold", marginBottom: "10px" }}>Expert Final Diagnosis</label>
-                        {props.mode === "view" && props.info.status === "annotated" && // 1 time finalized
+                        {props.mode === "view" && props.info.status === "annotated" &&
                             <label>-</label>}
-                        {props.mode === "edit" && props.info.status === "annotated" && <Form
+                        {props.mode === "view" && props.info.status === "reviewed" &&
+                            <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
+                                <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
+                                    {printAnswer(question[0], props.info.final_diag)}
+                                    {printAnswer(question[1], props.info.ctt_result)}
+                                    {printAnswer(question[2], props.info.anorectal_structural_abnormality === "other" ?
+                                        `${props.info.anorectal_structural_abnormality} (${props.info.anorectal_structural_abnormality_note})` :
+                                        props.info.anorectal_structural_abnormality)}
+                                    {printAnswer(question[3], props.info.IBS ? "yes" : "no")}
+                                    {printAnswer(question[4], props.info.comorbidity === "other" ?
+                                        `${props.info.comorbidity} (${props.info.comorbidity_note})` : props.info.comorbidity)}
+                                    {printAnswer(question[5], props.info.surgery ? `yes (${props.info.surgery_note})` : "no")}
+                                    {printAnswer(question[6], props.info.comments ? props.info.comments : "-")}
+                            </Space>}
+                        {props.mode === "edit" && <Form
                             form={form}
                             layout="vertical"
+                            onFieldsChange={() => {
+                                setActivity(true);
+                                setCurrentActivity({ ...currentActivity, enablePageChange: false });
+                            }}
                         >
                             <Space direction="vertical" size={3}>
                                 <Form.Item
                                     name="label"
                                     key="label"
                                     label="Label"
-                                    // initialValue={props.details ? props.details.name : null}
+                                    initialValue={props.info.label}
                                     rules={[
                                         {
                                             required: true,
@@ -199,7 +194,7 @@ export default function ResultsPanel(props) {
                                     name="final_diag"
                                     key="final_diag"
                                     label={question[0]}
-                                    // initialValue={props.details ? props.details.name : null}
+                                    initialValue={props.info.final_diag}
                                     rules={[
                                         {
                                             required: true,
@@ -212,7 +207,7 @@ export default function ResultsPanel(props) {
                                     name="ctt_result"
                                     key="ctt_result"
                                     label={question[1]}
-                                    // initialValue={props.details ? props.details.name : null}
+                                    initialValue={props.info.ctt_result}
                                     rules={[
                                         {
                                             required: true,
@@ -231,7 +226,7 @@ export default function ResultsPanel(props) {
                                         key="anorectal_structural_abnormality"
                                         label={question[2]}
                                         style={{ marginBottom: anorectal === "other" ? "14px" : "24px" }}
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.anorectal_structural_abnormality}
                                         rules={[
                                             {
                                                 required: true,
@@ -252,7 +247,7 @@ export default function ResultsPanel(props) {
                                     {anorectal === "other" && <Form.Item
                                         name="anorectal_structural_abnormality_note"
                                         key="anorectal_structural_abnormality_note"
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.anorectal_structural_abnormality_note}
                                         rules={[
                                             {
                                                 required: true,
@@ -272,7 +267,7 @@ export default function ResultsPanel(props) {
                                     name="IBS"
                                     key="IBS"
                                     label={question[3]}
-                                    // initialValue={props.details ? props.details.name : null}
+                                    initialValue={props.info.IBS ? "yes" : (props.info.IBS !== null ? "no" : undefined)}
                                     rules={[
                                         {
                                             required: true,
@@ -280,8 +275,8 @@ export default function ResultsPanel(props) {
                                         },
                                     ]}>
                                         <Radio.Group style={{ padding: "0 10px" }}>
-                                            <Radio key="yes" value={true}>yes</Radio>
-                                            <Radio key="no" value={false}>no</Radio>
+                                            <Radio key="yes" value="yes">yes</Radio>
+                                            <Radio key="no" value="no">no</Radio>
                                         </Radio.Group>
                                 </Form.Item>
                                 <div>
@@ -290,7 +285,7 @@ export default function ResultsPanel(props) {
                                         key="comorbidity"
                                         label={question[4]}
                                         style={{ marginBottom: comorbidity === "other" ? "14px" : "24px" }}
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.comorbidity}
                                         rules={[
                                             {
                                                 required: true,
@@ -308,16 +303,17 @@ export default function ResultsPanel(props) {
                                                 style={{ padding: "0 10px" }}
                                                 onChange={(e) => setComorbidity(e.target.value)}
                                             >
+                                                <Radio key="none" value="none">none</Radio>
                                                 <Radio key="stroke" value="stroke">stroke</Radio>
                                                 <Radio key="parkinson" value="parkinson">parkinson</Radio>
-                                                <Radio key="CIPO" value="CIPO">CIPO</Radio>
+                                                <Radio key="cipo" value="cipo">CIPO</Radio>
                                                 <Radio key="other" value="other">other</Radio>
                                             </Radio.Group>
                                     </Form.Item>
                                     {comorbidity === "other" && <Form.Item
                                         name="comorbidity_note"
                                         key="comorbidity_note"
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.comorbidity_note}
                                         rules={[
                                             {
                                                 required: true,
@@ -339,7 +335,7 @@ export default function ResultsPanel(props) {
                                         key="surgery"
                                         label={question[5]}
                                         style={{ marginBottom: surgery ? "14px" : "24px" }}
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.surgery ? "yes" : (props.info.surgery !== null ? "no" : undefined)}
                                         rules={[
                                             {
                                                 required: true,
@@ -350,14 +346,14 @@ export default function ResultsPanel(props) {
                                                 style={{ padding: "0 10px" }}
                                                 onChange={(e) => setSurgery(e.target.value)}
                                             >
-                                                <Radio key="yes" value={true}>yes</Radio>
-                                                <Radio key="no" value={false}>no</Radio>
+                                                <Radio key="yes" value="yes">yes</Radio>
+                                                <Radio key="no" value="no">no</Radio>
                                             </Radio.Group>
                                     </Form.Item>
-                                    {surgery && <Form.Item
+                                    {surgery === "yes" && <Form.Item
                                         name="surgery_note"
                                         key="surgery_note"
-                                        // initialValue={props.details ? props.details.name : null}
+                                        initialValue={props.info.surgery_note}
                                         rules={[
                                             {
                                                 required: true,
@@ -377,7 +373,7 @@ export default function ResultsPanel(props) {
                                     name="comments"
                                     key="comments"
                                     label={question[6]}
-                                    // initialValue={props.details ? props.details.name : null}
+                                    initialValue={props.info.comments}
                                     // rules={[
                                     //     {
                                     //         required: true,
@@ -394,47 +390,41 @@ export default function ResultsPanel(props) {
                                 </Form.Item>
                             </Space>
                         </Form>}
-                        {props.info.status === "reviewed" &&
-                            <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
-                                <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
-                                    {printAnswer(question[0], props.info.final_diag)}
-                                    {printAnswer(question[1], props.info.ctt_result)}
-                                    {printAnswer(question[2], props.info.anorectal_structural_abnormality === "other" ?
-                                        `${props.info.anorectal_structural_abnormality} (${props.info.anorectal_structural_abnormality_note})` :
-                                        props.info.anorectal_structural_abnormality)}
-                                    {printAnswer(question[3], props.info.IBS ? "yes" : "no")}
-                                    {printAnswer(question[4], props.info.comorbidity === "other" ?
-                                        `${props.info.comorbidity} (${props.info.comorbidity_note})` : props.info.comorbidity)}
-                                    {printAnswer(question[5], props.info.surgery ? `yes (${props.info.surgery_note})` : "no")}
-                                    {printAnswer(question[6], props.info.comments ? props.info.comments : "-")}
-                            </Space>}
                     </Space>
                 </Col>
             </Row>
-            <Row justify={props.mode === "edit" && props.info.status !== "reviewed" ? "space-between" : "end"}>
+            <Row justify={props.mode === "edit" ? "space-between" : "end"}>
                 <Button
+                    id="report-back-btn"
                     className={
-                        props.mode === "view" || props.info.status === "reviewed" ?
-                        "primary-btn smaller" : "primary-btn smaller cancel"}
+                        props.mode === "view" ? "primary-btn smaller" : "primary-btn smaller cancel"}
                     onClick={onBack}
                 >
                     Back
                 </Button>
-                {props.mode === "edit" && props.info.status !== "reviewed" && <Button
+                {props.mode === "edit" && <Button
                     className="primary-btn smaller"
                     onClick={async () => {
                         try {
                             const data = await form.validateFields();
                             if (data.anorectal_structural_abnormality !== "other") {
-                                data.anorectal_structural_abnormality_note = undefined;
+                                data.anorectal_structural_abnormality_note = "empty";
+                            }
+                            if (data.IBS === "yes") {
+                                data.IBS = true;
+                            } else {
+                                data.IBS = false;
                             }
                             if (data.comorbidity !== "other") {
                                 data.comorbidity_note = "empty";
                             }
-                            if (!data.surgery) {
-                                data.surgery_note = "empty";
+                            if (data.surgery === "yes") {
+                                data.surgery = true;
+                            } else {
+                                data.surgery = false;
+                                data.surgery_note = undefined;
                             }
-                            if (data.comments === "") {
+                            if (data.comments === "" || data.comments === null) {
                                 data.comments = undefined;
                             }
                             // console.log(data);

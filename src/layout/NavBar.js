@@ -16,12 +16,12 @@ import Contexts from "../utils/Contexts";
 
 export default function NavBar() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
-  const [tab, setTab] = useState();
+  const [tab, setTab] = useState("home");
   const history = useHistory();
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
-    return history.listen((location) => { 
+    return history.listen((location) => {
       let key = getTabKey(location.pathname);
       setTab(key);
       setCurrentActivity({ menu: key, enablePageChange: true }); 
@@ -42,18 +42,11 @@ export default function NavBar() {
     if (!currentActivity.enablePageChange) {
       let contentText = "";
       switch (currentActivity.menu) {
-        // case "upload":
-        //   contentText = "Your uploaded record hasn't been saved and will be lost.";
-        //   break;
-        // case "myrecord":
-        //   contentText = "Unsaved changes will be lost.";
-        //   break;
-        case "viewresults":
-          contentText = "All changes made will be lost.";
+        case "diagnosis":
+          contentText = "Your action has not completed and it will not be saved.";
           break;
         default:
-          contentText =
-            "Your action hasn't completed and it won't be saved.";
+          contentText = "Changes will not be saved.";
       }
       return Modal.confirm({
         title: "Are you sure you want to navigate away from this page?",
@@ -148,7 +141,7 @@ export default function NavBar() {
                 window.location.reload();
               })
               .catch((e) => {
-                // console.log(e);
+                console.log(e);
                 window.location.reload();
               });
           }}
