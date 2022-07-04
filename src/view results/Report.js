@@ -101,7 +101,7 @@ export default function Report(props) {
                                 Created Date: {new Date(info.createdAt).toLocaleString()}
                                 <br />
                                 Created By:{" "}
-                                {`${info.created_by.first_name} ${info.created_by.last_name}`}
+                                {`${info.created_by.first_name} ${info.created_by.last_name} (${info.created_by.hospital})`}
                             </i>
                             {info.status !== "annotated" &&
                                 <i>
@@ -109,7 +109,7 @@ export default function Report(props) {
                                     Last Updated: {new Date(info.updatedAt).toLocaleString()}
                                     <br />
                                     Updated By:{" "}
-                                    {`${info.updated_by.first_name} ${info.updated_by.last_name}`}
+                                    {`${info.updated_by.first_name} ${info.updated_by.last_name} (${info.updated_by.hospital})`}
                                 </i>}
                         </label>
                 </div>
