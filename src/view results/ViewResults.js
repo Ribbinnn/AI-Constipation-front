@@ -325,6 +325,11 @@ export default function ViewResults(props) {
         .then((response) => {
             // console.log(response);
             // filter data by search query params
+            let toDate = null;
+            if (queryString.get("to")) {
+                toDate = new Date(queryString.get("to"));
+                toDate.setHours(23, 59, 59);
+            }
             let filter_data = response.data.filter(
                 (item, i) =>
                 (queryString.get("patient_HN") === null
@@ -344,11 +349,10 @@ export default function ViewResults(props) {
                     : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
                 (queryString.get("from") === null
                     ? true
-                    : new Date(item.date) >=
-                    new Date(queryString.get("from"))) &&
+                    : new Date(item.date) >= new Date(queryString.get("from"))) &&
                 (queryString.get("to") === null
                     ? true
-                    : new Date(item.date) <= new Date(queryString.get("to"))) &&
+                    : new Date(item.date) <= toDate) &&
                 (queryString.get("model") === null
                     ? true
                     : item.model === queryString.get("model"))
