@@ -50,7 +50,7 @@ export default function Report(props) {
     useEffect(() => {
         getReport(rid)
         .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             setInfo(res.data);
             if (res.data.task === "image" || res.data.task === "integrate") {
                 getImage(rid, "original")
