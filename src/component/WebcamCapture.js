@@ -17,7 +17,6 @@ const videoConstraints = {
 };
 
 export const WebcamCapture = (props) => {
-
     const [image,setImage] = useState('');
     const webcamRef = useRef(null);
 
@@ -37,7 +36,6 @@ export const WebcamCapture = (props) => {
     //         zIndex: 3000,
     //     });
     // };
-
 
     return(
         <Modal

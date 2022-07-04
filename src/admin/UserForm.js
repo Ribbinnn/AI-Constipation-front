@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Form, Input, Select, Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import { createUser, updateUser, getAllUsers, getUserById } from "../api/admin";
+import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
@@ -10,6 +11,7 @@ const LoadingIcon = (
 const { Option } = Select;
 
 function UserForm() {
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const { mode } = useParams();
     const [loaded, setLoaded] = useState(false);
     const roles = ["general", "clinician", "admin"];
@@ -52,7 +54,13 @@ function UserForm() {
                 </div>
             )}
             {loaded && 
-                <Form form={form} layout="vertical" requiredMark={false} style={{marginTop: "30px"}}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    requiredMark={false}
+                    style={{marginTop: "30px"}}
+                    onFieldsChange={() => setCurrentActivity({ ...currentActivity, enablePageChange: false })}
+                >
                     <div>
                         <Form.Item
                             name="username"

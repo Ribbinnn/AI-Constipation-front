@@ -1,5 +1,5 @@
 import React from "react";
- import { Image, Button, Row, Col, label } from "antd";
+ import { Button } from "antd";
 
  export default function PageNotFound () {
      return (

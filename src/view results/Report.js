@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
 import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
@@ -7,14 +7,12 @@ import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";
 import PreviewImageCard from "../component/PreviewImageCard";
 import ResultsPanel from "./ResultsPanel";
 import { getReport, getImage } from "../api/reports";
-// import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
   <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
 );
 
 export default function Report(props) {
-    // const { currentActivity } = useContext(Contexts).active;
     const { mode, rid } = useParams();
     const history = useHistory();
     function useQuery() {

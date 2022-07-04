@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Steps, Button, Modal } from "antd";
 import "antd/dist/antd.css";
-import { LoadingOutlined } from "@ant-design/icons";
 import PersonalDetails from "./PersonalDetails";
 import SelectModel from "./SelectModel";
 import InsertInput from "./InsertInput";
@@ -17,7 +16,6 @@ const { Step } = Steps;
 
 export default function Diagnosis() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
-  // const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(0);
   const personalDetailsRef = useRef();
   const [uploadQuestionVisible, setUploadQuestionVisible] = useState(false);
@@ -52,23 +50,25 @@ export default function Diagnosis() {
     },
   ];
 
+  const resultLoading = (res) => {
+    console.log(res);
+    setReportId(res.data.report_id);
+    setCurrent(current + 1);
+    setCurrentActivity({ ...currentActivity, enablePageChange: false });
+  }
+
   const next = () => {
     /** add condition for each step to go next step here */
     if (current === 0) {
       personalDetailsRef.current.setPersonalDetails();
     } else if (current === 3) {
-      // setLoading(true);
       if (model === "questionnaire") {
         questionnaireInfer(question, details)
         .then((res) => {
-          console.log(res);
-          setReportId(res.data.report_id);
-          setCurrent(current + 1);
-          // setLoading(false);
+          resultLoading(res);
         }).catch((err) => {
           console.log(err.response);
           Modal.error({ content: err.response.data.message });
-          // setLoading(false);
         });
       } else if (model === "image") {
         // fetch(image.croppedImage)
@@ -77,66 +77,56 @@ export default function Diagnosis() {
         // .then(croppedImage => {
           imageInfer(image.croppedImage, JSON.stringify(details))
           .then((res) => {
-            console.log(res);
-            setReportId(res.data.report_id);
-            setCurrent(current + 1);
-            // setLoading(false);
+            resultLoading(res);
           }).catch((err) => {
             console.log(err.response);
             Modal.error({ content: err.response.data.message });
-            // setLoading(false);
           });
         // });
       } else {
         integrateInfer(JSON.stringify(question), image.croppedImage, JSON.stringify(details))
         .then((res) => {
-          console.log(res);
-          setReportId(res.data.report_id);
-          setCurrent(current + 1);
-          // setLoading(false);
+          resultLoading(res);
         }).catch((err) => {
           console.log(err.response);
           Modal.error({ content: err.response.data.message });
-          // setLoading(false);
         });
       }
     } else {
       setCurrent(current + 1);
+      setCurrentActivity({ ...currentActivity, enablePageChange: false });
     }
   };
 
   const prev = () => {
     setCurrent(current - 1);
+    setCurrentActivity({ ...currentActivity, enablePageChange: false });
   };
 
-  // useHotkeys(
-  //   "enter",
-  //   () => {
-  //     if (document.getElementById("diagnosis-next-btn") && !document.getElementsByClassName("ant-modal").length) {
-  //       next();
-  //     }
-  //   },
-  //   {
-  //     filter: () => true,
-  //   },
-  //   []
-  // );
+  useHotkeys(
+    "enter",
+    () => {
+      if (document.getElementById("diagnosis-next-btn") && !document.getElementsByClassName("ant-modal").length) {
+        next();
+      }
+    },
+    {
+      filter: () => true,
+    }, []);
 
-  // useHotkeys(
-  //   "shift+b",
-  //   () => {
-  //     if (document.getElementById("diagnosis-back-btn") && !document.getElementsByClassName("ant-modal").length) {
-  //       prev();
-  //     }
-  //   },
-  //   {
-  //     filter: () => true,
-  //   },
-  //   []
-  // );
+  useHotkeys(
+    "shift+b",
+    () => {
+      if (document.getElementById("diagnosis-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+        prev();
+      }
+    },
+    {
+      filter: () => true,
+    }, []);
 
   return (
-    <div className={/*loading ? "content diagnosis loading" :*/ "content diagnosis"}>
+    <div className="content diagnosis">
       <Steps progressDot current={current}>
         {stepsTitle.map((item) => (
           <Step key={item} title={item} />
@@ -177,7 +167,7 @@ export default function Diagnosis() {
             image={image}
           />
         )}
-        {current === stepsTitle.length - 1 && ( // edit soon
+        {current === stepsTitle.length - 1 && (
           <Result
             btnList={btnList}
             title="Diagnosis is processing"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
 import {
     EyeOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
@@ -7,7 +7,6 @@ import {
 import { viewResults, deleteReport } from "../api/reports";
 import { useHistory, useLocation } from "react-router-dom";
 import * as moment from "moment";
-import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />

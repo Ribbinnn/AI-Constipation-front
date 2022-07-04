@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { updateReport, getImage } from "../api/reports";
@@ -7,7 +8,7 @@ import Contexts from "../utils/Contexts";
 const { TextArea } = Input;
 
 export default function ResultsPanel(props) {
-    // const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const [form] = Form.useForm();
     const [activity, setActivity] = useState(false);
 
@@ -104,6 +105,17 @@ export default function ResultsPanel(props) {
         );
     };
 
+    useHotkeys(
+        "shift+b",
+        () => {
+            if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+                onBack();
+            }
+        },
+        {
+            filter: () => true,
+        }, []);
+
     return (
         <div>
             <Row style={{ marginBottom: "35px" }}>
@@ -156,7 +168,10 @@ export default function ResultsPanel(props) {
                         {props.mode === "edit" && <Form
                             form={form}
                             layout="vertical"
-                            onFieldsChange={() => setActivity(true)}
+                            onFieldsChange={() => {
+                                setActivity(true);
+                                setCurrentActivity({ ...currentActivity, enablePageChange: false });
+                            }}
                         >
                             <Space direction="vertical" size={3}>
                                 <Form.Item
@@ -380,6 +395,7 @@ export default function ResultsPanel(props) {
             </Row>
             <Row justify={props.mode === "edit" ? "space-between" : "end"}>
                 <Button
+                    id="report-back-btn"
                     className={
                         props.mode === "view" ? "primary-btn smaller" : "primary-btn smaller cancel"}
                     onClick={onBack}

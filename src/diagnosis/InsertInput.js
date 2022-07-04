@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Card, Row, Col, Button } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import FillQuestionnaireModal from "./FillQuestionnaireModal";
 // import UploadQuestionnaireModal from "./UploadQuestionnaireModal";
 // import UploadImageModal from "./UploadImageModal";
-// import Contexts from '../utils/Contexts';
 
 function InsertInput(props) {
     const [fillQuestionVisible, setFillQuestionVisible] = useState(false);

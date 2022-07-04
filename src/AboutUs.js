@@ -1,14 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Row, Col, Spin, Image } from 'antd';
-// import { Table, Tooltip, Spin, Form, DatePicker, Button, Input } from "antd";
-// import { LoadingOutlined } from "@ant-design/icons";
-// import { getPatientData } from "../api/pacs"
-// import ImageModal from "../component/ImageModal";
-// import * as moment from "moment";
-// import Contexts from '../utils/Contexts';
+import React from "react";
+import { Row, Col, Image } from 'antd';
 
-function AboutUs(props) {
-
+function AboutUs() {
     return (
         <div className="content">
             <Row style={{ marginBottom: "5px" }}>

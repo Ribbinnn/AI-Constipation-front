@@ -11,6 +11,7 @@ const LoadingIcon = (
 );
 
 function Home() {
+    const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const [loaded, setLoaded] = useState(false);
     const user = JSON.parse(sessionStorage.getItem("user"));
     const [userData, setUserData] = useState({});
@@ -26,6 +27,7 @@ function Home() {
                 // console.log(res);
                 setUserData(res);
                 setLoaded(true);
+                setCurrentActivity({ ...currentActivity, enablePageChange: true });
             }).catch((err) => console.log(err.response));
     }, [])
 

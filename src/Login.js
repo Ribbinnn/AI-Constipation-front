@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Form, Input, Button, Modal, Card } from "antd";
 import { login } from "./api/login";
 
 function Login() {
-  const history = useHistory();
   const [form] = Form.useForm();
   const [remember, setRemember] = useState(false);
 

@@ -4,12 +4,10 @@ import { CloudDownloadOutlined, ExclamationCircleOutlined } from "@ant-design/ic
 import XLSX from "xlsx";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 import { downloadTemplate } from "../api/infer";
-import Contexts from "../utils/Contexts";
 
 var _ = require('lodash');
 
 function UploadQuestionnaireModal(props) {
-    // const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const fields = [
         "DistFreq", "DistSev", "DistDur", "FreqStool", "Incomplete", "Strain",
         "Hard", "Block", "Digit", "BloatFreq", "BloatSev", "BloatDur", "SevScale"
@@ -51,39 +49,37 @@ function UploadQuestionnaireModal(props) {
     };
 
     async function handleUploadedFile(event) {
-        // read file
-        const data = await event.target.files[0].arrayBuffer();
-        const workbook = XLSX.read(data);
-        const target_workbook = workbook.Sheets[workbook.SheetNames[0]];
-        // convert file to json
-        const data_json = XLSX.utils.sheet_to_json(target_workbook);
-        // console.log(data_json);
-        // check fields
-        const uploaded_fields = data_json.map(d => d.name);
-        if (data_json.length !== 13 || !_.isEqual(uploaded_fields, fields)) {
-            Modal.warning({
-                title: "Some fields are missing, or fields are more than 13",
-                content: "Please upload new file with all required fields (listed in template file).",
-            });
-            setUploadedFileName(null);
-            document.getElementById("input-file-q").value = "";
-            // if (!currentActivity.enablePageChange){
-            //     setCurrentActivity({ ...currentActivity, enablePageChange: true });
-            //   }
-        } else {
-            const question = {};
-            for (const i in data_json) {
-                let key = data_json[i].name;
-                let val = data_json[i].value;
-                question[key] = val;
+        try {
+            // read file
+            const data = await event.target.files[0].arrayBuffer();
+            const workbook = XLSX.read(data);
+            const target_workbook = workbook.Sheets[workbook.SheetNames[0]];
+            // convert file to json
+            const data_json = XLSX.utils.sheet_to_json(target_workbook);
+            // console.log(data_json);
+            // check fields
+            const uploaded_fields = data_json.map(d => d.name);
+            if (data_json.length !== 13 || !_.isEqual(uploaded_fields, fields)) {
+                Modal.warning({
+                    title: "Some fields are missing, or fields are more than 13",
+                    content: "Please upload new file with all required fields (listed in template file).",
+                });
+                setUploadedFileName(null);
+                document.getElementById("input-file-q").value = "";
+            } else {
+                const question = {};
+                for (const i in data_json) {
+                    let key = data_json[i].name;
+                    let val = data_json[i].value;
+                    question[key] = val;
+                }
+                // console.log(question);
+                setUploadedFileName(event.target.files[0].name);
+                setQuestion(question);
+                setHasError(false);
             }
-            // console.log(question);
-            setUploadedFileName(event.target.files[0].name);
-            setQuestion(question);
-            setHasError(false);
-            // if (currentActivity.enablePageChange){
-            //     setCurrentActivity({ ...currentActivity, enablePageChange: false });
-            //   }
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -91,7 +87,7 @@ function UploadQuestionnaireModal(props) {
         <div>
             <Modal
                 // centered
-                destroyOnClose
+                // destroyOnClose
                 maskClosable={false}
                 keyboard={false}
                 visible={props.visible}
