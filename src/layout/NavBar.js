@@ -4,7 +4,7 @@ import { Menu, Modal } from "antd";
 import { useHistory } from "react-router-dom";
 import {
   ControlOutlined,
-  SearchOutlined,
+  EditOutlined,
   ClockCircleOutlined,
   BookOutlined,
   TeamOutlined,
@@ -16,9 +16,15 @@ import Contexts from "../utils/Contexts";
 
 export default function NavBar() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
-  const [tab, setTab] = useState("home");
+  const [tab, setTab] = useState();
   const history = useHistory();
   const user = JSON.parse(sessionStorage.getItem("user"));
+
+  useEffect(() => {
+    let key = getTabKey();
+    setTab(key);
+    setCurrentActivity({ ...currentActivity, enablePageChange: true });
+  }, []);
 
   useEffect(() => {
     return history.listen((location) => {
@@ -95,10 +101,10 @@ export default function NavBar() {
         <Menu.Item
           key="diagnosis"
           className="menuitem"
-          icon={<SearchOutlined />}
+          icon={<EditOutlined />}
           onClick={() => selectMenu("/diagnosis")}
           >
-            Diagnosis
+            Enter Data
           </Menu.Item>
         <Menu.Item
           key="viewresults"
