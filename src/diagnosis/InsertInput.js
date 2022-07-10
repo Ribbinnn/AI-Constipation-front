@@ -61,7 +61,7 @@ function InsertInput(props) {
                 <Button
                     type="link"
                     className="label-btn"
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%", marginBottom: "25px" }}
                     onClick={() => props.setUploadImageVisible(true)}
                 >
                     <Card
@@ -77,6 +77,14 @@ function InsertInput(props) {
                         </div>
                     </Card>
                 </Button>}
+                {(props.model === "questionnaire" || props.model === "integrate") && <Row>
+                    <dl style={{ fontSize: "medium", padding: "10px 10px" }}>
+                        <dt style={{ color: "#9772fb", fontWeight: "500" }}>การให้คะแนนความรุนแรงของอาการ (<span style={{ fontWeight: "600", textDecoration: "underline" }}>เฉลี่ยในช่วงระยะเวลา 3 เดือนที่ผ่านมา</span>) โดยใช้เกณฑ์ดังนี้</dt>
+                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการเล็กน้อย</span> &nbsp;&nbsp;= มีอาการแต่อาการไม่รบกวนการดำเนินชีวิตประจำวัน</dt>
+                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการปานกลาง</span> = มีอาการรบกวน แต่ไม่ต้องเปลี่ยนแปลงการดำเนินกิจวัตรประจำวันนั้นๆ</dt>
+                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการรุนแรง</span> &emsp;&nbsp;= มีอาการและอาการมีผลกับกิจวัตรประจำวันมากจนต้องเปลี่ยนแปลงการดำเนินชีวิตประจำวัน</dt>
+                    </dl>
+                </Row>}
             <FillQuestionnaireModal
                 visible={fillQuestionVisible}
                 setVisible={setFillQuestionVisible}
