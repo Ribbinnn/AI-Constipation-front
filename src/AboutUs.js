@@ -5,30 +5,37 @@ function AboutUs() {
     return (
         <div className="content">
             <Row style={{ marginBottom: "5px" }}>
-                <Col span={16}>
+                <Col span={10}>
                     <div style={{ fontSize: "30px", marginBottom: "17px" }}>
                         {`About Us`}
                     </div>
                 </Col>
-                <Col span={8}>
-                    <Row justify="end" style={{ marginBottom: "5px" }}>
+                <Col span={14}>
+                    <Row justify="end" style={{ alignItems: "center", marginBottom: "13px" }}>
                         <Image
                             preview={false}
-                            height={54}
+                            height={70}
                             src="/logos/MedCU_Logo.png"
                         />
                         <Image
                             preview={false}
-                            height={61}
+                            height={90}
+                            style={{ marginLeft: "15px" }}
                             src="/logos/CUNM_Logo.png"
                         />
-                    </Row><Row justify="end" style={{ marginRight: "10px" }}>
+                        <Image
+                            preview={false}
+                            height={55}
+                            src="/logos/EngCU_Logo.jpg"
+                        />
+                    </Row>
+                    {/* <Row justify="end" style={{ marginRight: "10px" }}>
                         <Image
                             preview={false}
                             height={37}
                             src="/logos/EngCU_Logo.jpg"
                         />
-                    </Row>
+                    </Row> */}
                 </Col>
                 <hr style={{ width: "100%" }} />
             </Row>

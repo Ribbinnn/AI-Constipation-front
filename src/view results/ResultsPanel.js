@@ -30,6 +30,7 @@ export default function ResultsPanel(props) {
     const [surgery, setSurgery] = useState(false);
 
     const [gradCam, setGradCam] = useState();
+    const [previewGradCamVisible, setPreviewGradCamVisible] = useState(false);
 
     const onBack = () => {
         if (activity) {
@@ -123,7 +124,7 @@ export default function ResultsPanel(props) {
                     <Space
                         direction="vertical"
                         size={10}
-                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "35px" }}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "30px" }}
                     >
                         <label style={{ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
                         {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
@@ -135,9 +136,17 @@ export default function ResultsPanel(props) {
                     {(props.info.task === "image" || props.info.task === "integrate") &&
                         <div style={{ textAlign: "center" }}>
                             <Image
-                                // preview={false}
-                                height={320}
+                                preview={false}
+                                height={300}
                                 src={gradCam}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => setPreviewGradCamVisible(true)}
+                            />
+                             <Image
+                                preview={false}
+                                height={310}
+                                style={{ margin: "8px 0 0 5px" }}
+                                src="/pics/colorbar.png"
                             />
                         </div>}
                 </Col>
@@ -434,7 +443,8 @@ export default function ResultsPanel(props) {
                                 data.surgery, data.surgery_note, data.comments
                             ).then((res) => {
                                 console.log(res);
-                                window.location.reload();
+                                // window.location.reload();
+                                props.history.push(`/viewresults/?${props.queryString}`);
                             }).catch((err) => {
                                 console.log(err.response);
                                 Modal.error({ content: err.response.data.message });
@@ -448,6 +458,22 @@ export default function ResultsPanel(props) {
                     Save
                 </Button>}
             </Row>
+            <Modal
+                // centered
+                destroyOnClose
+                visible={previewGradCamVisible}
+                onCancel={() => setPreviewGradCamVisible(false)}
+                footer={null}
+                width="750px"
+                bodyStyle={{ textAlign: "center" }}
+                style={{ top: 20 }}
+            >
+                <Image
+                    preview={false}
+                    height={700}
+                    src={gradCam}
+                />
+            </Modal>
         </div>
     );
 }

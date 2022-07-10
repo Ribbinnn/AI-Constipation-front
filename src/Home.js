@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Row, Col, Spin, Image, Space } from 'antd';
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
 import PreviewQuestionnaireCard from "./component/PreviewQuestionnaireCard";
 import PreviewImageCard from "./component/PreviewImageCard";
 import { getUserById } from "./api/admin";
@@ -13,6 +14,7 @@ const LoadingIcon = (
 function Home() {
     const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
     const [loaded, setLoaded] = useState(false);
+    const history = useHistory();
     const user = JSON.parse(sessionStorage.getItem("user"));
     const [userData, setUserData] = useState({});
 
@@ -46,7 +48,7 @@ function Home() {
             {loaded &&
                 <div>
                     <Row style={{ marginBottom: "10px" }}>
-                        <Col span={16}>
+                        <Col span={10}>
                             <div style={{ fontSize: "25px", marginBottom: "20px" }}>
                                 {`Welcome, ${userData.username}.`}
                             </div>
@@ -54,60 +56,78 @@ function Home() {
                                 {`${userData.first_name} ${userData.last_name} (${userData.role.substring(0, 1).toUpperCase()}${userData.role.substring(1,)}), ${userData.hospital}`}
                             </label>
                         </Col>
-                        <Col span={8}>
-                            <Row justify="end" style={{ marginBottom: "5px" }}>
+                        <Col span={14}>
+                            <Row justify="end" style={{ alignItems: "center" }}>
                                 <Image
                                     preview={false}
-                                    height={54}
+                                    height={70}
                                     src="/logos/MedCU_Logo.png"
                                 />
                                 <Image
                                     preview={false}
-                                    height={61}
+                                    height={90}
+                                    style={{ marginLeft: "15px" }}
                                     src="/logos/CUNM_Logo.png"
                                 />
-                            </Row><Row justify="end" style={{ marginRight: "10px" }}>
+                                <Image
+                                    preview={false}
+                                    height={55}
+                                    src="/logos/EngCU_Logo.jpg"
+                                />
+                            </Row>
+                            {/* <Row justify="end" style={{ marginRight: "10px" }}>
                                 <Image
                                     preview={false}
                                     height={37}
                                     src="/logos/EngCU_Logo.jpg"
                                 />
-                            </Row>
+                            </Row> */}
                         </Col>
                         <hr style={{ width: "100%" }} />
                     </Row>
+                    <Row justify="center" style={{ textAlign: "center", marginBottom: "30px" }}>
+                        <label style={{ marginBottom: "5px", color: "#9772fb", fontWeight: "bold" }}>
+                            ระบบปัญญาประดิษฐ์เพื่อวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน โดยใช้ข้อมูลจากภาพเอกซเรย์ช่องท้องและแบบสอบถามอาการระบบทางเดินอาหาร (Artificial intelligence imaging and gastrointestinal symptoms analysis for diagnosis of dyssynergic defecation)
+                        </label>
+                    </Row>
                     <Row>
-                        <Col span={16}>
-                            <Space direction="vertical" size={20}>
+                        <Col span={18}>
+                            <Space direction="vertical" size={25}>
                                 <Row style={{ marginBottom: "10px" }}>
-                                    <label style={{ marginBottom: "5px" }}>
+                                    {/* <label style={{ marginBottom: "5px", color: "#9772fb", fontWeight: "500" }}>
                                         &emsp;&emsp;ระบบปัญญาประดิษฐ์เพื่อวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน โดยใช้ข้อมูลจากภาพเอกซเรย์ช่องท้องและแบบสอบถามอาการระบบทางเดินอาหาร (Artificial intelligence imaging and gastrointestinal symptoms analysis for diagnosis of dyssynergic defecation)
-                                    </label>
+                                    </label> */}
                                     <label>
-                                        &emsp;&emsp;พัฒนาระบบโดยศูนย์เชี่ยวชาญเฉพาะทางด้านระบบประสาทและการเคลื่อนไหวของระบบทางเดินอาหาร <br />ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย และภาควิชาวิศวกรรมคอมพิวเตอร์ <br />คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
+                                        &emsp;&emsp;พัฒนาระบบโดยศูนย์เชี่ยวชาญเฉพาะทางด้านระบบประสาทและการเคลื่อนไหวของระบบทางเดินอาหาร ภาควิชาอายุรศาสตร์ <br />คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย และภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
                                     </label>
                                 </Row>
                                 <Row>
                                     <dl style={{ fontSize: "medium" }}>
                                         <dt style={{ color: "#9772fb", fontWeight: "500" }}>วิธีใช้งานระบบ</dt>
-                                        <dt style={{ marginBottom: "2px" }}>1. กรอกข้อมูลผู้ป่วย</dt>
+                                        <dt style={{ marginBottom: "2px", display: "flex", alignItems: "center" }}>
+                                            1. กรอกข้อมูลผู้ป่วย
+                                            <EditOutlined
+                                                style={{ color: "#9772fb", fontWeight: "500", marginLeft: "5px" }}
+                                                onClick={() => history.push("/diagnosis")}
+                                            />
+                                        </dt>
                                         <dt>2. เลือกรูปแบบการวิเคราะห์ (Model)</dt>
                                         <dt>&emsp;&emsp;- Model 1 แบบสอบถาม </dt>
                                         <dt>&emsp;&emsp;- Model 2 ภาพเอกซเรย์ช่องท้อง </dt>
                                         <dt style={{ marginBottom: "2px" }}>&emsp;&emsp;- Model 3 แบบสอบถามและภาพเอกซเรย์ช่องท้อง </dt>
                                         <dt style={{ marginBottom: "2px" }}>3. ใส่ข้อมูล <span style={{ color: "#9772fb" }}>แบบสอบถาม</span> และ/หรือ <span style={{ color: "#9772fb" }}>อัปโหลดรูปภาพ</span></dt>
-                                        <dt style={{ marginBottom: "2px" }}>4. กดวินิจฉัย (diagnosis)</dt>
+                                        <dt style={{ marginBottom: "2px" }}>4. กดวินิจฉัย</dt>
                                         <dt style={{ marginBottom: "2px" }}>5. ระบบแสดงร้อยละความเชื่อมั่นในการวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน</dt>
                                     </dl>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <dl style={{ fontSize: "medium" }}>
                                         <dt style={{ color: "#9772fb", fontWeight: "500" }}>การให้คะแนนความรุนแรงของอาการ (<span style={{ fontWeight: "600", textDecoration: "underline" }}>เฉลี่ยในช่วงระยะเวลา 3 เดือนที่ผ่านมา</span>) โดยใช้เกณฑ์ดังนี้</dt>
                                         <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการเล็กน้อย</span> &nbsp;&nbsp;= มีอาการแต่อาการไม่รบกวนการดำเนินชีวิตประจำวัน</dt>
                                         <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการปานกลาง</span> = มีอาการรบกวน แต่ไม่ต้องเปลี่ยนแปลงการดำเนินกิจวัตรประจำวันนั้นๆ</dt>
                                         <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการรุนแรง</span> &emsp;&nbsp;= มีอาการและอาการมีผลกับกิจวัตรประจำวันมากจนต้องเปลี่ยนแปลงการดำเนินชีวิตประจำวัน</dt>
                                     </dl>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <dl style={{ fontSize: "medium" }}>
                                         <dt style={{ color: "#9772fb", fontWeight: "600" }}>Model Accuracy</dt>
@@ -118,7 +138,7 @@ function Home() {
                                 </Row>
                             </Space>
                         </Col>
-                        <Col span={8}>
+                        <Col span={6}>
                             <div style={{ textAlign: "center" }}>
                                 <label style={{ margin: "10px 0 18px 0", color: "#9772fb", fontWeight: 500 }}>Example of input</label>
                                 <PreviewQuestionnaireCard question={question} margin="0 0 20px 0" />
