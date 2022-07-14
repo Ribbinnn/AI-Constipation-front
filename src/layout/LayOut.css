@@ -234,7 +234,7 @@
   padding: 45px 35px;
 }
 
-.content.loading {
+.content.processing {
   cursor: progress;
 }
 

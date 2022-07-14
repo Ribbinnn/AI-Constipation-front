@@ -17,6 +17,7 @@ const { Step } = Steps;
 export default function Diagnosis() {
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [current, setCurrent] = useState(0);
+  const [processing, setProcessing] = useState(false);
   const personalDetailsRef = useRef();
   const [uploadQuestionVisible, setUploadQuestionVisible] = useState(false);
   const [uploadImageVisible, setUploadImageVisible] = useState(false);
@@ -62,6 +63,7 @@ export default function Diagnosis() {
     if (current === 0) {
       personalDetailsRef.current.setPersonalDetails();
     } else if (current === 3) {
+      setProcessing(true);
       if (model === "questionnaire") {
         questionnaireInfer(question, details)
         .then((res) => {
@@ -126,7 +128,7 @@ export default function Diagnosis() {
     }, []);
 
   return (
-    <div className="content diagnosis">
+    <div className={processing ? "content diagnosis processing" : "content diagnosis"}>
       <Steps progressDot current={current}>
         {stepsTitle.map((item) => (
           <Step key={item} title={item} />
