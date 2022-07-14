@@ -395,6 +395,16 @@ ol {
   height: 45px;
 }
 
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+  border-color: #c4c4c4;
+}
+
+.ant-input-affix-wrapper > input.ant-input {
+  color: black;
+  background: #fafafa;
+  font-size: medium;
+}
+
 .input-text.login-input {
   color: #58595b;
   background: white;
@@ -431,16 +441,6 @@ ol {
 .input-text.fixed-size {
   width: 270px;
 }
-
-/* .input-prev-edit-text,
-.input-prev-edit-text:hover,
-.input-prev-edit-text:focus {
-  color: #58595b;
-  font-size: medium;
-  border: 1px solid #58595b;
-  border-radius: 8px;
-  box-shadow: none;
-} */
 
 .ant-input-number,
 .ant-input-number:hover,
