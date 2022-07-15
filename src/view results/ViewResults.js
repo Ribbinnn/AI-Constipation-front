@@ -389,6 +389,7 @@ export default function ViewResults(props) {
                     style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
+                        allowClear
                         className="input-text"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("patient_HN") : queryString.set("patient_HN", item.target.value);
@@ -441,6 +442,7 @@ export default function ViewResults(props) {
                     style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
+                        allowClear
                         className="input-text"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("clinician") : queryString.set("clinician", item.target.value);
@@ -457,6 +459,7 @@ export default function ViewResults(props) {
                     style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
+                        allowClear
                         className="input-text"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("no") : queryString.set("no", item.target.value);

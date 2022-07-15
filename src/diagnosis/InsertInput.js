@@ -22,11 +22,13 @@ function InsertInput(props) {
                         >
                             <Card
                                 hoverable={true}
-                                className={props.question ? "selected-card" : ""}
+                                className={props.question && props.questionReview ? "selected-card" : ""}
                             >
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    {props.question && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                                    <label className="clickable-label" style={{ color: props.question ? "#45c01a" : "black", fontWeight: props.question ? 500 : 400 }}>
+                                    {props.question && props.questionReview && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                    <label
+                                        className="clickable-label"
+                                        style={{ color: props.question && props.questionReview ? "#45c01a" : "black", fontWeight: props.question && props.questionReview ? 500 : 400 }}>
                                         Fill in Symptom Questionnaire
                                     </label>
                                 </div>
@@ -45,11 +47,13 @@ function InsertInput(props) {
                         >
                             <Card
                                 hoverable={true}
-                                className={props.question ? "selected-card" : ""}
+                                className={props.question && props.questionReview ? "selected-card" : ""}
                             >
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    {props.question && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                                    <label className="clickable-label" style={{ color: props.question ? "#45c01a" : "black", fontWeight: props.question ? 500 : 400 }}>
+                                    {props.question && props.questionReview && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                    <label
+                                        className="clickable-label"
+                                        style={{ color: props.question && props.questionReview ? "#45c01a" : "black", fontWeight: props.question && props.questionReview ? 500 : 400 }}>
                                         Import File (.xlsx/.csv)
                                     </label>
                                 </div>
@@ -90,6 +94,8 @@ function InsertInput(props) {
                 setVisible={setFillQuestionVisible}
                 question={props.question}
                 setQuestion={props.setQuestion}
+                questionReview={props.questionReview}
+                setQuestionReview={props.setQuestionReview}
             />
             {/* <UploadQuestionnaireModal
                 visible={uploadQuestionVisible}

@@ -1,4 +1,4 @@
-import React, { useState, } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Row, Button } from "antd";
 import { CloudDownloadOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import XLSX from "xlsx";
@@ -21,6 +21,8 @@ function UploadQuestionnaireModal(props) {
     const onOK = () => {
         props.setVisible(false);
         setHasError(false);
+        setQuestion(null);
+        setUploadedFileName(null);
     }
 
     const onCancel = () => {
@@ -36,7 +38,7 @@ function UploadQuestionnaireModal(props) {
             question.DistSevFreq = question.DistFreq * question.DistSev;
             question.BloatSevFreq = question.BloatFreq * question.BloatSev;
         }
-        if ((!props.question && !question) || (props.question && _.isEqual(props.question, question))) {
+        if ((!props.question && !question) || (!props.questionReview && !question) || (props.question && _.isEqual(props.question, question))) {
             props.setVisible(false);
         } else {
             return Modal.confirm({
@@ -82,6 +84,15 @@ function UploadQuestionnaireModal(props) {
             console.log(e);
         }
     }
+
+    useEffect(() => {
+        if (props.question && props.uploadedFileName) {
+            setQuestion(props.question);
+            setUploadedFileName(props.uploadedFileName);
+        } else if (document.getElementById("input-file-q")) {
+            document.getElementById("input-file-q").value = "";
+        }
+    }, [props.visible]);
 
     return(
         <div>
@@ -182,7 +193,11 @@ function UploadQuestionnaireModal(props) {
                                         question.DistSevFreq = question.DistFreq * question.DistSev;
                                         question.BloatSevFreq = question.BloatFreq * question.BloatSev;
                                         props.setQuestion(question);
+                                        props.setUploadedFileName(uploadedFileName);
                                         onOK();
+                                        if (!props.questionReview) {
+                                            props.setQuestionReview(true);
+                                        }
                                     }
                                 } else {
                                     Modal.error({content: "Value of some fields are out of range.", zIndex: 3000});
