@@ -161,8 +161,8 @@ function UploadImageModal(props) {
                                     <input 
                                         type="file"
                                         id="input-file"
-                                        // accept=".png, .jpeg, .jpg"
-                                        accept="image/*"
+                                        accept="image/png, image/jpeg"
+                                        // accept="image/*"
                                         hidden 
                                         onChange={onFileChange}
                                     />
