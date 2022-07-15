@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
-import { LoadingOutlined, SnippetsOutlined, PictureOutlined } from "@ant-design/icons";
+import { LoadingOutlined, SnippetsOutlined, PictureOutlined, EditOutlined } from "@ant-design/icons";
 // import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";
 import PreviewImageCard from "../component/PreviewImageCard";
@@ -137,7 +137,7 @@ export default function Report(props) {
                         </Space>
                     </Col>
                     <Col span={12}>
-                        <Row justify="center" style={{ height: "100%" }}>
+                        <Row justify="center" /*style={{ height: "100%" }}*/ style={{ marginBottom: "18px" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
@@ -194,6 +194,15 @@ export default function Report(props) {
                                 <PreviewImageCard image={originalImage} />
                             }
                         </Row>
+                        {info.status !== "reviewed" && <Row justify="center">
+                            <a
+                                href={`/diagnosis/${rid}`}
+                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
+                            >
+                                <EditOutlined style={{ marginRight: "8px" }} />
+                                Edit Questionnaire/Image and rediagnose
+                            </a>
+                        </Row>}
                     </Col>
                 </Row>
             )}

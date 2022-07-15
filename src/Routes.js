@@ -55,6 +55,11 @@ function Routes() {
                   render={() => (auth ? <Diagnosis /> : <Redirect to="/login" />)}
                 />
                 <Route
+                  path="/diagnosis/:rid"
+                  exact
+                  render={() => (auth ? <Diagnosis /> : <Redirect to="/login" />)}
+                />
+                <Route
                   path="/viewresults"
                   exact
                   render={() => (auth ? <ViewResults /> : <Redirect to="/login" />)}

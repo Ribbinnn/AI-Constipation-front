@@ -389,6 +389,9 @@ function FillQuestionnaireModal(props) {
                                         data.BloatSevFreq = data.BloatFreq * data.BloatSev;
                                         props.setQuestion(data);
                                         onOK();
+                                        if (!props.questionReview) {
+                                            props.setQuestionReview(true);
+                                        }
                                     }
                                 } catch (errInfo) {
                                     console.log('Validate Failed:', errInfo);
@@ -396,7 +399,7 @@ function FillQuestionnaireModal(props) {
                                 }
                             }}
                         >
-                            OK
+                            {props.questionReview ? "OK" : "Confirm"}
                         </Button>
                     </Row>
                 </div>
