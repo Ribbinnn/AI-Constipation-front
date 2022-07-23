@@ -120,7 +120,7 @@ export default function ResultsPanel(props) {
     return (
         <div>
             <Row style={{ marginBottom: "35px" }}>
-                <Col span={6}>
+                <Col xs={24} sm={24} md={11} lg={9} xl={6}>
                     <Space
                         direction="vertical"
                         size={10}
@@ -150,8 +150,8 @@ export default function ResultsPanel(props) {
                             />
                         </div>}
                 </Col>
-                <Col span={1} />
-                <Col span={17}>
+                <Col xs={24} sm={24} md={1} />
+                <Col xs={24} sm={24} md={12} lg={14} xl={17}>
                     <Space
                         direction="vertical"
                         size={10}

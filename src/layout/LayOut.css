@@ -439,7 +439,7 @@ ol {
 }
 
 .input-text.fixed-size {
-  width: 270px;
+  max-width: 270px;
 }
 
 .ant-input-number,
@@ -730,7 +730,7 @@ hr {
 .ant-form-item .ant-select {
   font-size: medium;
   /* display: block; */
-  width: 270px;
+  max-width: 270px;
 }
 
 .ant-select-arrow {
@@ -1567,4 +1567,56 @@ table tr td.ant-table-selection-column {
   /* display: flex;
   flex-direction: column;
   align-items: stretch; */
+}
+
+@media screen and (max-width: 520px) {
+  .ant-input-number.bigger,
+  .ant-input-number.bigger:hover,
+  .ant-input-number.bigger:focus {
+    width: auto !important;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .ant-steps-dot .ant-steps-item-icon,
+  .ant-steps-dot .ant-steps-item-process .ant-steps-item-icon {
+    width: 35px !important;
+    height: 35px !important;
+    margin-left: 15px !important;
+  }
+
+  .ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-icon>.ant-steps-icon>.ant-steps-icon-dot {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon>.ant-steps-icon>.ant-steps-icon-dot,
+  .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-icon>.ant-steps-icon>.ant-steps-icon-dot {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .ant-steps-dot .ant-steps-item-tail {
+    top: 15px !important;
+    margin-left: 25px !important;
+  }
+
+  .ant-steps-item-content {
+    width: 60px !important;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .ant-image-img.MedLogo {
+    height: 52px !important;
+    width: auto !important;
+  }
+  .ant-image-img.CUNMLogo {
+    height: 72px !important;
+    width: auto !important;
+  }
+  .ant-image-img.EngLogo {
+    height: 37px !important;
+    width: auto !important;
+  }
 }
