@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
-import { ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
+import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image, Spin } from "antd";
+import { LoadingOutlined, ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
+import PreviewImageModal from "../component/PreviewImageModal";
 import { updateReport, getImage } from "../api/reports";
 import Contexts from "../utils/Contexts";
+
+const LoadingIcon = (
+    <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
+);
 
 const { TextArea } = Input;
 
@@ -134,7 +139,17 @@ export default function ResultsPanel(props) {
                             {props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD"}
                         </label>
                     </Space>
-                    {(props.info.task === "image" || props.info.task === "integrate") &&
+                    {(props.info.task === "image" || props.info.task === "integrate") && !gradCam && (
+                        <div style={{ textAlign: "center", marginTop: "20%" }}>
+                        <Spin indicator={LoadingIcon} />
+                        <br />
+                        <br />
+                        <span style={{ fontSize: "medium", color: "#9772fb" }}>
+                            Loading ...
+                        </span>
+                        </div>
+                    )}
+                    {(props.info.task === "image" || props.info.task === "integrate") && gradCam &&
                         <div style={{ textAlign: "center" }}>
                             <Image
                                 preview={false}
@@ -474,22 +489,11 @@ export default function ResultsPanel(props) {
                     Save Final Diagnosis
                 </Button>}
             </Row>
-            <Modal
-                // centered
-                destroyOnClose
+            <PreviewImageModal
+                image={gradCam}
                 visible={previewGradCamVisible}
-                onCancel={() => setPreviewGradCamVisible(false)}
-                footer={null}
-                width="750px"
-                bodyStyle={{ textAlign: "center" }}
-                style={{ top: 20 }}
-            >
-                <Image
-                    preview={false}
-                    height={700}
-                    src={gradCam}
-                />
-            </Modal>
+                setVisible={setPreviewGradCamVisible}
+            />
         </div>
     );
 }

@@ -137,7 +137,7 @@ export default function Report(props) {
                         </Space>
                     </Col>
                     <Col span={12}>
-                        <Row justify="center" /*style={{ height: "100%" }}*/ style={{ marginBottom: "18px" }}>
+                        <Row justify="center" /*style={{ height: "100%" }}*/ style={{ margin: "15px 0 18px 0" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"

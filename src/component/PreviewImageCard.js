@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Card, Button, Image } from "antd";
 import { PictureOutlined } from "@ant-design/icons";
+import PreviewImageModal from "./PreviewImageModal";
 
 function PreviewImageCard(props) {
     const [visible, setVisible] = useState(false);
 
     return(
-        <div style={{ height: "200px" }}>
+        <div style={{ height: "180px" }}>
             <Button
                 type="link"
                 className="label-btn"
@@ -17,7 +18,7 @@ function PreviewImageCard(props) {
                     className="preview-card"
                 >
                     <div>
-                        <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                        <label className="clickable-label" style={{ marginBottom: "10px" }}>
                             X-Ray Image
                         </label>
                         <br />
@@ -25,22 +26,11 @@ function PreviewImageCard(props) {
                     </div>
                 </Card>
             </Button>
-            <Modal
-                // centered
-                destroyOnClose
+            <PreviewImageModal
+                image={props.image}
                 visible={visible}
-                onCancel={() => setVisible(false)}
-                footer={null}
-                width="750px"
-                bodyStyle={{ textAlign: "center" }}
-                style={{ top: 20 }}
-            >
-                <Image
-                    preview={false}
-                    height={700}
-                    src={props.image}
-                />
-            </Modal>
+                setVisible={setVisible}
+            />
         </div>
     );
 }
