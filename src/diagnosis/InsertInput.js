@@ -10,25 +10,35 @@ function InsertInput(props) {
     // const [uploadQuestionVisible, setUploadQuestionVisible] = useState(false);
     // const [uploadImageVisible, setUploadImageVisible] = useState(false);
 
+    const isQuestionComplete = (props.question && props.questionReview) || props.mode === "image";
+    const isImageComplete = props.image || props.mode === "questionnaire";
+
     return(
         <div>
-            {(props.model === "questionnaire" || props.model === "integrate") && <Row style={{ marginBottom: "25px" }}>
+            {(props.model === "questionnaire" || props.model === "integrate") &&
+                <Row style={{ marginBottom: "25px" }}>
                     <Col span={11}>
                         <Button
                             type="link"
                             className="label-btn"
                             style={{ width: "100%", height: "100%" }}
+                            disabled={props.mode === "image" ? true : false}
                             onClick={() => setFillQuestionVisible(true)}
                         >
                             <Card
                                 hoverable={true}
-                                className={props.question && props.questionReview ? "selected-card" : ""}
+                                className={isQuestionComplete ? "selected-card" : ""}
                             >
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    {props.question && props.questionReview && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                    {isQuestionComplete &&
+                                        <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
                                     <label
                                         className="clickable-label"
-                                        style={{ color: props.question && props.questionReview ? "#45c01a" : "black", fontWeight: props.question && props.questionReview ? 500 : 400 }}>
+                                        style={{
+                                            color: isQuestionComplete ? "#45c01a" : "black",
+                                            fontWeight: isQuestionComplete ? 500 : 400
+                                        }}
+                                    >
                                         Fill in Symptom Questionnaire
                                     </label>
                                 </div>
@@ -43,17 +53,23 @@ function InsertInput(props) {
                             type="link"
                             className="label-btn"
                             style={{ width: "100%", height: "100%" }}
+                            disabled={props.mode === "image" ? true : false}
                             onClick={() => props.setUploadQuestionVisible(true)}
                         >
                             <Card
                                 hoverable={true}
-                                className={props.question && props.questionReview ? "selected-card" : ""}
+                                className={isQuestionComplete ? "selected-card" : ""}
                             >
                                 <div style={{ display: "flex", alignItems: "center" }}>
-                                    {props.question && props.questionReview && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                    {isQuestionComplete &&
+                                        <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
                                     <label
                                         className="clickable-label"
-                                        style={{ color: props.question && props.questionReview ? "#45c01a" : "black", fontWeight: props.question && props.questionReview ? 500 : 400 }}>
+                                        style={{
+                                            color: isQuestionComplete ? "#45c01a" : "black",
+                                            fontWeight: isQuestionComplete ? 500 : 400
+                                        }}
+                                    >
                                         Import File (.xlsx/.csv)
                                     </label>
                                 </div>
@@ -66,16 +82,24 @@ function InsertInput(props) {
                     type="link"
                     className="label-btn"
                     style={{ width: "100%", height: "100%", marginBottom: "25px" }}
+                    disabled={props.mode === "questionnaire" ? true : false}
                     onClick={() => props.setUploadImageVisible(true)}
                 >
                     <Card
                         // style={{ marginBottom: "25px" }}
                         hoverable={true}
-                        className={props.image ? "selected-card" : ""}
+                        className={isImageComplete ? "selected-card" : ""}
                     >
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            {props.image && <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                            <label className="clickable-label" style={{ color: props.image ? "#45c01a" : "black", fontWeight: props.image ? 500 : 400 }}>
+                            {isImageComplete &&
+                                <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                            <label
+                                className="clickable-label"
+                                style={{
+                                    color: isImageComplete ? "#45c01a" : "black",
+                                    fontWeight: isImageComplete ? 500 : 400
+                                }}
+                            >
                                 Upload X-Ray Image
                             </label>
                         </div>

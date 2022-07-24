@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
 import { updateReport, getImage } from "../api/reports";
 import Contexts from "../utils/Contexts";
 
@@ -9,6 +9,7 @@ const { TextArea } = Input;
 
 export default function ResultsPanel(props) {
     const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
+    const role = JSON.parse(sessionStorage.getItem("user")).role;
     const [form] = Form.useForm();
     const [activity, setActivity] = useState(false);
 
@@ -157,9 +158,24 @@ export default function ResultsPanel(props) {
                         size={10}
                         style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px" }}
                     >
-                        <label style={{ fontWeight: "bold", marginBottom: "10px" }}>Expert Final Diagnosis</label>
+                        <label style={{ fontWeight: "bold", marginBottom: "10px", display: "flex", alignItems: "center" }}>
+                            Expert Final Diagnosis
+                            {role === "clinician" && props.mode === "view" &&
+                                <EditOutlined
+                                    style={{ marginLeft: "8px", color: "#9772fb", fontWeight: "bold" }}
+                                    onClick={() => props.history.push(`/viewresults/edit/${props.rid}/?${props.queryString}`)}
+                                />}
+                        </label>
                         {props.mode === "view" && props.info.status === "annotated" &&
                             <label>-</label>}
+                        {/* {role === "clinician" && props.mode === "view" &&
+                            <a
+                                href={`/viewresults/edit/${props.rid}/?${props.queryString}`}
+                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
+                            >
+                                <EditOutlined style={{ marginRight: "8px" }} />
+                                Edit Final Diagnosis
+                            </a>} */}
                         {props.mode === "view" && props.info.status === "reviewed" &&
                             <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
@@ -409,7 +425,7 @@ export default function ResultsPanel(props) {
                         props.mode === "view" ? "primary-btn smaller" : "primary-btn smaller cancel"}
                     onClick={onBack}
                 >
-                    Back
+                    {props.mode === "view" ? "OK" : "Cancel"}
                 </Button>
                 {props.mode === "edit" && <Button
                     className="primary-btn smaller"
@@ -455,7 +471,7 @@ export default function ResultsPanel(props) {
                         }
                     }}
                 >
-                    Save
+                    Save Final Diagnosis
                 </Button>}
             </Row>
             <Modal

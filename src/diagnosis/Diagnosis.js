@@ -12,7 +12,7 @@ import UploadImageModal from "./UploadImageModal";
 import Result from "./Result";
 import BeginDiagnosis from "./BeginDiagnosis";
 import { questionnaireInfer, imageInfer, integrateInfer } from "../api/infer";
-import { getReport, deleteReport } from "../api/reports";
+import { getReport, deleteReport, getImage } from "../api/reports";
 import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
@@ -22,7 +22,7 @@ const LoadingIcon = (
 const { Step } = Steps;
 
 export default function Diagnosis() {
-  const { rid } = useParams();
+  const { mode, rid } = useParams();
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -70,7 +70,19 @@ export default function Diagnosis() {
         if (res.data.question_id) {
           res.data.question_id._id = undefined;
           setQuestion(res.data.question_id);
-          setQuestionReview(false);
+          if (mode === "image") {
+            setQuestionReview(true);
+          } else {
+            setQuestionReview(false);
+          }
+        }
+        if (mode === "questionnaire" && res.data.task === "integrate") {
+          getImage(rid, "original")
+          .then((res) => {
+              // console.log(res);
+              let image = new File([res], "croppedImage.png", { type: "image/png" });
+              setImage({croppedImage: image});
+          })
         }
         res.data.personal_info_id._id = undefined;
         setDetails(res.data.personal_info_id);
@@ -209,6 +221,7 @@ export default function Diagnosis() {
           )}
           {current === 2 && (
             <InsertInput
+              mode={mode}
               model={model}
               question={question}
               setQuestion={setQuestion}
@@ -229,7 +242,7 @@ export default function Diagnosis() {
           {current === stepsTitle.length - 1 && (
             <Result
               btnList={btnList}
-              title="Diagnosis is processing"
+              // title="Diagnosis is processing"
               model={model}
               reportId={reportId}
             />

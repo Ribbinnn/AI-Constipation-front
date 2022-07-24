@@ -668,6 +668,11 @@ label,
   font-size: medium;
 }
 
+.a-with-icon {
+  display: flex;
+  align-items: center;
+}
+
 .login-title div {
   font-size: 37px;
   font-weight: bold;

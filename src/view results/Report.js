@@ -160,7 +160,7 @@ export default function Report(props) {
                                 // </Button>
                                 <PreviewQuestionnaireCard
                                     question={info.question_id}
-                                    margin="0 20px 0 0"
+                                    margin={info.task === "integrate" ? "0 20px 0 0" : 0}
                                     noChildren={
                                         info.question_id.DistFreq === 0 && info.question_id.BloatFreq === 0
                                     }
@@ -195,13 +195,36 @@ export default function Report(props) {
                             }
                         </Row>
                         {info.status !== "reviewed" && <Row justify="center">
-                            <a
-                                href={`/diagnosis/${rid}`}
-                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
+                            {(info.task === "questionnaire" || info.task === "integrate") && <a
+                                href={`/diagnosis/questionnaire/${rid}`}
+                                className="a-with-icon"
+                                style={{
+                                    color: "#9772fb", fontWeight: "bold"
+                                }}
                             >
                                 <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Questionnaire/Image and rediagnose
-                            </a>
+                                Edit Questionnaire
+                            </a>}
+                            {(info.task === "image" || info.task === "integrate") && <a
+                                href={`/diagnosis/image/${rid}`}
+                                className="a-with-icon"
+                                style={{
+                                    color: "#9772fb", fontWeight: "bold", marginLeft: info.task === "integrate" ? "15px": 0
+                                }}
+                            >
+                                <EditOutlined style={{ marginRight: "8px" }} />
+                                Edit Image
+                            </a>}
+                            {info.task === "integrate" && <a
+                                href={`/diagnosis/all/${rid}`}
+                                className="a-with-icon"
+                                style={{
+                                    color: "#9772fb", fontWeight: "bold", marginLeft: "15px"
+                                }}
+                            >
+                                <EditOutlined style={{ marginRight: "8px" }} />
+                                Edit Both
+                            </a>}
                         </Row>}
                     </Col>
                 </Row>
