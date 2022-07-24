@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useHotkeys } from "react-hotkeys-hook";
+// import { useHotkeys } from "react-hotkeys-hook";
 import { Steps, Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
@@ -161,27 +161,27 @@ export default function Diagnosis() {
     setCurrentActivity({ ...currentActivity, enablePageChange: false });
   };
 
-  useHotkeys(
-    "enter",
-    () => {
-      if (document.getElementById("diagnosis-next-btn") && !document.getElementsByClassName("ant-modal").length) {
-        next();
-      }
-    },
-    {
-      filter: () => true,
-    }, []);
+  // useHotkeys(
+  //   "enter",
+  //   () => {
+  //     if (document.getElementById("diagnosis-next-btn") && !document.getElementsByClassName("ant-modal").length) {
+  //       next();
+  //     }
+  //   },
+  //   {
+  //     filter: () => true,
+  //   }, []);
 
-  useHotkeys(
-    "shift+b",
-    () => {
-      if (document.getElementById("diagnosis-back-btn") && !document.getElementsByClassName("ant-modal").length) {
-        prev();
-      }
-    },
-    {
-      filter: () => true,
-    }, []);
+  // useHotkeys(
+  //   "shift+b",
+  //   () => {
+  //     if (document.getElementById("diagnosis-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+  //       prev();
+  //     }
+  //   },
+  //   {
+  //     filter: () => true,
+  //   }, []);
 
   return (
     <div className={processing ? "content diagnosis processing" : "content diagnosis"}>

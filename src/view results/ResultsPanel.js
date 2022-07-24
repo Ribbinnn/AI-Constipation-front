@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
+// import { useHotkeys } from "react-hotkeys-hook";
 import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image, Spin } from "antd";
 import { LoadingOutlined, ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
 import PreviewImageModal from "../component/PreviewImageModal";
@@ -112,16 +112,16 @@ export default function ResultsPanel(props) {
         );
     };
 
-    useHotkeys(
-        "shift+b",
-        () => {
-            if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
-                onBack();
-            }
-        },
-        {
-            filter: () => true,
-        }, []);
+    // useHotkeys(
+    //     "shift+b",
+    //     () => {
+    //         if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+    //             onBack();
+    //         }
+    //     },
+    //     {
+    //         filter: () => true,
+    //     }, []);
 
     return (
         <div>
