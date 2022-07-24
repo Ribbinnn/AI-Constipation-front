@@ -9,15 +9,15 @@ import ResultsPanel from "./ResultsPanel";
 import { getReport, getImage } from "../api/reports";
 
 const LoadingIcon = (
-  <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
+    <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
 );
 
 export default function Report(props) {
     const { mode, rid } = useParams();
     const history = useHistory();
     function useQuery() {
-      const { search } = useLocation();
-      return new URLSearchParams(search);
+        const { search } = useLocation();
+        return new URLSearchParams(search);
     }
     const queryString = useQuery();
     const [loaded, setLoaded] = useState(false);
@@ -33,7 +33,7 @@ export default function Report(props) {
     // const [previewImageVisible, setPreviewImageVisible] = useState(false);
 
     const printResult = (field, value) => {
-        return(
+        return (
             <Row style={{ alignItems: "baseline" }}>
                 <Col span={12}>
                     <label>{field}</label>
@@ -47,37 +47,37 @@ export default function Report(props) {
 
     useEffect(() => {
         getReport(rid)
-        .then((res) => {
-            // console.log(res.data);
-            setInfo(res.data);
-            if (res.data.task === "image" || res.data.task === "integrate") {
-                getImage(rid, "original")
-                .then((res) => {
-                    // console.log(res);
-                    let url = URL.createObjectURL(res);
-                    setOriginalImage(url);
+            .then((res) => {
+                // console.log(res.data);
+                setInfo(res.data);
+                if (res.data.task === "image" || res.data.task === "integrate") {
+                    getImage(rid, "original")
+                        .then((res) => {
+                            // console.log(res);
+                            let url = URL.createObjectURL(res);
+                            setOriginalImage(url);
+                            setLoaded(true);
+                        })
+                } else {
                     setLoaded(true);
-                })
-            } else {
-                setLoaded(true);
-            }
-        })
-        .catch((err) => {
-            console.log(err.response);
-            return Modal.error({ content: err.response.data.message, onOk: () => history.push("/viewresults")});
-        });
+                }
+            })
+            .catch((err) => {
+                console.log(err.response);
+                return Modal.error({ content: err.response.data.message, onOk: () => history.push("/viewresults") });
+            });
     }, []);
 
     return (
         <div className="content">
             {!loaded && (
                 <div style={{ textAlign: "center", marginTop: "20%" }}>
-                <Spin indicator={LoadingIcon} />
-                <br />
-                <br />
-                <span style={{ fontSize: "medium", color: "#9772fb" }}>
-                    Loading ...
-                </span>
+                    <Spin indicator={LoadingIcon} />
+                    <br />
+                    <br />
+                    <span style={{ fontSize: "medium", color: "#9772fb" }}>
+                        Loading ...
+                    </span>
                 </div>
             )}
             {loaded && (
@@ -86,7 +86,7 @@ export default function Report(props) {
                         <label style={{ color: "#9772fb", fontSize: "28px", fontWeight: 500 }}>
                             Final Diagnosis
                         </label>
-                        <Badge count={`No. ${info.index}`} className="rno-badge"/>
+                        <Badge count={`No. ${info.index}`} className="rno-badge" />
                         <Tag
                             color={info.status === "annotated" ? "warning" : "success"}
                             style={{ fontSize: "small", marginLeft: "10px" }}
@@ -94,27 +94,27 @@ export default function Report(props) {
                             {info.status === "annotated" ? "AI-Annotated" : "Expert-Annotated"}
                         </Tag>
                     </div>
-                        <label style={{ color: "#a3a3a3", textAlign: "left", marginBottom: "30px" }}>
+                    <label style={{ color: "#a3a3a3", textAlign: "left", marginBottom: "30px" }}>
+                        <i>
+                            Created Date: {new Date(info.createdAt).toLocaleString()}
+                            <br />
+                            Created By:{" "}
+                            {`${info.created_by.first_name} ${info.created_by.last_name} (${info.created_by.hospital})`}
+                        </i>
+                        {info.status !== "annotated" &&
                             <i>
-                                Created Date: {new Date(info.createdAt).toLocaleString()}
                                 <br />
-                                Created By:{" "}
-                                {`${info.created_by.first_name} ${info.created_by.last_name} (${info.created_by.hospital})`}
-                            </i>
-                            {info.status !== "annotated" &&
-                                <i>
-                                    <br />
-                                    Last Updated: {new Date(info.updatedAt).toLocaleString()}
-                                    <br />
-                                    Updated By:{" "}
-                                    {`${info.updated_by.first_name} ${info.updated_by.last_name} (${info.updated_by.hospital})`}
-                                </i>}
-                        </label>
+                                Last Updated: {new Date(info.updatedAt).toLocaleString()}
+                                <br />
+                                Updated By:{" "}
+                                {`${info.updated_by.first_name} ${info.updated_by.last_name} (${info.updated_by.hospital})`}
+                            </i>}
+                    </label>
                 </div>
             )}
             {loaded && (
                 <Row style={{ marginBottom: "35px" }}>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12}>
                         <Space direction="vertical" size={10} style={{ width: "100%" }}>
                             {printResult("Hospital:", info.personal_info_id.hospital)}
                             {printResult("HN:", info.personal_info_id.hn)}
@@ -136,7 +136,7 @@ export default function Report(props) {
                             </Row>
                         </Space>
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12}>
                         <Row justify="center" /*style={{ height: "100%" }}*/ style={{ margin: "15px 0 18px 0" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
@@ -191,7 +191,10 @@ export default function Report(props) {
                                 //         </div>
                                 //     </Card>
                                 // </Button>
-                                <PreviewImageCard image={originalImage} />
+                                <PreviewImageCard
+                                    margin="0 10px 0 10px"
+                                    image={originalImage}
+                                />
                             }
                         </Row>
                         {info.status !== "reviewed" && <Row justify="center">

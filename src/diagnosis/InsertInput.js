@@ -17,7 +17,7 @@ function InsertInput(props) {
         <div>
             {(props.model === "questionnaire" || props.model === "integrate") &&
                 <Row style={{ marginBottom: "25px" }}>
-                    <Col span={11}>
+                    <Col xs={24} sm={24} lg={11}>
                         <Button
                             type="link"
                             className="label-btn"
@@ -45,10 +45,10 @@ function InsertInput(props) {
                             </Card>
                         </Button>
                     </Col>
-                    <Col span={2}>
+                    <Col xs={24} sm={24} lg={2}>
                         <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>OR</label>
                     </Col>
-                    <Col span={11}>
+                    <Col xs={24} sm={24} lg={11}>
                         <Button
                             type="link"
                             className="label-btn"

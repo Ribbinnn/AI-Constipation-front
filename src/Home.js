@@ -48,7 +48,7 @@ function Home() {
             {loaded &&
                 <div>
                     <Row style={{ marginBottom: "10px" }}>
-                        <Col span={10}>
+                        <Col xs={24} sm={10}>
                             <div style={{ fontSize: "25px", marginBottom: "20px" }}>
                                 {`Welcome, ${userData.username}.`}
                             </div>
@@ -56,20 +56,23 @@ function Home() {
                                 {`${userData.first_name} ${userData.last_name} (${userData.role.substring(0, 1).toUpperCase()}${userData.role.substring(1,)}), ${userData.hospital}`}
                             </label>
                         </Col>
-                        <Col span={14}>
+                        <Col xs={24} sm={14}>
                             <Row justify="end" style={{ alignItems: "center" }}>
                                 <Image
+                                    className="MedLogo"
                                     preview={false}
                                     height={70}
                                     src="/logos/MedCU_Logo.png"
                                 />
                                 <Image
+                                    className="CUNMLogo"
                                     preview={false}
                                     height={90}
                                     style={{ marginLeft: "15px" }}
                                     src="/logos/CUNM_Logo.png"
                                 />
                                 <Image
+                                    className="EngLogo"
                                     preview={false}
                                     height={55}
                                     src="/logos/EngCU_Logo.jpg"
@@ -91,7 +94,7 @@ function Home() {
                         </label>
                     </Row>
                     <Row>
-                        <Col span={18}>
+                        <Col md={16} lg={18}>
                             <Space direction="vertical" size={15}>
                                 <Row style={{ marginBottom: "1em" }}>
                                     {/* <label style={{ marginBottom: "5px", color: "#9772fb", fontWeight: "500" }}>
@@ -138,7 +141,7 @@ function Home() {
                                 </Row>
                             </Space>
                         </Col>
-                        <Col span={6}>
+                        <Col md={8} lg={6}>
                             <div style={{ textAlign: "center" }}>
                                 <label style={{ margin: "15px 0 25px 0", color: "#9772fb", fontWeight: 500 }}>Example of input</label>
                                 <PreviewQuestionnaireCard question={question} margin="0 0 20px 0" />

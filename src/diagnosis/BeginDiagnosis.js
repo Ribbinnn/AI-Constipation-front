@@ -26,10 +26,10 @@ export default function BeginDiagnosis(props) {
     <div>
       <label style={{ marginBottom: "25px", fontWeight: "bold" }}>Please review your Questionnaire and/or X-Ray Image</label>
       <Row>
-        {props.question && <Col span={props.image ? 16 : 24} style={{ paddingLeft: "15px" }}>
+        {props.question && <Col xl={props.image ? 16 : 24} style={{ paddingLeft: "15px" }}>
           <PreviewQuestionnaire question={props.question} />
         </Col>}
-        {props.image && <Col span={props.question ? 8 : 24} style={{ paddingLeft: "15px", paddingTop: "10px" }}>
+        {props.image && <Col xl={props.question ? 8 : 24} style={{ paddingLeft: "15px", paddingTop: "10px" }}>
           <Image
             preview={false}
             height={380}
