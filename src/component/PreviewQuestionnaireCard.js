@@ -7,7 +7,7 @@ function PreviewQuestionnaireCard(props) {
     const [visible, setVisible] = useState(false);
 
     return(
-        <div style={{ height: "200px", margin: props.margin }}>
+        <div style={{ height: "180px", margin: props.margin }}>
             <Button
                 type="link"
                 className="label-btn"
@@ -18,7 +18,7 @@ function PreviewQuestionnaireCard(props) {
                     className="preview-card"
                 >
                     <div>
-                        <label className="clickable-label" style={{ marginBottom: "15px" }}>
+                        <label className="clickable-label" style={{ marginBottom: "10px" }}>
                             Symptom <br /> Questionnaire
                         </label>
                         <br />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Form, Input, Button, Select, DatePicker, Tag, Spin, Popconfirm, Popover, Row, Col } from "antd";
 import {
-    EyeOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
+    EyeOutlined, EditOutlined, DeleteOutlined, ReloadOutlined, LoadingOutlined,
     InfoCircleOutlined, CheckOutlined, CloseOutlined
 } from '@ant-design/icons';
 import { viewResults, deleteReport } from "../api/reports";
@@ -280,12 +280,19 @@ export default function ViewResults(props) {
                 return(
                     report.status === "waiting" || report.status === "in progress" ? null :
                     <div className="center-div">
-                        {report.status === "canceled" ?
-                            null : 
+                        {report.status !== "canceled" &&
                             <EyeOutlined
                                 className="clickable-icon"
                                 onClick={() => {
-                                    history.push(`/viewresults/${role === "clinician" ? "edit" : "view"}/${report._id}/?${queryString}`);
+                                    history.push(`/viewresults/view/${report._id}/?${queryString}`);
+                                }}
+                            />}
+                        {report.status !== "canceled" && role === "clinician" &&
+                            <EditOutlined
+                                className="clickable-icon"
+                                style={{ marginLeft: "8px" }}
+                                onClick={() => {
+                                    history.push(`/viewresults/edit/${report._id}/?${queryString}`);
                                 }}
                             />}
                         {/* {role === "clinician" && <Popconfirm

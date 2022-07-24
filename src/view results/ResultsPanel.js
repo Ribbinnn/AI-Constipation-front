@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+// import { useHotkeys } from "react-hotkeys-hook";
+import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image, Spin } from "antd";
+import { LoadingOutlined, ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
+import PreviewImageModal from "../component/PreviewImageModal";
 import { updateReport, getImage } from "../api/reports";
 import Contexts from "../utils/Contexts";
+
+const LoadingIcon = (
+    <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
+);
 
 const { TextArea } = Input;
 
 export default function ResultsPanel(props) {
     const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
+    const role = JSON.parse(sessionStorage.getItem("user")).role;
     const [form] = Form.useForm();
     const [activity, setActivity] = useState(false);
 
@@ -106,21 +112,21 @@ export default function ResultsPanel(props) {
         );
     };
 
-    useHotkeys(
-        "shift+b",
-        () => {
-            if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
-                onBack();
-            }
-        },
-        {
-            filter: () => true,
-        }, []);
+    // useHotkeys(
+    //     "shift+b",
+    //     () => {
+    //         if (document.getElementById("report-back-btn") && !document.getElementsByClassName("ant-modal").length) {
+    //             onBack();
+    //         }
+    //     },
+    //     {
+    //         filter: () => true,
+    //     }, []);
 
     return (
         <div>
             <Row style={{ marginBottom: "35px" }}>
-                <Col span={6}>
+                <Col xs={24} sm={24} md={11} lg={9} xl={6}>
                     <Space
                         direction="vertical"
                         size={10}
@@ -133,7 +139,17 @@ export default function ResultsPanel(props) {
                             {props.info.DD_probability > threshold ? "Likely DD" : "Unlikely DD"}
                         </label>
                     </Space>
-                    {(props.info.task === "image" || props.info.task === "integrate") &&
+                    {(props.info.task === "image" || props.info.task === "integrate") && !gradCam && (
+                        <div style={{ textAlign: "center", marginTop: "20%" }}>
+                        <Spin indicator={LoadingIcon} />
+                        <br />
+                        <br />
+                        <span style={{ fontSize: "medium", color: "#9772fb" }}>
+                            Loading ...
+                        </span>
+                        </div>
+                    )}
+                    {(props.info.task === "image" || props.info.task === "integrate") && gradCam &&
                         <div style={{ textAlign: "center" }}>
                             <Image
                                 preview={false}
@@ -150,16 +166,31 @@ export default function ResultsPanel(props) {
                             />
                         </div>}
                 </Col>
-                <Col span={1} />
-                <Col span={17}>
+                <Col xs={24} sm={24} md={1} />
+                <Col xs={24} sm={24} md={12} lg={14} xl={17}>
                     <Space
                         direction="vertical"
                         size={10}
                         style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px" }}
                     >
-                        <label style={{ fontWeight: "bold", marginBottom: "10px" }}>Expert Final Diagnosis</label>
+                        <label style={{ fontWeight: "bold", marginBottom: "10px", display: "flex", alignItems: "center" }}>
+                            Expert Final Diagnosis
+                            {role === "clinician" && props.mode === "view" &&
+                                <EditOutlined
+                                    style={{ marginLeft: "8px", color: "#9772fb", fontWeight: "bold" }}
+                                    onClick={() => props.history.push(`/viewresults/edit/${props.rid}/?${props.queryString}`)}
+                                />}
+                        </label>
                         {props.mode === "view" && props.info.status === "annotated" &&
                             <label>-</label>}
+                        {/* {role === "clinician" && props.mode === "view" &&
+                            <a
+                                href={`/viewresults/edit/${props.rid}/?${props.queryString}`}
+                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
+                            >
+                                <EditOutlined style={{ marginRight: "8px" }} />
+                                Edit Final Diagnosis
+                            </a>} */}
                         {props.mode === "view" && props.info.status === "reviewed" &&
                             <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>
@@ -409,7 +440,7 @@ export default function ResultsPanel(props) {
                         props.mode === "view" ? "primary-btn smaller" : "primary-btn smaller cancel"}
                     onClick={onBack}
                 >
-                    Back
+                    {props.mode === "view" ? "OK" : "Cancel"}
                 </Button>
                 {props.mode === "edit" && <Button
                     className="primary-btn smaller"
@@ -455,25 +486,14 @@ export default function ResultsPanel(props) {
                         }
                     }}
                 >
-                    Save
+                    Save Final Diagnosis
                 </Button>}
             </Row>
-            <Modal
-                // centered
-                destroyOnClose
+            <PreviewImageModal
+                image={gradCam}
                 visible={previewGradCamVisible}
-                onCancel={() => setPreviewGradCamVisible(false)}
-                footer={null}
-                width="750px"
-                bodyStyle={{ textAlign: "center" }}
-                style={{ top: 20 }}
-            >
-                <Image
-                    preview={false}
-                    height={700}
-                    src={gradCam}
-                />
-            </Modal>
+                setVisible={setPreviewGradCamVisible}
+            />
         </div>
     );
 }

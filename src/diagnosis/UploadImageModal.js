@@ -100,7 +100,7 @@ function UploadImageModal(props) {
         }
     }, [props.visible]);
 
-    return(
+    return (
         <div>
             <Modal
                 // centered
@@ -121,24 +121,28 @@ function UploadImageModal(props) {
             >
                 <div>
                     <Row>
-                        <Col span={7}>
-                            <label>
-                                กรุณากำหนดภาพดังนี้
-                                <ul style={{ paddingLeft: "1rem", margin: "12px 0 22px 0" }}>
-                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>จุดกลางภาพ:</label> the level of the <br /> iliac crest</li>
-                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านบน:</label> superior to the <br /> upper kidney pole</li>
-                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านล่าง:</label> inferior to the <br /> inferior pubic rami</li>
-                                    <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านข้าง:</label> laterally to the <br /> lateral abdominal wall</li>
-                                </ul>
-                            </label>
-                            <Image
-                                preview={false}
-                                height={300}
-                                src="/pics/crop_overlay.png"
-                            />
+                        <Col md={9} lg={7}>
+                            <Row>
+                                <label>
+                                    กรุณากำหนดภาพดังนี้
+                                    <ul style={{ paddingLeft: "1rem", margin: "12px 0 22px 0" }}>
+                                        <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>จุดกลางภาพ:</label> the level of the <br /> iliac crest</li>
+                                        <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านบน:</label> superior to the <br /> upper kidney pole</li>
+                                        <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านล่าง:</label> inferior to the <br /> inferior pubic rami</li>
+                                        <li><label style={{ color: "#9772fb", fontWeight: 2000 }}>ขอบด้านข้าง:</label> laterally to the <br /> lateral abdominal wall</li>
+                                    </ul>
+                                </label>
+                            </Row>
+                            <Row style={{ marginBottom: "10px" }}>
+                                <Image
+                                    preview={false}
+                                    height={300}
+                                    src="/pics/crop_overlay.png"
+                                />
+                            </Row>
                         </Col>
-                        <Col span={1} />
-                        <Col span={16} style={{ paddingLeft: "7px" }}>
+                        <Col xs={0} sm={0} lg={1} />
+                        <Col md={14} lg={16} style={{ paddingLeft: "7px", marginBottom: "10px" }}>
                             <label>Select Image:</label>
                             <Button
                                 type="primary"
@@ -149,9 +153,9 @@ function UploadImageModal(props) {
                                     setWebcamVisible(true);
                                 }}
                             />
-                            <Button 
-                                type="primary" 
-                                className="primary-btn smaller" 
+                            <Button
+                                type="primary"
+                                className="primary-btn smaller"
                                 style={{ marginLeft: "15px" }}
                                 onClick={() => {
                                     document.getElementById("input-file").click();
@@ -161,8 +165,8 @@ function UploadImageModal(props) {
                                     <input 
                                         type="file"
                                         id="input-file"
-                                        accept="image/png, image/jpeg"
-                                        // accept="image/*"
+                                        // accept="image/png, image/jpeg"
+                                        accept="image/*"
                                         hidden 
                                         onChange={onFileChange}
                                     />

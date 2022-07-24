@@ -13,7 +13,7 @@ const LoadingIcon = (
 
 export default function Result(props) {
   const history = useHistory();
-  const role = JSON.parse(sessionStorage.getItem("user")).role;
+  // const role = JSON.parse(sessionStorage.getItem("user")).role;
   const btnList = props.btnList;
   const title = props.title;
   const time = {questionnaire: 1000, image: 10000, integrate: 7000};
@@ -24,7 +24,7 @@ export default function Result(props) {
       .then((res) => {
           // console.log(res.data);
           if (res.data.status === "annotated") {
-            history.push(`/viewresults/${role === "clinician" ? "edit" : "view"}/${props.reportId}`);
+            history.push(`/viewresults/view/${props.reportId}`);
           }
           if (res.data.status === "canceled") {
             history.push("/viewresults");
@@ -42,7 +42,12 @@ export default function Result(props) {
   return (
     <div className="btn-column">
       <Spin indicator={LoadingIcon} />
-      <span style={{ fontSize: '25px', color: "#9772fb", marginTop: 20, marginBottom: 10 }}> {title} </span>
+      <div style={{ fontSize: '25px', fontWeight: 500, color: "#9772fb", marginTop: 20 }}>
+        Diagnosis is processing
+      </div>
+      <div style={{ fontSize: '20px', fontWeight: 500, color: "#45c01a", marginBottom: 10 }}>
+        All data is saved
+      </div>
       {btnList.map((btn) => (
         <a href={btn.destination} key={btn.title}>
           <Button className="primary-btn" >{btn.title}</Button>
