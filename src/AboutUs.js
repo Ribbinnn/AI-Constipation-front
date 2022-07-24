@@ -188,7 +188,7 @@ function AboutUs() {
                                 <Image
                                     preview={false}
                                     height={190}
-                                    src="/people/sornsiri.jpeg"
+                                    src="/people/sornsiri.jpg"
                                 />
                             </Row>
                             <Row justify="center">
