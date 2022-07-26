@@ -86,10 +86,10 @@ export default function Report(props) {
                         <label style={{ color: "#9772fb", fontSize: "28px", fontWeight: 500 }}>
                             Final Diagnosis
                         </label>
-                        <Badge count={`No. ${info.index}`} className="rno-badge" />
+                        {/* <Badge count={`No. ${info.index}`} className="rno-badge" /> */}
                         <Tag
                             color={info.status === "annotated" ? "warning" : "success"}
-                            style={{ fontSize: "small", marginLeft: "10px" }}
+                            style={{ fontSize: "small", marginLeft: "15px" }}
                         >
                             {info.status === "annotated" ? "AI-Annotated" : "Expert-Annotated"}
                         </Tag>

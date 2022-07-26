@@ -59,16 +59,16 @@ export default function ViewResults(props) {
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
 
     const columns = [
-        {
-            title: "No.",
-            dataIndex: "index",
-            key: "index",
-            align: "center",
-            sorter: {
-                compare: (a, b) => a.index.localeCompare(b.index)
-            },
-            showSorterTooltip: false,
-        },
+        // {
+        //     title: "No.",
+        //     dataIndex: "index",
+        //     key: "index",
+        //     align: "center",
+        //     sorter: {
+        //         compare: (a, b) => a.index.localeCompare(b.index)
+        //     },
+        //     showSorterTooltip: false,
+        // },
         {
             title: 
                 <span>
@@ -103,6 +103,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown)
             },
             showSorterTooltip: false,
+            width: 150,
             render: (status) => {
                 return(
                     <Tag color={shownStatus[status].color}  style={{width: "100%", fontSize: "small"}}>
@@ -127,6 +128,7 @@ export default function ViewResults(props) {
                 }
             },
             showSorterTooltip: false,
+            width: 120,
         },
         {
             title: "Name",
@@ -144,6 +146,7 @@ export default function ViewResults(props) {
                 }
             },
             showSorterTooltip: false,
+            width: 120,
         },
         {
             title: "Final Diagnosis",
@@ -249,7 +252,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => new Date(a.date) - new Date(b.date)
             },
             showSorterTooltip: false,
-            width: 150,
+            width: 140,
         },
         {
             title: "Clinician",
@@ -260,6 +263,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => a.clinician.localeCompare(b.clinician)
             },
             showSorterTooltip: false,
+            width: 100,
         },
         {
             title: "Hospital",
@@ -270,7 +274,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => a.hospital.localeCompare(b.hospital)
             },
             showSorterTooltip: false,
-            width: 150,
+            width: 160,
         },
         {
             // title: "Action",
@@ -321,7 +325,7 @@ export default function ViewResults(props) {
                 );
             },
             align: "center",
-            width: 40,
+            width: 50,
         },
     ];
 
@@ -350,9 +354,9 @@ export default function ViewResults(props) {
                 (queryString.get("clinician") === null
                     ? true
                     : item.clinician.toLowerCase().includes(queryString.get("clinician").toLowerCase())) &&
-                (queryString.get("no") === null
-                    ? true
-                    : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
+                // (queryString.get("no") === null
+                //     ? true
+                //     : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
                 (queryString.get("from") === null
                     ? true
                     : new Date(item.date) >= new Date(queryString.get("from"))) &&
@@ -458,7 +462,7 @@ export default function ViewResults(props) {
                 </Form.Item>
             </Form>
             <Form layout="inline">
-                <Form.Item
+                {/* <Form.Item
                     name="no"
                     key="no"
                     label="No."
@@ -472,7 +476,7 @@ export default function ViewResults(props) {
                             item.target.value === "" ? queryString.delete("no") : queryString.set("no", item.target.value);
                         }}
                         style={{width:"200px"}} />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name="from"
                     key="from"
@@ -543,27 +547,21 @@ export default function ViewResults(props) {
                 </div>
             )}
             {loaded &&
-                <Row style={{margin: "40px 0 8px 0"}}>
-                    <Col span={12}>
-                            <label
-                                className="clickable-label"
-                                style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
-                                onClick={() => {
-                                    // window.location.reload();
-                                    reload === "" ? setReload("reload") : setReload("")
-                                    setLoaded(false);
-                                }}>
-                                    <ReloadOutlined style={{marginRight: "5px"}} />
-                                    Reload
-                            </label>
-                    </Col>
-                    <Col span={12}>
-                        <div style={{float: "right", marginRight: "5px"}}>
-                            <label style={{ fontWeight: 500 }}>
-                                {`${uploadedItem.length} report(s)`}
-                            </label>
-                        </div>
-                    </Col>
+                <Row justify="space-between" style={{ margin: "40px 0 8px 0" }}>
+                    <label
+                        className="clickable-label"
+                        style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
+                        onClick={() => {
+                            // window.location.reload();
+                            reload === "" ? setReload("reload") : setReload("")
+                            setLoaded(false);
+                        }}>
+                            <ReloadOutlined style={{marginRight: "5px"}} />
+                            Reload
+                    </label>
+                    <label style={{ fontWeight: 500, marginRight: "5px" }}>
+                        {`${uploadedItem.length} report(s)`}
+                    </label>
                 </Row>}
             {loaded &&
                 <Table 
