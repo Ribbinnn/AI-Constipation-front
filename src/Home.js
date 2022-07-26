@@ -23,6 +23,12 @@ function Home() {
         Block: 1, Digit: 0, BloatFreq: 5, BloatSev: 3, BloatDur: 1, SevScale: 8.5
     }
 
+    const modelList = [
+        {desc: "แบบสอบถาม", acc: "56.36"},
+        {desc: "ภาพเอกซเรย์ช่องท้อง", acc: "60.50"},
+        {desc: "แบบสอบถามและภาพเอกซเรย์ช่องท้อง", acc: "64.98"},
+    ]
+
     useEffect(() => {
         getUserById(user.id)
             .then((res) => {
@@ -115,33 +121,39 @@ function Home() {
                                             />
                                         </dt>
                                         <dt>2. เลือกรูปแบบการวิเคราะห์ (Model)</dt>
-                                        <dt>&emsp;&emsp;- Model 1 แบบสอบถาม </dt>
-                                        <dt>&emsp;&emsp;- Model 2 ภาพเอกซเรย์ช่องท้อง </dt>
-                                        <dt style={{ marginBottom: "2px" }}>&emsp;&emsp;- Model 3 แบบสอบถามและภาพเอกซเรย์ช่องท้อง </dt>
+                                        <dt>&emsp;&emsp;- Model 1 &nbsp;แบบสอบถาม </dt>
+                                        <dt>&emsp;&emsp;- Model 2 &nbsp;ภาพเอกซเรย์ช่องท้อง </dt>
+                                        <dt style={{ marginBottom: "2px" }}>&emsp;&emsp;- Model 3 &nbsp;แบบสอบถามและภาพเอกซเรย์ช่องท้อง </dt>
                                         <dt style={{ marginBottom: "2px" }}>3. ใส่ข้อมูล <span style={{ color: "#9772fb" }}>แบบสอบถาม</span> และ/หรือ <span style={{ color: "#9772fb" }}>อัปโหลดรูปภาพ</span></dt>
                                         <dt style={{ marginBottom: "2px" }}>4. กดวินิจฉัย</dt>
                                         <dt style={{ marginBottom: "2px" }}>5. ระบบแสดงร้อยละความเชื่อมั่นในการวินิจฉัยภาวะกล้ามเนื้อควบคุมการถ่ายอุจจาระทำงานไม่ประสานกัน</dt>
                                     </dl>
                                 </Row>
-                                {/* <Row>
-                                    <dl style={{ fontSize: "medium" }}>
-                                        <dt style={{ color: "#9772fb", fontWeight: "500" }}>การให้คะแนนความรุนแรงของอาการ (<span style={{ fontWeight: "600", textDecoration: "underline" }}>เฉลี่ยในช่วงระยะเวลา 3 เดือนที่ผ่านมา</span>) โดยใช้เกณฑ์ดังนี้</dt>
-                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการเล็กน้อย</span> &nbsp;&nbsp;= มีอาการแต่อาการไม่รบกวนการดำเนินชีวิตประจำวัน</dt>
-                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการปานกลาง</span> = มีอาการรบกวน แต่ไม่ต้องเปลี่ยนแปลงการดำเนินกิจวัตรประจำวันนั้นๆ</dt>
-                                        <dt style={{ marginBottom: "2px" }}>- <span style={{ fontWeight: "600" }}>มีอาการรุนแรง</span> &emsp;&nbsp;= มีอาการและอาการมีผลกับกิจวัตรประจำวันมากจนต้องเปลี่ยนแปลงการดำเนินชีวิตประจำวัน</dt>
-                                    </dl>
-                                </Row> */}
-                                <Row>
-                                    <dl style={{ fontSize: "medium" }}>
-                                        <dt style={{ color: "#9772fb", fontWeight: "600" }}>Model Accuracy</dt>
-                                        <dt style={{ marginBottom: "2px" }}>1. Model 1 Version x.x &emsp;Accuracy: 56.36%</dt>
-                                        <dt style={{ marginBottom: "2px" }}>2. Model 2 Version x.x &emsp;Accuracy: 60.50%</dt>
-                                        <dt style={{ marginBottom: "2px" }}>3. Model 3 Version x.x &emsp;Accuracy: 64.98%</dt>
-                                    </dl>
-                                </Row>
+                                <div style={{ marginBottom: "2em" }}>
+                                    <label style={{ color: "#9772fb", fontWeight: "600" }}>Model Accuracy</label>
+                                    {modelList.map((item, i) => (
+                                        <Row style={{ marginBottom: "2px" }}>
+                                            <Col xs={24} sm={11} xl={10} xxl={9}>
+                                                <dl style={{ fontSize: "medium", marginBottom: 0 }}>
+                                                    <dt>Model {i+1} &nbsp;{item.desc}</dt>
+                                                </dl>
+                                            </Col>
+                                            <Col xs={24} sm={5}>
+                                                <dl style={{ fontSize: "medium", marginBottom: 0 }}>
+                                                    <dt>&nbsp; Accuracy &nbsp;{item.acc}%</dt>
+                                                </dl>
+                                            </Col>
+                                            <Col xs={24} sm={8} xl={9} xxl={10}>
+                                                <dl style={{ fontSize: "medium", marginBottom: 0, color: "#a3a3a3" }}>
+                                                    <dt>&nbsp; <i>(updated July, 2022)</i></dt>
+                                                </dl>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                </div>
                             </Space>
                         </Col>
-                        <Col md={8} lg={6}>
+                        <Col xs={22} md={8} lg={6}>
                             <div style={{ textAlign: "center" }}>
                                 <label style={{ margin: "15px 0 25px 0", color: "#9772fb", fontWeight: 500 }}>Example of input</label>
                                 <PreviewQuestionnaireCard question={question} margin="0 0 20px 0" />
