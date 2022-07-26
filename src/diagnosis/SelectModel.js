@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Button } from "antd";
 
 function SelectModel(props) {
     const modelList = [
@@ -11,11 +11,11 @@ function SelectModel(props) {
     return(
         <div>
             {modelList.map((item, i) => (
-                <Card
-                    key={i}
-                    style={{ marginBottom: "25px" }}
-                    hoverable={true}
-                    className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
+                <Button
+                    type="link"
+                    className="label-btn"
+                    style={{ width: "100%", height: "100%", marginBottom: "25px" }}
+                    disabled={props.rid ? true : false}
                     onClick={() => {
                         props.setModel(item.name);
                         if (item.name === "questionnaire") {
@@ -25,11 +25,17 @@ function SelectModel(props) {
                         }
                     }}
                 >
-                    <div style={{ width: "100%", cursor: "pointer" }}>
-                        <label className="clickable-label" style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
-                        <label className="clickable-label">{item.desc}</label>
-                    </div>
-                </Card>
+                    <Card
+                        key={i}
+                        hoverable={true}
+                        className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
+                    >
+                        <div style={{ width: "100%", cursor: "pointer" }}>
+                            <label className="clickable-label" style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
+                            &nbsp;<label className="clickable-label">{item.desc}</label>
+                        </div>
+                    </Card>
+                </Button>
             ))}
         </div>
     );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 // import { useHotkeys } from "react-hotkeys-hook";
 import { Steps, Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -22,6 +22,7 @@ const LoadingIcon = (
 const { Step } = Steps;
 
 export default function Diagnosis() {
+  const history = useHistory();
   const { mode, rid } = useParams();
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [current, setCurrent] = useState(0);
@@ -92,7 +93,9 @@ export default function Diagnosis() {
       })
       .catch((err) => {
         console.log(err.response);
-        return Modal.error({ content: err.response.data.message });
+        // return Modal.error({ content: err.response.data.message });
+        history.push("/diagnosis");
+        window.location.reload();
       });
     } else {
       setLoaded(true);
@@ -205,6 +208,7 @@ export default function Diagnosis() {
         <div className={current === 3 && question ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
           {current === 0 && (
             <PersonalDetails
+              rid={rid}
               ref={personalDetailsRef}
               details={details}
               setDetails={setDetails}
@@ -213,6 +217,7 @@ export default function Diagnosis() {
           )}
           {current === 1 && (
             <SelectModel
+              rid={rid}
               model={model}
               setModel={setModel}
               setQuestion={setQuestion}

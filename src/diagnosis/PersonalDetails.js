@@ -55,7 +55,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Select>
+                                <Select disabled={props.rid ? true : false}>
                                     {hospitals.map((hospital, i) => (
                                         <Option key={i} value={hospital}>
                                             {hospital}
@@ -80,7 +80,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Input className="input-text fixed-size" />
+                                <Input className="input-text fixed-size" disabled={props.rid ? true : false} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -99,7 +99,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Input className="input-text fixed-size" />
+                                <Input className="input-text fixed-size" disabled={props.rid ? true : false} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -118,7 +118,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Radio.Group>
+                                <Radio.Group disabled={props.rid ? true : false}>
                                     <Radio key="female" value="F">Female</Radio>
                                     <Radio key="male" value="M">Male</Radio>
                                 </Radio.Group>
@@ -142,6 +142,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             ]}>
                                 <InputNumber
                                     className="bigger"
+                                    disabled={props.rid ? true : false}
                                     min={0}
                                     max={130}
                                     step={1}
@@ -179,6 +180,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     className="rating"
                                     tooltips={ratingDesc}
                                     allowClear={false}
+                                    disabled={props.rid ? true : false}
                                 />
                         </Form.Item>
                     </Col>
