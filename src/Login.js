@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Modal, Card } from "antd";
+import React from "react";
+import { Form, Input, Button, Modal, Card, Checkbox } from "antd";
 import { login } from "./api/login";
 
 function Login() {
   const [form] = Form.useForm();
-  const [remember, setRemember] = useState(false);
-
-  function rememberOnChange(item) {
-    setRemember(item.target.checked);
-  }
-
+  
   return (
     <div style={{ width: "100%", height: "100%", background: "#888" }}>
       <div className="center-div" style={{ height: "100%" }}>
@@ -54,17 +49,14 @@ function Login() {
                   style={{ width: "300px" }}
                 />
               </Form.Item>
-              <Form.Item>
-                <div style={{ display: "inline-block" }}>
-                  <label
-                    className="center-div checkbox-container"
-                    style={{ color: "#58595b" }}
-                  >
-                    <Input type="checkbox" onChange={rememberOnChange} />
-                    <span className="checkmark"></span>
-                    Remember me
-                  </label>
-                </div>
+              <Form.Item
+                name="remember"
+                valuePropName="checked"
+                initialValue={false}
+              >
+                <Checkbox className="login-checkbox">
+                  Remember me
+                </Checkbox>
               </Form.Item>
               <Form.Item>
                 <Button
@@ -74,7 +66,7 @@ function Login() {
                   onClick={async () => {
                     /* call sign in api */
                     const data = await form.validateFields();
-                    login(data.username, data.password, remember)
+                    login(data.username, data.password, data.remember)
                       .then((respond) => {
                         window.location.reload();
                       })
