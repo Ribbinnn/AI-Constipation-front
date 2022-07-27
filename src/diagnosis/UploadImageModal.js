@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Modal, Row, Col, Button, Image, Slider, InputNumber } from "antd";
+import { Modal, Row, Col, Button, Image, Slider, InputNumber, Checkbox } from "antd";
 import { CameraOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import Cropper from 'react-easy-crop'
 import { getOrientation } from 'get-orientation/browser'
 import { getCroppedImg, getRotatedImage } from '../utils/cropUtils'
 import { WebcamCapture } from "../component/WebcamCapture";
+import { getImage } from "../api/reports";
 
 function UploadImageModal(props) {
+    const [useOldImage, setUseOldImage] = useState(false);
     const [imageName, setImageName] = useState(null);
     const [webcamVisible, setWebcamVisible] = useState(false);
     const [activity, setActivity] = useState(null);
@@ -77,6 +79,9 @@ function UploadImageModal(props) {
             }
 
             setImageSrc(imageDataUrl)
+            if (useOldImage) {
+                setUseOldImage(false);
+            }
             setActivity("file change");
         }
     }
@@ -95,7 +100,8 @@ function UploadImageModal(props) {
             // console.log(props.image);
             setImageSrc(props.image.originalImage);
             setImageName(props.image.originalImageName);
-        } else if (document.getElementById("input-file")) {
+        }
+        if (document.getElementById("input-file")) {
             document.getElementById("input-file").value = "";
         }
     }, [props.visible]);
@@ -148,7 +154,7 @@ function UploadImageModal(props) {
                                 type="primary"
                                 className="primary-btn smaller"
                                 icon={<CameraOutlined />}
-                                style={{ marginLeft: "15px" }}
+                                style={{ marginLeft: "15px", marginBottom: "7px" }}
                                 onClick={() => {
                                     setWebcamVisible(true);
                                 }}
@@ -172,8 +178,19 @@ function UploadImageModal(props) {
                                     />
                             </Button>
                             <label style={{ marginLeft: "20px" }}>{imageName ? imageName : ""}</label>
+                            {props.rid && props.model === "integrate" &&
+                                <Checkbox
+                                    checked={useOldImage}
+                                    style={{ marginLeft: "20px" }}
+                                    onChange={() => {
+                                        setUseOldImage(!useOldImage);
+                                        setActivity("use old image");
+                                    }}
+                                >
+                                    ใช้รูปภาพเดิม
+                                </Checkbox>}
                             {imageSrc && <div>
-                                <Row style={{ margin: "27px 0 5px 0" }}>
+                                <Row style={{ margin: "20px 0 5px 0" }}>
                                     <Col span={24}>
                                         <div className="crop-container">
                                             <Cropper
@@ -282,8 +299,16 @@ function UploadImageModal(props) {
                             className="primary-btn smaller"
                             onClick={async () => {
                                 // showCroppedImage();
-                                if (imageSrc) {
-                                    const croppedImageURL = await getCroppedImg(
+                                if (props.rid && useOldImage) {
+                                    getImage(props.rid, "original")
+                                    .then((res) => {
+                                        // console.log(res);
+                                        let image = new File([res], "croppedImage.png", { type: "image/png" });
+                                        props.setImage({croppedImage: image});
+                                        onOK();
+                                    });
+                                } else if (imageSrc) {
+                                    const croppedImage = await getCroppedImg(
                                         imageSrc,
                                         croppedAreaPixels,
                                         rotation
@@ -291,7 +316,7 @@ function UploadImageModal(props) {
                                     props.setImage({
                                         originalImage: imageSrc,
                                         originalImageName: imageName,
-                                        croppedImage: croppedImageURL,
+                                        croppedImage: croppedImage,
                                     });
                                     onOK();
                                 } else {

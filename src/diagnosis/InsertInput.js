@@ -10,8 +10,8 @@ function InsertInput(props) {
     // const [uploadQuestionVisible, setUploadQuestionVisible] = useState(false);
     // const [uploadImageVisible, setUploadImageVisible] = useState(false);
 
-    const isQuestionComplete = (props.question && props.questionReview) || props.mode === "image";
-    const isImageComplete = props.image || props.mode === "questionnaire";
+    const isQuestionComplete = (props.question && props.questionReview);
+    const isImageComplete = props.image;
 
     return(
         <div>
@@ -22,7 +22,6 @@ function InsertInput(props) {
                             type="link"
                             className="label-btn"
                             style={{ width: "100%", height: "100%" }}
-                            disabled={props.mode === "image" ? true : false}
                             onClick={() => setFillQuestionVisible(true)}
                         >
                             <Card
@@ -53,7 +52,6 @@ function InsertInput(props) {
                             type="link"
                             className="label-btn"
                             style={{ width: "100%", height: "100%" }}
-                            disabled={props.mode === "image" ? true : false}
                             onClick={() => props.setUploadQuestionVisible(true)}
                         >
                             <Card
@@ -82,7 +80,6 @@ function InsertInput(props) {
                     type="link"
                     className="label-btn"
                     style={{ width: "100%", height: "100%", marginBottom: "25px" }}
-                    disabled={props.mode === "questionnaire" ? true : false}
                     onClick={() => props.setUploadImageVisible(true)}
                 >
                     <Card

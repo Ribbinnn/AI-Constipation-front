@@ -620,6 +620,10 @@ ol {
   font-size: medium;
 }
 
+.ant-checkbox-inner {
+  border-color: #c4c4c4;
+}
+
 .ant-radio-inner,
 .ant-radio-wrapper:hover .ant-radio,
 .ant-radio:hover .ant-radio-inner,

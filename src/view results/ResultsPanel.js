@@ -183,14 +183,6 @@ export default function ResultsPanel(props) {
                         </label>
                         {props.mode === "view" && props.info.status === "annotated" &&
                             <label>-</label>}
-                        {/* {role === "clinician" && props.mode === "view" &&
-                            <a
-                                href={`/viewresults/edit/${props.rid}/?${props.queryString}`}
-                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
-                            >
-                                <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Final Diagnosis
-                            </a>} */}
                         {props.mode === "view" && props.info.status === "reviewed" &&
                             <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>

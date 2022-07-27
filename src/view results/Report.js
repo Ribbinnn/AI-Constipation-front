@@ -198,36 +198,16 @@ export default function Report(props) {
                             }
                         </Row>
                         {info.status !== "reviewed" && <Row justify="center">
-                            {(info.task === "questionnaire" || info.task === "integrate") && <a
-                                href={`/diagnosis/questionnaire/${rid}`}
+                            <a
+                                href={`/diagnosis/${rid}`}
                                 className="a-with-icon"
-                                style={{
-                                    color: "#9772fb", fontWeight: "bold"
-                                }}
+                                style={{ color: "#9772fb", fontWeight: "bold" }}
                             >
                                 <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Questionnaire
-                            </a>}
-                            {(info.task === "image" || info.task === "integrate") && <a
-                                href={`/diagnosis/image/${rid}`}
-                                className="a-with-icon"
-                                style={{
-                                    color: "#9772fb", fontWeight: "bold", marginLeft: info.task === "integrate" ? "15px": 0
-                                }}
-                            >
-                                <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Image
-                            </a>}
-                            {info.task === "integrate" && <a
-                                href={`/diagnosis/all/${rid}`}
-                                className="a-with-icon"
-                                style={{
-                                    color: "#9772fb", fontWeight: "bold", marginLeft: "15px"
-                                }}
-                            >
-                                <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Both
-                            </a>}
+                                Edit {info.task === "integrate" ?
+                                    "Questionnaire / Image" :
+                                    info.task.charAt(0).toUpperCase() + info.task.slice(1)}
+                            </a>
                         </Row>}
                     </Col>
                 </Row>
