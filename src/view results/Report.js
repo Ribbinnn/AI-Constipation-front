@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
-import { LoadingOutlined, SnippetsOutlined, PictureOutlined, EditOutlined } from "@ant-design/icons";
+import { LoadingOutlined, SnippetsOutlined, PictureOutlined, EditOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 // import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";
 import PreviewImageCard from "../component/PreviewImageCard";
 import ResultsPanel from "./ResultsPanel";
-import { getReport, getImage } from "../api/reports";
+import { getReport, getImage, getQuestionnaireFile } from "../api/reports";
 
 const LoadingIcon = (
     <LoadingOutlined style={{ fontSize: 50, color: "#9772fb" }} spin />
@@ -23,6 +23,7 @@ export default function Report(props) {
     const [loaded, setLoaded] = useState(false);
     const [info, setInfo] = useState();
     const [originalImage, setOriginalImage] = useState(null);
+    const [questionFile, setQuestionFile] = useState(null);
 
     const ratingDesc = [
         "ไม่มั่นใจ", "มั่นใจเล็กน้อย", "มั่นใจปานกลาง", "ค่อนข้างมั่นใจ", "มั่นใจมาก"
@@ -47,25 +48,31 @@ export default function Report(props) {
 
     useEffect(() => {
         getReport(rid)
-            .then((res) => {
-                // console.log(res.data);
-                setInfo(res.data);
-                if (res.data.task === "image" || res.data.task === "integrate") {
-                    getImage(rid, "original")
-                        .then((res) => {
-                            // console.log(res);
-                            let url = URL.createObjectURL(res);
-                            setOriginalImage(url);
-                            setLoaded(true);
-                        })
-                } else {
-                    setLoaded(true);
-                }
-            })
-            .catch((err) => {
-                console.log(err.response);
-                return Modal.error({ content: err.response.data.message, onOk: () => history.push("/viewresults") });
-            });
+        .then((res) => {
+            // console.log(res.data);
+            setInfo(res.data);
+            if (res.data.task === "questionnaire" || res.data.task === "integrate") {
+                getQuestionnaireFile(rid)
+                .then((res) => {
+                    let url = URL.createObjectURL(res);
+                    setQuestionFile(url);
+                    // setLoaded(true);
+                })
+            }
+            if (res.data.task === "image" || res.data.task === "integrate") {
+                getImage(rid, "original")
+                .then((res) => {
+                    let url = URL.createObjectURL(res);
+                    setOriginalImage(url);
+                    // setLoaded(true);
+                })
+            }
+            setLoaded(true);
+        })
+        .catch((err) => {
+            console.log(err.response);
+            return Modal.error({ content: err.response.data.message, onOk: () => history.push("/viewresults") });
+        });
     }, []);
 
     return (
@@ -137,7 +144,7 @@ export default function Report(props) {
                         </Space>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
-                        <Row justify="center" /*style={{ height: "100%" }}*/ style={{ margin: "15px 0 18px 0" }}>
+                        <Row justify="center" style={{ margin: "5px 0 18px 0" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
@@ -166,12 +173,6 @@ export default function Report(props) {
                                     }
                                 />
                             }
-                            {/* {(info.task === "image" || info.task === "integrate") &&
-                                <Image
-                                    // preview={false}
-                                    height={230}
-                                    src={originalImage}
-                                />} */}
                             {(info.task === "image" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
@@ -209,6 +210,30 @@ export default function Report(props) {
                                     info.task.charAt(0).toUpperCase() + info.task.slice(1)}
                             </a>
                         </Row>}
+                        <Row justify="center">
+                            {(info.task === "questionnaire" || info.task === "integrate") && <a
+                                href={questionFile}
+                                download="questionnaire.xlsx"
+                                className="a-with-icon"
+                                style={{ color: "#9772fb", fontWeight: "bold" }}
+                            >
+                                <CloudDownloadOutlined style={{ marginRight: "8px" }} />
+                                Download Questionnaire
+                            </a>}
+                            {(info.task === "image" || info.task === "integrate") && <a
+                                href={originalImage}
+                                download="image.png"
+                                className="a-with-icon"
+                                style={{
+                                    color: "#9772fb",
+                                    fontWeight: "bold",
+                                    marginLeft: info.task === "integrate" ? "15px" : 0
+                                }}
+                            >
+                                <CloudDownloadOutlined style={{ marginRight: "8px" }} />
+                                Download Image
+                            </a>}
+                        </Row>
                     </Col>
                 </Row>
             )}
