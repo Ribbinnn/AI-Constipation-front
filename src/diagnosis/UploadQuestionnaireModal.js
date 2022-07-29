@@ -3,7 +3,7 @@ import { Modal, Row, Button } from "antd";
 import { CloudDownloadOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import XLSX from "xlsx";
 import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
-import { downloadTemplate } from "../api/infer";
+import { getTemplate, getTemplateDesc } from "../api/infer";
 
 var _ = require('lodash');
 
@@ -12,6 +12,8 @@ function UploadQuestionnaireModal(props) {
         "DistFreq", "DistSev", "DistDur", "FreqStool", "Incomplete", "Strain",
         "Hard", "Block", "Digit", "BloatFreq", "BloatSev", "BloatDur", "SevScale"
     ];
+    const [template, setTemplate] = useState(null);
+    const [templateDesc, setTemplateDesc] = useState(null);
 
     const [question, setQuestion] = useState(null);
     const [uploadedFileName, setUploadedFileName] = useState(null);
@@ -58,7 +60,6 @@ function UploadQuestionnaireModal(props) {
             const target_workbook = workbook.Sheets[workbook.SheetNames[0]];
             // convert file to json
             const data_json = XLSX.utils.sheet_to_json(target_workbook);
-            // console.log(data_json);
             // check fields
             const uploaded_fields = data_json.map(d => d.name);
             if (data_json.length !== 13 || !_.isEqual(uploaded_fields, fields)) {
@@ -75,7 +76,6 @@ function UploadQuestionnaireModal(props) {
                     let val = data_json[i].value;
                     question[key] = val;
                 }
-                // console.log(question);
                 setUploadedFileName(event.target.files[0].name);
                 setQuestion(question);
                 setHasError(false);
@@ -84,6 +84,24 @@ function UploadQuestionnaireModal(props) {
             console.log(e);
         }
     }
+    
+    useEffect(() => {
+        getTemplate()
+        .then((res) => {
+            const template = window.URL.createObjectURL(res)
+            setTemplate(template);
+        }).catch((e) => {
+            console.log(e);
+        });
+
+        getTemplateDesc()
+        .then((res) => {
+            const templateDesc = window.URL.createObjectURL(res)
+            setTemplateDesc(templateDesc);
+        }).catch((e) => {
+            console.log(e);
+        });
+    }, []);
 
     useEffect(() => {
         if (props.question && props.uploadedFileName) {
@@ -115,29 +133,24 @@ function UploadQuestionnaireModal(props) {
             >
                 <div style={{ height: "100%" }}>
                     <div style={{ height: "91%", overflow: "scroll" }}>
-                        <label 
-                            style={{display: "flex", alignItems: "center", marginBottom: "15px", color: "#9772fb", fontWeight: 500}}
-                            className="clickable-label"
-                            onClick={() => {
-                                downloadTemplate()
-                                .then((res) => {
-                                    const url = window.URL.createObjectURL(res)
-                                    const link = document.createElement('a');
-
-                                    link.href = url;
-                                    link.setAttribute('download', `template.xlsx`);
-                                    
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    document.body.removeChild(link);
-                                }).catch((e) => {
-                                    console.log(e)
-                                })
-                            }}
+                        <a
+                            href={template}
+                            download="template.xlsx"
+                            className="a-with-icon"
+                            style={{ color: "#9772fb", fontWeight: 500 }}
                         >
-                                Download Template
-                                <CloudDownloadOutlined style={{marginLeft: "8px"}} />
-                        </label>
+                            <CloudDownloadOutlined style={{ marginRight: "8px" }} />
+                            Download Template
+                        </a>
+                        <a
+                            href={templateDesc}
+                            download="template_desc.xlsx"
+                            className="a-with-icon"
+                            style={{ color: "#9772fb", fontWeight: 500, marginBottom: "20px" }}
+                        >
+                            <CloudDownloadOutlined style={{ marginRight: "8px" }} />
+                            Download Template Description
+                        </a>
                         <div style={{ marginBottom: "30px" }}>
                             <Button 
                                 type="primary" 
