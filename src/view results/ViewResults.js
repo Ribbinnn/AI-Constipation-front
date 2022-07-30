@@ -249,7 +249,8 @@ export default function ViewResults(props) {
             key: "date",
             align: "center",
             sorter: {
-                compare: (a, b) => new Date(a.date) - new Date(b.date)
+                compare: (a, b) => new Date(a.date) - new Date(b.date),
+                // multiple: 1,
             },
             showSorterTooltip: false,
             width: 140,
@@ -260,7 +261,8 @@ export default function ViewResults(props) {
             key: "clinician",
             align: "center",
             sorter: {
-                compare: (a, b) => a.clinician.localeCompare(b.clinician)
+                compare: (a, b) => a.clinician.localeCompare(b.clinician),
+                // multiple: 2,
             },
             showSorterTooltip: false,
             width: 100,
@@ -534,6 +536,12 @@ export default function ViewResults(props) {
                         }}>
                             Search
                     </Button>
+                    {window.location.search && <label
+                        style={{ color: "#f32424", fontWeight: 500, marginLeft: "25px", cursor: "pointer" }}
+                        onClick={() => window.location.search = ""}
+                    >
+                        Clear all filters
+                    </label>}
                 </Form.Item>
             </Form>
             {!loaded && (
