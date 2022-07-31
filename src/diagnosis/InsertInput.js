@@ -44,7 +44,7 @@ function InsertInput(props) {
                             </Card>
                         </Button>
                     </Col>
-                    <Col xs={24} sm={24} lg={2}>
+                    <Col xs={24} sm={24} lg={2} style={{ margin: "5px 0" }}>
                         <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>OR</label>
                     </Col>
                     <Col xs={24} sm={24} lg={11}>

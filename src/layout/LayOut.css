@@ -254,11 +254,11 @@
 
 .steps-content-diagnosis {
   padding: 60px 45px 30px 45px;
-  height: 79%;
+  height: 77%;
 }
 
 .steps-content-diagnosis.preview {
-  padding: 45px 35px;
+  padding: 45px 35px 20px;
   height: auto;
 }
 
@@ -266,7 +266,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 35px;
+  margin: 15px 35px 0 35px;
 }
 
 .steps-action-1 {
