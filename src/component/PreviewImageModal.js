@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Image } from "antd";
+import { Modal } from "antd";
 
 function PreviewImageModal(props) {
 

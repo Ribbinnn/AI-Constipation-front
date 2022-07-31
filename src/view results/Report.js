@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button, Image } from "antd";
+import { Spin, Modal, Row, Col, Badge, Tag, Rate, Space, Card, Button } from "antd";
 import { LoadingOutlined, SnippetsOutlined, PictureOutlined, EditOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 // import PreviewQuestionnaire from "../component/PreviewQuestionnaire";
 import PreviewQuestionnaireCard from "../component/PreviewQuestionnaireCard";

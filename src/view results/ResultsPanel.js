@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 // import { useHotkeys } from "react-hotkeys-hook";
-import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image, Spin } from "antd";
+import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Spin } from "antd";
 import { LoadingOutlined, ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
 import PreviewImageModal from "../component/PreviewImageModal";
 import { updateReport, getImage } from "../api/reports";
