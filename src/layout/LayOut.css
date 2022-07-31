@@ -242,6 +242,10 @@
   margin-right: 40px;
 }
 
+.content.aboutus {
+  padding: 30px 45px 15px;
+}
+
 .center-div {
   display: flex;
   align-items: center;
