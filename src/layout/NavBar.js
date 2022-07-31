@@ -77,7 +77,7 @@ export default function NavBar() {
 
   return (
     <div className="navbar">
-      <div>
+      <div style={{ wordBreak: "break-word", padding: "0 10px" }}>
         <div style={{ textAlign: "center", color: "black", fontSize: "large", fontWeight: "bold", marginBottom: "40px" }}>
           AI Constipation
         </div>
