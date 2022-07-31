@@ -1145,8 +1145,8 @@ hr {
 }
 
 .upload-image-modal .ant-modal-body {
-  padding: 10px 40px 30px 40px;
-  height: 653px;
+  padding: 0 40px 30px 40px;
+  /* height: 653px; */
 }
 
 .upload-question-modal .ant-modal-body {
@@ -1707,5 +1707,11 @@ img { /* responsive */
   .ant-image-img.EngLogo {
     height: 37px !important;
     width: auto !important;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .select-image-label {
+    width: 100%;
   }
 }
