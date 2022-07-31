@@ -393,28 +393,26 @@ export default function ViewResults(props) {
 
     return (
         <div className="content">
-            <Form layout="inline">
+            <Form layout="inline" className="view-results-form" style={{ maxWidth: "90%" }}>
                 <Form.Item
                     name="patient_HN"
                     key="patient_HN"
                     label="Patient's HN"
                     initialValue={queryString.get("patient_HN")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
                         allowClear
-                        className="input-text"
+                        className="input-text fixed-size smaller"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("patient_HN") : queryString.set("patient_HN", item.target.value);
                         }}
-                        style={{width:"200px"}} />
+                     />
                 </Form.Item>
                 <Form.Item
                     name="status"
                     key="status"
                     label="Status"
                     initialValue={queryString.get("status") === null ? "All" : queryString.get("status")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -433,7 +431,6 @@ export default function ViewResults(props) {
                     key="hospital"
                     label="Hospital"
                     initialValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -452,18 +449,15 @@ export default function ViewResults(props) {
                     key="clinician"
                     label="Clinician"
                     initialValue={queryString.get("clinician")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
                         allowClear
-                        className="input-text"
+                        className="input-text fixed-size smaller"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("clinician") : queryString.set("clinician", item.target.value);
                         }}
-                        style={{width:"200px"}} />
+                    />
                 </Form.Item>
-            </Form>
-            <Form layout="inline">
                 {/* <Form.Item
                     name="no"
                     key="no"
@@ -484,33 +478,30 @@ export default function ViewResults(props) {
                     key="from"
                     label="From"
                     initialValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >   
                     <DatePicker
                         onChange={(date) => {
                             date === null ? queryString.delete("from") : queryString.set("from", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
-                        style={{width:"200px"}} />
+                        style={{ width:"200px" }} />
                 </Form.Item>
                 <Form.Item
                     name="to"
                     key="to"
                     label="To"
                     initialValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <DatePicker
                         onChange={(date) => {
                             date === null ? queryString.delete("to") : queryString.set("to", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
-                        style={{width:"200px"}} />
+                        style={{ width:"200px" }} />
                 </Form.Item>
                 <Form.Item
                     name="model"
                     key="model"
                     label="Model"
                     initialValue={queryString.get("model") === null ? "all" : queryString.get("model")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -524,10 +515,12 @@ export default function ViewResults(props) {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item style={{marginLeft:"20px"}}>
+                <Form.Item
+                    label=" "
+                    colon={false}
+                >
                     <Button
                         className="primary-btn smaller"
-                        style={{marginTop:"32px"}}
                         onClick={() => {
                             history.push(`/viewresults/?${queryString}`);
                             // window.location.reload();
@@ -537,7 +530,7 @@ export default function ViewResults(props) {
                             Search
                     </Button>
                     {window.location.search && <label
-                        style={{ color: "#f32424", fontWeight: 500, marginLeft: "25px", cursor: "pointer" }}
+                        style={{ color: "#f32424", fontWeight: 500, marginLeft: "15px", cursor: "pointer" }}
                         onClick={() => window.location.search = ""}
                     >
                         Clear all filters

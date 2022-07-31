@@ -122,7 +122,7 @@ function UploadQuestionnaireModal(props) {
                 visible={props.visible}
                 onCancel={onCancel}
                 title={
-                    <label style={{ color: "#9772fb", fontSize: "25px" }}>
+                    <label className="modal-title">
                         Import File (.xlsx/.csv)
                     </label>
                 }

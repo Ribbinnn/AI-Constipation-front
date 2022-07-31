@@ -58,7 +58,8 @@ function UserForm() {
                     form={form}
                     layout="vertical"
                     requiredMark={false}
-                    style={{marginTop: "30px"}}
+                    className="admin-form"
+                    style={{ marginTop: "30px" }}
                     onFieldsChange={() => setCurrentActivity({ ...currentActivity, enablePageChange: false })}
                 >
                     <div>
@@ -71,11 +72,12 @@ function UserForm() {
                                     required: true,
                                 },
                             ]}
-                            style={{display: "inline-block", marginRight: "30px"}}
+                            style={{ marginRight: "30px" }}
                         >
                             {mode === "createuser" ? 
-                                <Input className="input-text fixed-size" disabled={submit ? true : false} /> :
-                                <Select 
+                                <Input className="input-text fixed-size smaller" disabled={submit ? true : false} /> :
+                                <Select
+                                    className="search-component"
                                     showSearch
                                     optionFilterProp="children"
                                     onChange={(id) => {
@@ -106,9 +108,8 @@ function UserForm() {
                                     type: "email"
                                 },
                             ]}
-                            style={{display: "inline-block"}}
                         >
-                            <Input className="input-text fixed-size" disabled={submit ? true : false} />
+                            <Input className="input-text fixed-size smaller" disabled={submit ? true : false} />
                         </Form.Item>}
                     </div>
                     {inputVisible && <div>
@@ -126,9 +127,9 @@ function UserForm() {
                                     message: "'password' length must be 8-32"
                                 }
                             ]}
-                            style={{display: "inline-block", marginRight: "30px"}}
+                            style={{ marginRight: "30px" }}
                         >
-                            <Input className="input-text fixed-size" type="password" disabled={submit ? true : false} />
+                            <Input className="input-text fixed-size smaller" type="password" disabled={submit ? true : false} />
                         </Form.Item>
                         <Form.Item
                             name="confirm"
@@ -140,9 +141,8 @@ function UserForm() {
                                     message: "'confirm password' is required",
                                 },
                             ]}
-                            style={{display: "inline-block"}}
                         >
-                            <Input className="input-text fixed-size" type="password" disabled={submit ? true : false} />
+                            <Input className="input-text fixed-size smaller" type="password" disabled={submit ? true : false} />
                         </Form.Item>
                     </div>}
                     {inputVisible && <div>
@@ -156,9 +156,9 @@ function UserForm() {
                                     message: "'first name' is required",
                                 },
                             ]}
-                            style={{display: "inline-block", marginRight: "30px"}}
+                            style={{ marginRight: "30px" }}
                         >
-                            <Input className="input-text fixed-size" disabled={submit ? true : false} />
+                            <Input className="input-text fixed-size smaller" disabled={submit ? true : false} />
                         </Form.Item>
                         <Form.Item
                             name="last_name"
@@ -170,9 +170,8 @@ function UserForm() {
                                     message: "'last name' is required",
                                 },
                             ]}
-                            style={{display: "inline-block"}}
                         >
-                            <Input className="input-text fixed-size" disabled={submit ? true : false} />
+                            <Input className="input-text fixed-size smaller" disabled={submit ? true : false} />
                         </Form.Item>
                     </div>}
                     {inputVisible && <div>
@@ -185,9 +184,9 @@ function UserForm() {
                                     required: true,
                                 },
                             ]}
-                            style={{display: "inline-block", marginRight: "30px"}}
+                            style={{ marginRight: "30px" }}
                         >
-                            <Select disabled={submit ? true : false}>
+                            <Select className="search-component" disabled={submit ? true : false}>
                                 {roles.map((role, i) => (
                                     <Option key={i} value={role}>
                                         {role.charAt(0).toUpperCase() + role.slice(1)}
@@ -204,9 +203,8 @@ function UserForm() {
                                     required: true,
                                 },
                             ]}
-                            style={{display: "inline-block"}}
                         >
-                            <Select disabled={submit ? true : false}>
+                            <Select className="search-component" disabled={submit ? true : false}>
                                 {hospitals.map((hospital, i) => (
                                     <Option key={i} value={hospital}>
                                         {hospital}
@@ -216,7 +214,7 @@ function UserForm() {
                         </Form.Item>
                     </div>}
                     {inputVisible && <Form.Item
-                        style={{marginTop: "25px"}}
+                        style={{ marginTop: "25px" }}
                     >
                         {submit ? 
                             <Button

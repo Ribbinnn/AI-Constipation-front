@@ -119,7 +119,7 @@ function FillQuestionnaireModal(props) {
                 visible={props.visible}
                 onCancel={onCancel}
                 title={
-                    <label style={{ color: "#9772fb", fontSize: "25px" }}>
+                    <label className="modal-title">
                         Fill in Symptom Questionnaire
                     </label>
                 }
@@ -165,11 +165,10 @@ function FillQuestionnaireModal(props) {
                             >
                                     {renderThreeChoice()}
                             </Form.Item>}
-                            {DistFreq !== 0 && <Row style={{ alignItems: "baseline", background: "#f0f0f0" }}>
+                            {DistFreq !== 0 && <Form.Item label={questions[2]} className="form-item-force-inline">
                                 <Form.Item
                                     name="DistDur"
                                     key="DistDur"
-                                    label={questions[2]}
                                     initialValue={props.question ? props.question.DistDur : null}
                                     rules={[
                                         {
@@ -177,18 +176,17 @@ function FillQuestionnaireModal(props) {
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline"
+                                    noStyle
                                     style={{ paddingLeft: "50px", paddingRight: 0 }}
                                 >
                                         {renderMonthInput()}
                                 </Form.Item>
                                 <label>เดือน</label>
-                            </Row>}
-                            <Row style={{ alignItems: "baseline", paddingTop: "5px" }}>
+                            </Form.Item>}
+                            <Form.Item label={questions[3]} className="form-item-force-inline">
                                 <Form.Item
                                     name="FreqStool"
                                     key="FreqStool"
-                                    label={questions[3]}
                                     initialValue={props.question ? props.question.FreqStool : null}
                                     rules={[
                                         {
@@ -196,7 +194,7 @@ function FillQuestionnaireModal(props) {
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline"
+                                    noStyle
                                     style={{ background: "white", paddingRight: 0 }}
                                 >
                                         <InputNumber
@@ -207,7 +205,7 @@ function FillQuestionnaireModal(props) {
                                         />
                                 </Form.Item>
                                 <label>ครั้ง/สัปดาห์</label>
-                            </Row>
+                            </Form.Item>
                             <Form.Item
                                 name="Incomplete"
                                 key="Incomplete"
@@ -307,11 +305,10 @@ function FillQuestionnaireModal(props) {
                             >
                                     {renderThreeChoice()}
                             </Form.Item>}
-                            {BloatFreq !== 0 && <Row style={{ alignItems: "baseline" }}>
+                            {BloatFreq !== 0 && <Form.Item label={questions[11]} className="form-item-force-inline">
                                 <Form.Item
                                     name="BloatDur"
                                     key="BloatDur"
-                                    label={questions[11]}
                                     initialValue={props.question ? props.question.BloatDur : null}
                                     rules={[
                                         {
@@ -319,13 +316,13 @@ function FillQuestionnaireModal(props) {
                                             message: "please answer this question",
                                         },
                                     ]}
-                                    className="form-item-force-inline"
+                                    noStyle
                                     style={{ paddingLeft: "50px", background: "white", paddingRight: 0 }}
                                 >
                                         {renderMonthInput()}
                                 </Form.Item>
                                 <label>เดือน</label>
-                            </Row>}
+                            </Form.Item>}
                             <Form.Item
                                 name="SevScale"
                                 key="SevScale"
