@@ -150,20 +150,21 @@ export default function ResultsPanel(props) {
                         </div>
                     )}
                     {(props.info.task === "image" || props.info.task === "integrate") && gradCam &&
-                        <div style={{ textAlign: "center" }}>
-                            <Image
-                                preview={false}
-                                height={300}
-                                src={gradCam}
-                                style={{ cursor: "pointer" }}
-                                onClick={() => setPreviewGradCamVisible(true)}
-                            />
-                             <Image
-                                preview={false}
-                                height={310}
-                                style={{ margin: "8px 0 0 5px" }}
-                                src="/pics/colorbar.png"
-                            />
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div>
+                                <img
+                                    src={gradCam}
+                                    width={240}
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => setPreviewGradCamVisible(true)}
+                                />
+                            </div>
+                            <div>
+                                <img
+                                    src="/pics/colorbar.png"
+                                    width={39}
+                                />
+                            </div>
                         </div>}
                 </Col>
                 <Col xs={24} sm={24} md={1} />

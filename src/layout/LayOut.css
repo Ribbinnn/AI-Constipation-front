@@ -1426,6 +1426,11 @@ table tr td.ant-table-selection-column {
 }
 
 /* image ------------ */
+img { /* responsive */
+  max-width: 100%;
+  height: auto;
+}
+
 .ant-image-img {
   width: auto;
 }

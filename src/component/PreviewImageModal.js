@@ -10,14 +10,14 @@ function PreviewImageModal(props) {
             visible={props.visible}
             onCancel={() => props.setVisible(false)}
             footer={null}
-            width="750px"
+            width="700px"
             bodyStyle={{ textAlign: "center" }}
             style={{ top: 20 }}
         >
-            <Image
-                preview={false}
-                height={700}
+            <img
                 src={props.image}
+                width={580}
+                style={{ padding: "5px 20px" }}
             />
         </Modal>
     );

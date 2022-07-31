@@ -30,10 +30,9 @@ export default function BeginDiagnosis(props) {
           <PreviewQuestionnaire question={props.question} />
         </Col>}
         {props.image && <Col xl={props.question ? 8 : 24} style={{ paddingLeft: "15px", paddingTop: "10px" }}>
-          <Image
-            preview={false}
-            height={380}
+          <img
             src={image}
+            width={300}
             style={{ cursor: "pointer" }}
             onClick={() => setPreviewImageVisible(true)}
           />
