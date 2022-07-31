@@ -51,3 +51,14 @@ export const getImage = async (report_id, finding) => {
         throw e
     }
 }
+
+export const getQuestionnaireFile = async (report_id) => {
+    try {
+        const response = (
+            await instance.get("/reports/questionnaire/" + report_id, { responseType: 'blob' })
+        ).data;
+        return response;
+    } catch (e) {
+        throw e
+    }
+}

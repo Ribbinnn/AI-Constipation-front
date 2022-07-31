@@ -40,10 +40,21 @@ export const integrateInfer = async (questionnaire, file, personalInfo) => {
     }
 }
 
-export const downloadTemplate = async () => {
+export const getTemplate = async () => {
     try {
         const response = (
             await instance.get("/infer/template", { responseType: 'blob' })
+        ).data;
+        return response;
+    } catch (e) {
+        throw e
+    }
+}
+
+export const getTemplateDesc = async () => {
+    try {
+        const response = (
+            await instance.get("/infer/template/description", { responseType: 'blob' })
         ).data;
         return response;
     } catch (e) {

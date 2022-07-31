@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Card, Button, Image } from "antd";
+import { Card, Button } from "antd";
 import { PictureOutlined } from "@ant-design/icons";
 import PreviewImageModal from "./PreviewImageModal";
 

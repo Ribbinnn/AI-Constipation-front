@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Modal, Row, Col, Button, Image, Slider, InputNumber } from "antd";
+import { Modal, Row, Col, Button, Slider, InputNumber, Checkbox } from "antd";
 import { CameraOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import Cropper from 'react-easy-crop'
 import { getOrientation } from 'get-orientation/browser'
 import { getCroppedImg, getRotatedImage } from '../utils/cropUtils'
 import { WebcamCapture } from "../component/WebcamCapture";
+import { getImage } from "../api/reports";
 
 function UploadImageModal(props) {
+    const [useOldImage, setUseOldImage] = useState(false);
     const [imageName, setImageName] = useState(null);
     const [webcamVisible, setWebcamVisible] = useState(false);
     const [activity, setActivity] = useState(null);
@@ -77,6 +79,9 @@ function UploadImageModal(props) {
             }
 
             setImageSrc(imageDataUrl)
+            if (useOldImage) {
+                setUseOldImage(false);
+            }
             setActivity("file change");
         }
     }
@@ -95,7 +100,8 @@ function UploadImageModal(props) {
             // console.log(props.image);
             setImageSrc(props.image.originalImage);
             setImageName(props.image.originalImageName);
-        } else if (document.getElementById("input-file")) {
+        }
+        if (document.getElementById("input-file")) {
             document.getElementById("input-file").value = "";
         }
     }, [props.visible]);
@@ -110,7 +116,7 @@ function UploadImageModal(props) {
                 visible={props.visible}
                 onCancel={onCancel}
                 title={
-                    <label style={{ color: "#9772fb", fontSize: "25px" }}>
+                    <label className="modal-title">
                         Upload X-Ray Image
                     </label>
                 }
@@ -121,7 +127,7 @@ function UploadImageModal(props) {
             >
                 <div>
                     <Row>
-                        <Col md={9} lg={7}>
+                        <Col md={9} lg={7} style={{ margin: "10px 0 20px" }}>
                             <Row>
                                 <label>
                                     กรุณากำหนดภาพดังนี้
@@ -133,47 +139,63 @@ function UploadImageModal(props) {
                                     </ul>
                                 </label>
                             </Row>
-                            <Row style={{ marginBottom: "10px" }}>
-                                <Image
-                                    preview={false}
-                                    height={300}
+                            <Row>
+                                <img
                                     src="/pics/crop_overlay.png"
+                                    width={245}
                                 />
                             </Row>
                         </Col>
-                        <Col xs={0} sm={0} lg={1} />
-                        <Col md={14} lg={16} style={{ paddingLeft: "7px", marginBottom: "10px" }}>
-                            <label>Select Image:</label>
-                            <Button
-                                type="primary"
-                                className="primary-btn smaller"
-                                icon={<CameraOutlined />}
-                                style={{ marginLeft: "15px" }}
-                                onClick={() => {
-                                    setWebcamVisible(true);
-                                }}
-                            />
-                            <Button
-                                type="primary"
-                                className="primary-btn smaller"
-                                style={{ marginLeft: "15px" }}
-                                onClick={() => {
-                                    document.getElementById("input-file").click();
-                                }}
-                            >
-                                    Browse
-                                    <input 
-                                        type="file"
-                                        id="input-file"
-                                        // accept="image/png, image/jpeg"
-                                        accept="image/*"
-                                        hidden 
-                                        onChange={onFileChange}
-                                    />
-                            </Button>
-                            <label style={{ marginLeft: "20px" }}>{imageName ? imageName : ""}</label>
+                        <Col xs={0} sm={0} md={1} />
+                        <Col md={14} lg={16} style={{ paddingLeft: "7px", margin: "10px 0 20px" }}>
+                            <div style={{ marginBottom: "20px" }}>
+                                <label
+                                    className="select-image-label"
+                                    style={{ marginBottom: "7px" }}
+                                >
+                                    Select Image:
+                                </label>
+                                <Button
+                                    type="primary"
+                                    className="primary-btn smaller"
+                                    icon={<CameraOutlined />}
+                                    style={{ marginLeft: "15px", marginBottom: "7px" }}
+                                    onClick={() => {
+                                        setWebcamVisible(true);
+                                    }}
+                                />
+                                <Button
+                                    type="primary"
+                                    className="primary-btn smaller"
+                                    style={{ marginLeft: "15px", marginBottom: "7px" }}
+                                    onClick={() => {
+                                        document.getElementById("input-file").click();
+                                    }}
+                                >
+                                        Browse
+                                        <input
+                                            type="file"
+                                            id="input-file"
+                                            accept="image/*"
+                                            hidden
+                                            onChange={onFileChange}
+                                        />
+                                </Button>
+                                <label style={{ marginLeft: "20px" }}>{imageName ? imageName : ""}</label>
+                                {props.rid && props.model === "integrate" &&
+                                    <Checkbox
+                                        checked={useOldImage}
+                                        style={{ marginLeft: "20px" }}
+                                        onChange={() => {
+                                            setUseOldImage(!useOldImage);
+                                            setActivity("use old image");
+                                        }}
+                                    >
+                                        ใช้รูปภาพเดิม
+                                    </Checkbox>}
+                            </div>
                             {imageSrc && <div>
-                                <Row style={{ margin: "27px 0 5px 0" }}>
+                                <Row style={{ marginBottom: "5px" }}>
                                     <Col span={24}>
                                         <div className="crop-container">
                                             <Cropper
@@ -207,10 +229,10 @@ function UploadImageModal(props) {
                                 </Row>
                                 <div className="controls">
                                     <Row style={{ alignItems: "center" }}>
-                                        <Col span={2}>
+                                        <Col xs={4} sm={3} lg={2}>
                                             <label>Zoom</label>
                                         </Col>
-                                        <Col span={18} style={{ paddingLeft: "7px", paddingRight: "15px" }}>
+                                        <Col xs={16} sm={17} lg={18} style={{ paddingLeft: "7px", paddingRight: "15px" }}>
                                             <Slider
                                                 value={typeof zoom === "number" ? zoom : 0}
                                                 min={1}
@@ -222,7 +244,7 @@ function UploadImageModal(props) {
                                                 }}
                                             />
                                         </Col>
-                                        <Col span={4}>
+                                        <Col xs={4}>
                                             <InputNumber
                                                 // className="input-text"
                                                 value={zoom.toFixed(2)}
@@ -237,10 +259,10 @@ function UploadImageModal(props) {
                                         </Col>
                                     </Row>
                                     <Row style={{ alignItems: "center", marginTop: "10px" }}>
-                                        <Col span={3}>
+                                        <Col xs={6} sm={5} lg={3}>
                                             <label>Rotation</label>
                                         </Col>
-                                        <Col span={17} style={{ paddingLeft: "1px", paddingRight: "15px" }}>
+                                        <Col xs={14} sm={15} lg={17} style={{ paddingLeft: "1px", paddingRight: "15px" }}>
                                             <Slider
                                                 value={typeof rotation === "number" ? rotation : 0}
                                                 min={0}
@@ -252,7 +274,7 @@ function UploadImageModal(props) {
                                                 }}
                                             />
                                         </Col>
-                                        <Col span={4}>
+                                        <Col xs={4}>
                                             <InputNumber
                                                 // className="input-text"
                                                 value={rotation}
@@ -282,8 +304,16 @@ function UploadImageModal(props) {
                             className="primary-btn smaller"
                             onClick={async () => {
                                 // showCroppedImage();
-                                if (imageSrc) {
-                                    const croppedImageURL = await getCroppedImg(
+                                if (props.rid && useOldImage) {
+                                    getImage(props.rid, "original")
+                                    .then((res) => {
+                                        // console.log(res);
+                                        let image = new File([res], "croppedImage.png", { type: "image/png" });
+                                        props.setImage({croppedImage: image});
+                                        onOK();
+                                    });
+                                } else if (imageSrc) {
+                                    const croppedImage = await getCroppedImg(
                                         imageSrc,
                                         croppedAreaPixels,
                                         rotation
@@ -291,7 +321,7 @@ function UploadImageModal(props) {
                                     props.setImage({
                                         originalImage: imageSrc,
                                         originalImageName: imageName,
-                                        croppedImage: croppedImageURL,
+                                        croppedImage: croppedImage,
                                     });
                                     onOK();
                                 } else {

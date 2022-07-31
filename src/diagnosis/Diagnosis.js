@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 // import { useHotkeys } from "react-hotkeys-hook";
 import { Steps, Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -12,7 +12,7 @@ import UploadImageModal from "./UploadImageModal";
 import Result from "./Result";
 import BeginDiagnosis from "./BeginDiagnosis";
 import { questionnaireInfer, imageInfer, integrateInfer } from "../api/infer";
-import { getReport, deleteReport, getImage } from "../api/reports";
+import { getReport, deleteReport } from "../api/reports";
 import Contexts from "../utils/Contexts";
 
 const LoadingIcon = (
@@ -22,7 +22,8 @@ const LoadingIcon = (
 const { Step } = Steps;
 
 export default function Diagnosis() {
-  const { mode, rid } = useParams();
+  const history = useHistory();
+  const { rid } = useParams();
   const { currentActivity, setCurrentActivity } = useContext(Contexts).active;
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -70,19 +71,7 @@ export default function Diagnosis() {
         if (res.data.question_id) {
           res.data.question_id._id = undefined;
           setQuestion(res.data.question_id);
-          if (mode === "image") {
-            setQuestionReview(true);
-          } else {
-            setQuestionReview(false);
-          }
-        }
-        if (mode === "questionnaire" && res.data.task === "integrate") {
-          getImage(rid, "original")
-          .then((res) => {
-              // console.log(res);
-              let image = new File([res], "croppedImage.png", { type: "image/png" });
-              setImage({croppedImage: image});
-          })
+          setQuestionReview(false);
         }
         res.data.personal_info_id._id = undefined;
         setDetails(res.data.personal_info_id);
@@ -92,7 +81,9 @@ export default function Diagnosis() {
       })
       .catch((err) => {
         console.log(err.response);
-        return Modal.error({ content: err.response.data.message });
+        // return Modal.error({ content: err.response.data.message });
+        history.push("/diagnosis");
+        window.location.reload();
       });
     } else {
       setLoaded(true);
@@ -205,6 +196,7 @@ export default function Diagnosis() {
         <div className={current === 3 && question ? "steps-content-diagnosis preview" : "steps-content-diagnosis"}>
           {current === 0 && (
             <PersonalDetails
+              rid={rid}
               ref={personalDetailsRef}
               details={details}
               setDetails={setDetails}
@@ -213,6 +205,7 @@ export default function Diagnosis() {
           )}
           {current === 1 && (
             <SelectModel
+              rid={rid}
               model={model}
               setModel={setModel}
               setQuestion={setQuestion}
@@ -221,7 +214,6 @@ export default function Diagnosis() {
           )}
           {current === 2 && (
             <InsertInput
-              mode={mode}
               model={model}
               question={question}
               setQuestion={setQuestion}
@@ -259,6 +251,8 @@ export default function Diagnosis() {
           setUploadedFileName={setUploadedQuestionName}
         />
         <UploadImageModal
+          rid={rid}
+          model={model}
           visible={uploadImageVisible}
           setVisible={setUploadImageVisible}
           image={image}

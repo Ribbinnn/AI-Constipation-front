@@ -86,6 +86,7 @@ export default function DeleteForm(props) {
                 </label>
               </div>
               <Select
+                className="search-component"
                 showSearch
                 optionFilterProp="children"
                 onChange={(i, j) => {

@@ -41,10 +41,10 @@ const PersonalDetails = forwardRef((props, ref) => {
                 onFieldsChange={() => setCurrentActivity({ ...currentActivity, enablePageChange: false })}
             >
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>Hospital:</label>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="hospital"
                             key="hospital"
@@ -55,7 +55,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Select>
+                                <Select disabled={props.rid ? true : false}>
                                     {hospitals.map((hospital, i) => (
                                         <Option key={i} value={hospital}>
                                             {hospital}
@@ -66,10 +66,10 @@ const PersonalDetails = forwardRef((props, ref) => {
                     </Col>
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>HN:</label>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="hn"
                             key="hn"
@@ -80,15 +80,15 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Input className="input-text fixed-size" />
+                                <Input className="input-text fixed-size" disabled={props.rid ? true : false} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>Name:</label>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="name"
                             key="name"
@@ -99,15 +99,15 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Input className="input-text fixed-size" />
+                                <Input className="input-text fixed-size" disabled={props.rid ? true : false} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>Gender:</label>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="gender"
                             key="gender"
@@ -118,7 +118,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     message: "please answer this question",
                                 },
                             ]}>
-                                <Radio.Group>
+                                <Radio.Group disabled={props.rid ? true : false}>
                                     <Radio key="female" value="F">Female</Radio>
                                     <Radio key="male" value="M">Male</Radio>
                                 </Radio.Group>
@@ -126,10 +126,10 @@ const PersonalDetails = forwardRef((props, ref) => {
                     </Col>
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>Age:</label>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="age"
                             key="age"
@@ -142,6 +142,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             ]}>
                                 <InputNumber
                                     className="bigger"
+                                    disabled={props.rid ? true : false}
                                     min={0}
                                     max={130}
                                     step={1}
@@ -150,7 +151,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                     </Col>
                 </Row>
                 <Row style={{ alignItems: "baseline" }}>
-                    <Col xs={24} sm={24} md={7}>
+                    <Col xs={24} sm={24} md={10} lg={7}>
                         <label>ความน่าจะเป็นในการเป็น <br /> Dyssynergic defecation <br /> ของผู้ป่วยรายนี้ (DD probability):</label>
                         <Popover
                             placement="topLeft"
@@ -164,7 +165,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                             <Button type="link" icon={<InfoCircleOutlined />} style={{color: "#9772fb", fontWeight: 500}} />
                         </Popover>
                     </Col>
-                    <Col xs={24} sm={24} md={17}>
+                    <Col xs={24} sm={24} md={14} lg={17}>
                         <Form.Item
                             name="DD_confidence"
                             key="DD_confidence"
@@ -179,6 +180,7 @@ const PersonalDetails = forwardRef((props, ref) => {
                                     className="rating"
                                     tooltips={ratingDesc}
                                     allowClear={false}
+                                    disabled={props.rid ? true : false}
                                 />
                         </Form.Item>
                     </Col>

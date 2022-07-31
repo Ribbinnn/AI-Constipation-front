@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 // import { useHotkeys } from "react-hotkeys-hook";
-import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Image, Spin } from "antd";
+import { Input, Button, Modal, Row, Col, Space, Form, Radio, Checkbox, Spin } from "antd";
 import { LoadingOutlined, ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
 import PreviewImageModal from "../component/PreviewImageModal";
 import { updateReport, getImage } from "../api/reports";
@@ -125,8 +125,8 @@ export default function ResultsPanel(props) {
 
     return (
         <div>
-            <Row style={{ marginBottom: "35px" }}>
-                <Col xs={24} sm={24} md={11} lg={9} xl={6}>
+            <Row /*style={{ marginBottom: "35px" }}*/>
+                <Col xs={24} sm={24} md={11} lg={9} xl={6} style={{ marginBottom: "35px" }}>
                     <Space
                         direction="vertical"
                         size={10}
@@ -150,24 +150,25 @@ export default function ResultsPanel(props) {
                         </div>
                     )}
                     {(props.info.task === "image" || props.info.task === "integrate") && gradCam &&
-                        <div style={{ textAlign: "center" }}>
-                            <Image
-                                preview={false}
-                                height={300}
-                                src={gradCam}
-                                style={{ cursor: "pointer" }}
-                                onClick={() => setPreviewGradCamVisible(true)}
-                            />
-                             <Image
-                                preview={false}
-                                height={310}
-                                style={{ margin: "8px 0 0 5px" }}
-                                src="/pics/colorbar.png"
-                            />
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div>
+                                <img
+                                    src={gradCam}
+                                    width={240}
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => setPreviewGradCamVisible(true)}
+                                />
+                            </div>
+                            <div>
+                                <img
+                                    src="/pics/colorbar.png"
+                                    width={39}
+                                />
+                            </div>
                         </div>}
                 </Col>
                 <Col xs={24} sm={24} md={1} />
-                <Col xs={24} sm={24} md={12} lg={14} xl={17}>
+                <Col xs={24} sm={24} md={12} lg={14} xl={17} style={{ marginBottom: "35px" }}>
                     <Space
                         direction="vertical"
                         size={10}
@@ -183,14 +184,6 @@ export default function ResultsPanel(props) {
                         </label>
                         {props.mode === "view" && props.info.status === "annotated" &&
                             <label>-</label>}
-                        {/* {role === "clinician" && props.mode === "view" &&
-                            <a
-                                href={`/viewresults/edit/${props.rid}/?${props.queryString}`}
-                                style={{ color: "#9772fb", fontWeight: "bold", display: "flex", alignItems: "center" }}
-                            >
-                                <EditOutlined style={{ marginRight: "8px" }} />
-                                Edit Final Diagnosis
-                            </a>} */}
                         {props.mode === "view" && props.info.status === "reviewed" &&
                             <Space direction="vertical" size={10} style={{ marginBottom: "3px" }}>
                                 <label style={{ color: "#9772fb", fontWeight: "bold", marginBottom: "10px" }}>{props.info.label}</label>

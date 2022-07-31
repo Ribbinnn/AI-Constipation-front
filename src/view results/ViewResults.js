@@ -59,16 +59,16 @@ export default function ViewResults(props) {
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10 });
 
     const columns = [
-        {
-            title: "No.",
-            dataIndex: "index",
-            key: "index",
-            align: "center",
-            sorter: {
-                compare: (a, b) => a.index.localeCompare(b.index)
-            },
-            showSorterTooltip: false,
-        },
+        // {
+        //     title: "No.",
+        //     dataIndex: "index",
+        //     key: "index",
+        //     align: "center",
+        //     sorter: {
+        //         compare: (a, b) => a.index.localeCompare(b.index)
+        //     },
+        //     showSorterTooltip: false,
+        // },
         {
             title: 
                 <span>
@@ -103,6 +103,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => shownStatus[a.status].shown.localeCompare(shownStatus[b.status].shown)
             },
             showSorterTooltip: false,
+            width: 150,
             render: (status) => {
                 return(
                     <Tag color={shownStatus[status].color}  style={{width: "100%", fontSize: "small"}}>
@@ -127,6 +128,7 @@ export default function ViewResults(props) {
                 }
             },
             showSorterTooltip: false,
+            width: 120,
         },
         {
             title: "Name",
@@ -144,6 +146,7 @@ export default function ViewResults(props) {
                 }
             },
             showSorterTooltip: false,
+            width: 120,
         },
         {
             title: "Final Diagnosis",
@@ -246,10 +249,11 @@ export default function ViewResults(props) {
             key: "date",
             align: "center",
             sorter: {
-                compare: (a, b) => new Date(a.date) - new Date(b.date)
+                compare: (a, b) => new Date(a.date) - new Date(b.date),
+                // multiple: 1,
             },
             showSorterTooltip: false,
-            width: 150,
+            width: 140,
         },
         {
             title: "Clinician",
@@ -257,9 +261,11 @@ export default function ViewResults(props) {
             key: "clinician",
             align: "center",
             sorter: {
-                compare: (a, b) => a.clinician.localeCompare(b.clinician)
+                compare: (a, b) => a.clinician.localeCompare(b.clinician),
+                // multiple: 2,
             },
             showSorterTooltip: false,
+            width: 100,
         },
         {
             title: "Hospital",
@@ -270,7 +276,7 @@ export default function ViewResults(props) {
                 compare: (a, b) => a.hospital.localeCompare(b.hospital)
             },
             showSorterTooltip: false,
-            width: 150,
+            width: 160,
         },
         {
             // title: "Action",
@@ -321,7 +327,7 @@ export default function ViewResults(props) {
                 );
             },
             align: "center",
-            width: 40,
+            width: 50,
         },
     ];
 
@@ -350,9 +356,9 @@ export default function ViewResults(props) {
                 (queryString.get("clinician") === null
                     ? true
                     : item.clinician.toLowerCase().includes(queryString.get("clinician").toLowerCase())) &&
-                (queryString.get("no") === null
-                    ? true
-                    : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
+                // (queryString.get("no") === null
+                //     ? true
+                //     : item.index.toLowerCase().includes(queryString.get("no").toLowerCase())) &&
                 (queryString.get("from") === null
                     ? true
                     : new Date(item.date) >= new Date(queryString.get("from"))) &&
@@ -387,28 +393,26 @@ export default function ViewResults(props) {
 
     return (
         <div className="content">
-            <Form layout="inline">
+            <Form layout="inline" className="view-results-form" style={{ maxWidth: "90%" }}>
                 <Form.Item
                     name="patient_HN"
                     key="patient_HN"
                     label="Patient's HN"
                     initialValue={queryString.get("patient_HN")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
                         allowClear
-                        className="input-text"
+                        className="input-text fixed-size smaller"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("patient_HN") : queryString.set("patient_HN", item.target.value);
                         }}
-                        style={{width:"200px"}} />
+                     />
                 </Form.Item>
                 <Form.Item
                     name="status"
                     key="status"
                     label="Status"
                     initialValue={queryString.get("status") === null ? "All" : queryString.get("status")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -427,7 +431,6 @@ export default function ViewResults(props) {
                     key="hospital"
                     label="Hospital"
                     initialValue={queryString.get("hospital") === null ? "All" : queryString.get("hospital")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -446,19 +449,16 @@ export default function ViewResults(props) {
                     key="clinician"
                     label="Clinician"
                     initialValue={queryString.get("clinician")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <Input
                         allowClear
-                        className="input-text"
+                        className="input-text fixed-size smaller"
                         onChange={(item) => {
                             item.target.value === "" ? queryString.delete("clinician") : queryString.set("clinician", item.target.value);
                         }}
-                        style={{width:"200px"}} />
+                    />
                 </Form.Item>
-            </Form>
-            <Form layout="inline">
-                <Form.Item
+                {/* <Form.Item
                     name="no"
                     key="no"
                     label="No."
@@ -472,39 +472,36 @@ export default function ViewResults(props) {
                             item.target.value === "" ? queryString.delete("no") : queryString.set("no", item.target.value);
                         }}
                         style={{width:"200px"}} />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name="from"
                     key="from"
                     label="From"
                     initialValue={queryString.get("from") === null ? null : moment(new Date(queryString.get("from")))}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >   
                     <DatePicker
                         onChange={(date) => {
                             date === null ? queryString.delete("from") : queryString.set("from", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
-                        style={{width:"200px"}} />
+                        style={{ width:"200px" }} />
                 </Form.Item>
                 <Form.Item
                     name="to"
                     key="to"
                     label="To"
                     initialValue={queryString.get("to") === null ? null : moment(new Date(queryString.get("to")))}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >
                     <DatePicker
                         onChange={(date) => {
                             date === null ? queryString.delete("to") : queryString.set("to", date.startOf('day').toDate().toLocaleString("sv-SE"));
                         }}
-                        style={{width:"200px"}} />
+                        style={{ width:"200px" }} />
                 </Form.Item>
                 <Form.Item
                     name="model"
                     key="model"
                     label="Model"
                     initialValue={queryString.get("model") === null ? "all" : queryString.get("model")}
-                    style={{display:"flex", flexDirection:"column", alignItems:"flex-start"}}
                 >                
                     <Select
                         className="search-component"
@@ -518,10 +515,12 @@ export default function ViewResults(props) {
                             ))}
                     </Select>
                 </Form.Item>
-                <Form.Item style={{marginLeft:"20px"}}>
+                <Form.Item
+                    label=" "
+                    colon={false}
+                >
                     <Button
                         className="primary-btn smaller"
-                        style={{marginTop:"32px"}}
                         onClick={() => {
                             history.push(`/viewresults/?${queryString}`);
                             // window.location.reload();
@@ -530,6 +529,12 @@ export default function ViewResults(props) {
                         }}>
                             Search
                     </Button>
+                    {window.location.search && <label
+                        style={{ color: "#f32424", fontWeight: 500, marginLeft: "15px", cursor: "pointer" }}
+                        onClick={() => window.location.search = ""}
+                    >
+                        Clear all filters
+                    </label>}
                 </Form.Item>
             </Form>
             {!loaded && (
@@ -543,27 +548,21 @@ export default function ViewResults(props) {
                 </div>
             )}
             {loaded &&
-                <Row style={{margin: "40px 0 8px 0"}}>
-                    <Col span={12}>
-                            <label
-                                className="clickable-label"
-                                style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
-                                onClick={() => {
-                                    // window.location.reload();
-                                    reload === "" ? setReload("reload") : setReload("")
-                                    setLoaded(false);
-                                }}>
-                                    <ReloadOutlined style={{marginRight: "5px"}} />
-                                    Reload
-                            </label>
-                    </Col>
-                    <Col span={12}>
-                        <div style={{float: "right", marginRight: "5px"}}>
-                            <label style={{ fontWeight: 500 }}>
-                                {`${uploadedItem.length} report(s)`}
-                            </label>
-                        </div>
-                    </Col>
+                <Row justify="space-between" style={{ margin: "40px 0 8px 0" }}>
+                    <label
+                        className="clickable-label"
+                        style={{color: "#9772fb", fontWeight: 500, display: "flex", alignItems: "center"}}
+                        onClick={() => {
+                            // window.location.reload();
+                            reload === "" ? setReload("reload") : setReload("")
+                            setLoaded(false);
+                        }}>
+                            <ReloadOutlined style={{marginRight: "5px"}} />
+                            Reload
+                    </label>
+                    <label style={{ fontWeight: 500, marginRight: "5px" }}>
+                        {`${uploadedItem.length} report(s)`}
+                    </label>
                 </Row>}
             {loaded &&
                 <Table 
