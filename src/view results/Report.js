@@ -36,10 +36,10 @@ export default function Report(props) {
     const printResult = (field, value) => {
         return (
             <Row style={{ alignItems: "baseline" }}>
-                <Col span={12}>
+                <Col xs={12} md={10} lg={12}>
                     <label>{field}</label>
                 </Col>
-                <Col span={12}>
+                <Col xs={12} md={14} lg={12}>
                     <label>{value}</label>
                 </Col>
             </Row>
@@ -120,8 +120,8 @@ export default function Report(props) {
                 </div>
             )}
             {loaded && (
-                <Row style={{ marginBottom: "35px" }}>
-                    <Col xs={24} sm={24} md={12}>
+                <Row /*style={{ marginBottom: "35px" }}*/>
+                    <Col xs={24} sm={24} lg={12} style={{ marginBottom: "35px" }}>
                         <Space direction="vertical" size={10} style={{ width: "100%" }}>
                             {printResult("Hospital:", info.personal_info_id.hospital)}
                             {printResult("HN:", info.personal_info_id.hn)}
@@ -129,10 +129,10 @@ export default function Report(props) {
                             {printResult("Gender:", info.personal_info_id.gender === "F" ? "Female" : "Male")}
                             {printResult("Age:", info.personal_info_id.age)}
                             <Row style={{ alignItems: "baseline" }}>
-                                <Col span={12}>
+                                <Col xs={12} md={10} lg={12}>
                                     <label>ความน่าจะเป็นในการเป็น <br /> Dyssynergic defecation <br /> ของผู้ป่วยรายนี้ (DD probability):</label>
                                 </Col>
-                                <Col span={12}>
+                                <Col xs={12} md={14} lg={12}>
                                     <Rate
                                         className="rating smaller"
                                         disabled
@@ -143,7 +143,7 @@ export default function Report(props) {
                             </Row>
                         </Space>
                     </Col>
-                    <Col xs={24} sm={24} md={12}>
+                    <Col xs={24} sm={24} lg={12} style={{ marginBottom: "35px" }}>
                         <Row justify="center" style={{ margin: "5px 0 18px 0" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
@@ -167,12 +167,13 @@ export default function Report(props) {
                                 // </Button>
                                 <PreviewQuestionnaireCard
                                     question={info.question_id}
-                                    margin={info.task === "integrate" ? "0 20px 0 0" : 0}
+                                    // margin={info.task === "integrate" ? "0 20px 0 0" : 0}
                                     noChildren={
                                         info.question_id.DistFreq === 0 && info.question_id.BloatFreq === 0
                                     }
                                 />
                             }
+                            <Col xs={0} md={1} />
                             {(info.task === "image" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"

@@ -125,8 +125,8 @@ export default function ResultsPanel(props) {
 
     return (
         <div>
-            <Row style={{ marginBottom: "35px" }}>
-                <Col xs={24} sm={24} md={11} lg={9} xl={6}>
+            <Row /*style={{ marginBottom: "35px" }}*/>
+                <Col xs={24} sm={24} md={11} lg={9} xl={6} style={{ marginBottom: "35px" }}>
                     <Space
                         direction="vertical"
                         size={10}
@@ -168,7 +168,7 @@ export default function ResultsPanel(props) {
                         </div>}
                 </Col>
                 <Col xs={24} sm={24} md={1} />
-                <Col xs={24} sm={24} md={12} lg={14} xl={17}>
+                <Col xs={24} sm={24} md={12} lg={14} xl={17} style={{ marginBottom: "35px" }}>
                     <Space
                         direction="vertical"
                         size={10}
