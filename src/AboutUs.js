@@ -85,8 +85,13 @@ function AboutUs() {
                             <Row justify="center">
                                 ผศ.(พิเศษ)พญ.ฐนิสา พัชรตระกูล
                             </Row>
-                            <Row justify="center" style={{ textDecoration: "underline" }}>
-                                (xxx@xxx.com)
+                            <Row justify="center" style={{ wordBreak: "break-all" }}>
+                                [ <a
+                                    className="email-a"
+                                    href="mailto:tanisa.p@chula.ac.th"
+                                >
+                                    tanisa.p@chula.ac.th
+                                </a> ]
                             </Row>
                         </Col>
                         <Col md={7} style={{ marginBottom: "20px" }}>
@@ -100,8 +105,13 @@ function AboutUs() {
                             <Row justify="center">
                                 อ.นพ.ภัคพล รัตนชัยสิทธิ์
                             </Row>
-                            <Row justify="center" style={{ textDecoration: "underline" }}>
-                                (xxx@xxx.com)
+                            <Row justify="center" style={{ wordBreak: "break-all" }}>
+                                [ <a
+                                    className="email-a"
+                                    href="mailto:pakkapon.r@gmail.com"
+                                >
+                                    pakkapon.r@gmail.com
+                                </a> ]
                             </Row>
                         </Col>
                         <Col xs={0} sm={0} md={2} />
@@ -127,7 +137,7 @@ function AboutUs() {
                         </Col>
                     </Row>
                     <Row justify="space-around" style={{ marginBottom: "3px" }}>
-                        <Col sm={12} md={8} style={{ marginBottom: "20px" }}>
+                        <Col sm={12} md={9} style={{ marginBottom: "20px" }}>
                             <Row justify="center">
                                 <Image
                                     preview={false}
@@ -138,8 +148,13 @@ function AboutUs() {
                             <Row justify="center">
                                 รศ.ดร.พีรพล เวทีกูล
                             </Row>
-                            <Row justify="center" style={{ textDecoration: "underline" }}>
-                                (xxx@xxx.com)
+                            <Row justify="center" style={{ wordBreak: "break-all" }}>
+                                [ <a
+                                    className="email-a"
+                                    href="mailto:peerapon.v@chula.ac.th"
+                                >
+                                    peerapon.v@chula.ac.th
+                                </a> ]
                             </Row>
                         </Col>
                         <Col sm={12} md={8} style={{ marginBottom: "20px" }}>
@@ -154,7 +169,7 @@ function AboutUs() {
                                 สรณ์สิริ พู่วงศาโรจน์
                             </Row>
                         </Col>
-                        <Col xs={0} sm={0} md={8} />
+                        <Col xs={0} sm={0} md={7} />
                     </Row>
                 </Col>
             </Row>
@@ -169,7 +184,7 @@ function AboutUs() {
                         <Image
                             preview={false}
                             height={190}
-                            src="/people/phattarat.jpg"
+                            src="/people/phattharat.jpg"
                         />
                     </Row>
                     <Row justify="center">

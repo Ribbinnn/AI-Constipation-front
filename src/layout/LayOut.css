@@ -719,6 +719,16 @@ label,
   align-items: center;
 }
 
+.email-a {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  display: contents;
+}
+
+.email-a:hover {
+  color: #9772fb;
+}
+
 .login-title div {
   font-size: 37px;
   font-weight: bold;
