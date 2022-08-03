@@ -1241,7 +1241,7 @@ hr {
   background-color: #c4c4c4;
   font-size: medium;
   color: black;
-  border: unset;
+  border: 1px solid #c4c4c4;
   text-align: center;
 }
 

@@ -230,7 +230,7 @@ export default function ViewResults(props) {
             key: "evaluation",
             align: "center",
             showSorterTooltip: false,
-            width: 80,
+            width: 85,
             render: (e) => {
                 switch (e) {
                     case true:
@@ -253,7 +253,7 @@ export default function ViewResults(props) {
                 // multiple: 1,
             },
             showSorterTooltip: false,
-            width: 140,
+            width: 145,
         },
         {
             title: "Clinician",
@@ -301,7 +301,7 @@ export default function ViewResults(props) {
                                     history.push(`/viewresults/edit/${report._id}/?${queryString}`);
                                 }}
                             />}
-                        {/* {role === "clinician" && <Popconfirm
+                        {role === "clinician" && <Popconfirm
                             title="Delete this result?"
                             onConfirm={() => {
                                 setLoaded(false);
@@ -322,7 +322,7 @@ export default function ViewResults(props) {
                                 className="clickable-icon"
                                 style={{ marginLeft: report.status === "canceled" ? 0 : "8px" }}
                             />
-                        </Popconfirm>} */}
+                        </Popconfirm>}
                     </div>
                 );
             },
