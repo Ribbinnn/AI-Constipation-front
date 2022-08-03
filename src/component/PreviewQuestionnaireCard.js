@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Card, Button } from "antd";
+import { Modal, Card } from "antd";
 import { SnippetsOutlined } from "@ant-design/icons";
 import PreviewQuestionnaire from "./PreviewQuestionnaire";
 
@@ -7,25 +7,21 @@ function PreviewQuestionnaireCard(props) {
     const [visible, setVisible] = useState(false);
 
     return(
-        <div style={{ height: "180px", margin: props.margin }}>
-            <Button
-                type="link"
-                className="label-btn"
+        <div style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+                hoverable={true}
+                className="preview-card"
+                style={{ margin: props.margin }}
                 onClick={() => setVisible(true)}
             >
-                <Card
-                    hoverable={true}
-                    className="preview-card"
-                >
-                    <div>
-                        <label className="clickable-label" style={{ marginBottom: "10px" }}>
-                            Symptom <br /> Questionnaire
-                        </label>
-                        <br />
-                        <SnippetsOutlined />
-                    </div>
-                </Card>
-            </Button>
+                <div>
+                    <label className="clickable-label" style={{ marginBottom: "10px" }}>
+                        Symptom <br /> Questionnaire
+                    </label>
+                    <br />
+                    <SnippetsOutlined />
+                </div>
+            </Card>
             <Modal
                 centered
                 destroyOnClose

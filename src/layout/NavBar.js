@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import "antd/dist/antd.css";
-import { Menu, Modal } from "antd";
+import { Menu, Modal, Popover } from "antd";
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
 import {
   ControlOutlined,
@@ -30,7 +31,10 @@ export default function NavBar() {
     return history.listen((location) => {
       let key = getTabKey(location.pathname);
       setTab(key);
-      setCurrentActivity({ menu: key, enablePageChange: true }); 
+      setCurrentActivity({ menu: key, enablePageChange: true });
+      if (key === "diagnosis") {
+        window.location.reload();
+      }
     })
   }, [history]);
 
@@ -75,15 +79,30 @@ export default function NavBar() {
     history.push(path);
   }
 
+  const userInfo = (
+    <div>
+      <div style={{ textAlign: "center", color: "black", fontSize: "large", fontWeight: "bold", marginBottom: "40px" }}>
+        AI Constipation
+      </div>
+      <div style={{ textAlign: "center", color: "black", fontSize: "small", marginBottom: "35px" }}>
+        Logged in as <b>{user.username}</b>
+      </div>
+    </div>
+  );
+
   return (
     <div className="navbar">
       <div style={{ wordBreak: "break-word", padding: "0 10px" }}>
-        <div style={{ textAlign: "center", color: "black", fontSize: "large", fontWeight: "bold", marginBottom: "40px" }}>
-          AI Constipation
+        <div className="navbar-info">
+          {userInfo}
         </div>
-        <div style={{ textAlign: "center", color: "black", fontSize: "small", marginBottom: "35px" }}>
-          Logged in as <b>{user.username}</b>
-        </div>
+        <Popover
+          placement="right"
+          content={userInfo}
+          trigger="click"
+        >
+          <InfoCircleOutlined className="navbar-info-icon" />
+        </Popover>
         <hr />
       </div>
       <Menu

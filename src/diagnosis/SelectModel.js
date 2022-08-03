@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card } from "antd";
 
 function SelectModel(props) {
     const modelList = [
@@ -11,31 +11,36 @@ function SelectModel(props) {
     return(
         <div>
             {modelList.map((item, i) => (
-                <Button
-                    type="link"
-                    className="label-btn"
-                    style={{ width: "100%", height: "100%", marginBottom: "25px" }}
-                    disabled={props.rid ? true : false}
-                    onClick={() => {
-                        props.setModel(item.name);
-                        if (item.name === "questionnaire") {
-                            props.setImage(null);
-                        } else if (item.name === "image") {
-                            props.setQuestion(null);
-                        }
-                    }}
-                >
+                <div style={{ cursor: props.rid ? "not-allowed" : "inherit" }}>
                     <Card
                         key={i}
                         hoverable={true}
-                        className={props.model ? (props.model === item.name ? "selected-card" : "") : ""}
+                        className={props.model && props.model === item.name ? "selected-card" : ""}
+                        style={{
+                            marginBottom: "25px",
+                            pointerEvents: props.rid ? "none" : "inherit"
+                        }}
+                        onClick={() => {
+                            props.setModel(item.name);
+                            if (item.name === "questionnaire") {
+                                props.setImage(null);
+                            } else if (item.name === "image") {
+                                props.setQuestion(null);
+                            }
+                        }}
                     >
-                        <div style={{ width: "100%", cursor: "pointer" }}>
-                            <label className="clickable-label" style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px" }}>Model {i+1}:</label>
+                        <div style={{ width: "100%" }}>
+                            <label
+                                className="clickable-label"
+                                style={{ color: "#9772fb", fontWeight: 500, marginRight: "5px"
+                                }}
+                            >
+                                Model {i+1}:
+                            </label>
                             &nbsp;<label className="clickable-label">{item.desc}</label>
                         </div>
                     </Card>
-                </Button>
+                </div>
             ))}
         </div>
     );

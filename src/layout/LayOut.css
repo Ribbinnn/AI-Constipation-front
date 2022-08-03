@@ -357,24 +357,6 @@ ol {
   color: #58595b;
 } */
 
-.label-btn,
-.label-btn:hover,
-.label-btn:focus,
-.label-btn:active {
-  background-color: white;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  height: 0px;
-  text-align: left;
-}
-
-.label-btn:hover,
-.label-btn:focus,
-.label-btn:active {
-  background-color: #fafafa;
-}
-
 /* input ----------------------- */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: black !important;
@@ -717,6 +699,16 @@ label,
 .a-with-icon {
   display: flex;
   align-items: center;
+}
+
+.email-a {
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  display: contents;
+}
+
+.email-a:hover {
+  color: #9772fb;
 }
 
 .login-title div {
@@ -1249,7 +1241,7 @@ hr {
   background-color: #c4c4c4;
   font-size: medium;
   color: black;
-  border: unset;
+  border: 1px solid #c4c4c4;
   text-align: center;
 }
 
@@ -1664,6 +1656,23 @@ img { /* responsive */
 
   .ant-steps-item-content {
     width: 60px !important;
+  }
+}
+
+.navbar-info-icon {
+  display: none;
+}
+
+@media screen and (max-width: 620px) {
+  .navbar-info {
+    display: none;
+  }
+
+  .navbar-info-icon {
+    display: block;
+    font-size: 18px;
+    color: #58595b;
+    padding: 30px 30px 50px;
   }
 }
 
