@@ -173,7 +173,7 @@ export default function Report(props) {
                                     }
                                 />
                             }
-                            <Col xs={0} sm={1} />
+                            <Col xs={0} sm={info.task === "integrate" ? 1 : 0} />
                             {(info.task === "image" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
