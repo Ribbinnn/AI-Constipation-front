@@ -1659,6 +1659,23 @@ img { /* responsive */
   }
 }
 
+.navbar-info-icon {
+  display: none;
+}
+
+@media screen and (max-width: 620px) {
+  .navbar-info {
+    display: none;
+  }
+
+  .navbar-info-icon {
+    display: block;
+    font-size: 18px;
+    color: #58595b;
+    padding: 30px 30px 50px;
+  }
+}
+
 @media screen and (max-width: 575px) {
   .ant-form-item .ant-form-item-label {
     padding: 0;
