@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Button } from "antd";
+import { Card, Row, Col } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import FillQuestionnaireModal from "./FillQuestionnaireModal";
 // import UploadQuestionnaireModal from "./UploadQuestionnaireModal";
@@ -18,90 +18,75 @@ function InsertInput(props) {
             {(props.model === "questionnaire" || props.model === "integrate") &&
                 <Row style={{ marginBottom: "25px" }}>
                     <Col xs={24} sm={24} lg={11}>
-                        <Button
-                            type="link"
-                            className="label-btn"
-                            style={{ width: "100%", height: "100%" }}
+                        <Card
+                            hoverable={true}
+                            className={isQuestionComplete ? "selected-card" : ""}
                             onClick={() => setFillQuestionVisible(true)}
                         >
-                            <Card
-                                hoverable={true}
-                                className={isQuestionComplete ? "selected-card" : ""}
-                            >
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    {isQuestionComplete &&
-                                        <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                                    <label
-                                        className="clickable-label"
-                                        style={{
-                                            color: isQuestionComplete ? "#45c01a" : "black",
-                                            fontWeight: isQuestionComplete ? 500 : 400
-                                        }}
-                                    >
-                                        Fill in Symptom Questionnaire
-                                    </label>
-                                </div>
-                            </Card>
-                        </Button>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                {isQuestionComplete &&
+                                    <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                <label
+                                    className="clickable-label"
+                                    style={{
+                                        color: isQuestionComplete ? "#45c01a" : "black",
+                                        fontWeight: isQuestionComplete ? 500 : 400
+                                    }}
+                                >
+                                    Fill in Symptom Questionnaire
+                                </label>
+                            </div>
+                        </Card>
                     </Col>
                     <Col xs={24} sm={24} lg={2} style={{ margin: "5px 0" }}>
-                        <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>OR</label>
+                        <label style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+                            OR
+                        </label>
                     </Col>
                     <Col xs={24} sm={24} lg={11}>
-                        <Button
-                            type="link"
-                            className="label-btn"
-                            style={{ width: "100%", height: "100%" }}
+                        <Card
+                            hoverable={true}
+                            className={isQuestionComplete ? "selected-card" : ""}
                             onClick={() => props.setUploadQuestionVisible(true)}
                         >
-                            <Card
-                                hoverable={true}
-                                className={isQuestionComplete ? "selected-card" : ""}
-                            >
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    {isQuestionComplete &&
-                                        <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                                    <label
-                                        className="clickable-label"
-                                        style={{
-                                            color: isQuestionComplete ? "#45c01a" : "black",
-                                            fontWeight: isQuestionComplete ? 500 : 400
-                                        }}
-                                    >
-                                        Import File (.xlsx/.csv)
-                                    </label>
-                                </div>
-                            </Card>
-                        </Button>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                {isQuestionComplete &&
+                                    <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                                <label
+                                    className="clickable-label"
+                                    style={{
+                                        color: isQuestionComplete ? "#45c01a" : "black",
+                                        fontWeight: isQuestionComplete ? 500 : 400
+                                    }}
+                                >
+                                    Import File (.xlsx/.csv)
+                                </label>
+                            </div>
+                        </Card>
                     </Col>
                 </Row>}
             {(props.model === "image" || props.model === "integrate") &&
-                <Button
-                    type="link"
-                    className="label-btn"
-                    style={{ width: "100%", height: "100%", marginBottom: "25px" }}
+                <Card
+                    hoverable={true}
+                    className={isImageComplete ? "selected-card" : ""}
+                    style={{ marginBottom: "25px" }}
                     onClick={() => props.setUploadImageVisible(true)}
                 >
-                    <Card
-                        // style={{ marginBottom: "25px" }}
-                        hoverable={true}
-                        className={isImageComplete ? "selected-card" : ""}
-                    >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            {isImageComplete &&
-                                <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
-                            <label
-                                className="clickable-label"
-                                style={{
-                                    color: isImageComplete ? "#45c01a" : "black",
-                                    fontWeight: isImageComplete ? 500 : 400
-                                }}
-                            >
-                                Upload X-Ray Image
-                            </label>
-                        </div>
-                    </Card>
-                </Button>}
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        {isImageComplete &&
+                            <CheckCircleOutlined style={{ color: "#45c01a", fontWeight: 500, marginRight: "8px" }} />}
+                        <label
+                            className="clickable-label"
+                            style={{
+                                color: isImageComplete ? "#45c01a" : "black",
+                                fontWeight: isImageComplete ? 500 : 400
+                            }}
+                        >
+                            Upload X-Ray Image
+                        </label>
+                    </div>
+                </Card>
+                }
                 {(props.model === "questionnaire" || props.model === "integrate") && <Row>
                     <dl style={{ fontSize: "medium", padding: "10px 10px" }}>
                         <dt style={{ color: "#9772fb", fontWeight: "500" }}>การให้คะแนนความรุนแรงของอาการ (<span style={{ fontWeight: "600", textDecoration: "underline" }}>เฉลี่ยในช่วงระยะเวลา 3 เดือนที่ผ่านมา</span>) โดยใช้เกณฑ์ดังนี้</dt>

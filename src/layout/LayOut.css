@@ -357,24 +357,6 @@ ol {
   color: #58595b;
 } */
 
-.label-btn,
-.label-btn:hover,
-.label-btn:focus,
-.label-btn:active {
-  background-color: white;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  height: 0px;
-  text-align: left;
-}
-
-.label-btn:hover,
-.label-btn:focus,
-.label-btn:active {
-  background-color: #fafafa;
-}
-
 /* input ----------------------- */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: black !important;
