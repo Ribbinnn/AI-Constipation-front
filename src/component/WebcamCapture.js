@@ -1,24 +1,26 @@
 import React, { useState, useRef } from 'react';
 import { Button, Modal } from "antd";
-// import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { SyncOutlined } from "@ant-design/icons";
 import Webcam from "react-webcam";
 
 /*
 * code reference: https://github.com/Sristi27/React-webcam
 */
 
-const width = 480;
-const height = 600;
-
-const videoConstraints = {
-    width: width,
-    height: height,
-    facingMode: "user"
-};
-
 export const WebcamCapture = (props) => {
     const [image,setImage] = useState('');
     const webcamRef = useRef(null);
+
+    const width = 480;
+    const height = 600;
+    const [facingMode, setFacingMode] = useState("user");
+    const [switchIconDisplay, setSwitchIconDisplay] = useState("none");
+
+    const videoConstraints = {
+        width: width,
+        height: height,
+        facingMode: facingMode
+    };
 
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -95,13 +97,25 @@ export const WebcamCapture = (props) => {
                             OK
                         </Button>
                     </div> :
-                    <Button
-                        className="primary-btn smaller"
-                        style={{ marginTop: "12px" }}
-                        onClick={() => capture()}
-                    >
-                        Capture
-                    </Button>}
+                    <div className="center-div" style={{ marginTop: "12px" }}>
+                        <SyncOutlined
+                            style={{ display: switchIconDisplay, marginRight: "15px" }}
+                            onTouchStart={() => setSwitchIconDisplay("inline-block")}
+                            onClick={() => {
+                                if (facingMode === "user") {
+                                    setFacingMode("environment");
+                                } else {
+                                    setFacingMode("user");
+                                }
+                            }}
+                        />
+                        <Button
+                            className="primary-btn smaller"
+                            onClick={() => capture()}
+                        >
+                            Capture
+                        </Button>
+                    </div>}
                 </div>
             </div>
         </Modal>
