@@ -36,10 +36,10 @@ export default function Report(props) {
     const printResult = (field, value) => {
         return (
             <Row style={{ alignItems: "baseline" }}>
-                <Col xs={12} md={10} lg={12}>
+                <Col xs={24} sm={10} lg={12}>
                     <label>{field}</label>
                 </Col>
-                <Col xs={12} md={14} lg={12}>
+                <Col xs={24} sm={14} lg={12}>
                     <label>{value}</label>
                 </Col>
             </Row>
@@ -129,10 +129,10 @@ export default function Report(props) {
                             {printResult("Gender:", info.personal_info_id.gender === "F" ? "Female" : "Male")}
                             {printResult("Age:", info.personal_info_id.age)}
                             <Row style={{ alignItems: "baseline" }}>
-                                <Col xs={12} md={10} lg={12}>
+                                <Col xs={24} sm={10} lg={12}>
                                     <label>ความน่าจะเป็นในการเป็น <br /> Dyssynergic defecation <br /> ของผู้ป่วยรายนี้ (DD probability):</label>
                                 </Col>
-                                <Col xs={12} md={14} lg={12}>
+                                <Col xs={24} sm={14} lg={12}>
                                     <Rate
                                         className="rating smaller"
                                         disabled
@@ -144,7 +144,7 @@ export default function Report(props) {
                         </Space>
                     </Col>
                     <Col xs={24} sm={24} lg={12} style={{ marginBottom: "35px" }}>
-                        <Row justify="center" style={{ margin: "5px 0 18px 0" }}>
+                        <Row justify="center" style={{ marginTop: "5px" }}>
                             {(info.task === "questionnaire" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
@@ -167,13 +167,13 @@ export default function Report(props) {
                                 // </Button>
                                 <PreviewQuestionnaireCard
                                     question={info.question_id}
-                                    // margin={info.task === "integrate" ? "0 20px 0 0" : 0}
+                                    margin="0 0 18px"
                                     noChildren={
                                         info.question_id.DistFreq === 0 && info.question_id.BloatFreq === 0
                                     }
                                 />
                             }
-                            <Col xs={0} md={1} />
+                            <Col xs={0} sm={1} />
                             {(info.task === "image" || info.task === "integrate") &&
                                 // <Button
                                 //     type="link"
@@ -194,7 +194,7 @@ export default function Report(props) {
                                 //     </Card>
                                 // </Button>
                                 <PreviewImageCard
-                                    margin="0 10px 0 10px"
+                                    margin="0 0 18px"
                                     image={originalImage}
                                 />
                             }
