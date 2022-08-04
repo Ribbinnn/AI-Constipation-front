@@ -88,7 +88,8 @@
   font-size: large;
 }
 
-.ant-menu-horizontal > .ant-menu-item {
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-vertical > .ant-menu-item {
   display: flex;
   align-items: center;
 }
