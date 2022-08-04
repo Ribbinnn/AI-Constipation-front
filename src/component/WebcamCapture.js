@@ -16,6 +16,10 @@ export const WebcamCapture = (props) => {
     const [facingMode, setFacingMode] = useState("user");
     const [switchIconDisplay, setSwitchIconDisplay] = useState("none");
 
+    function displaySwitchIcon() {
+        setSwitchIconDisplay("inline-block");
+    }
+
     const videoConstraints = {
         width: width,
         height: height,
@@ -100,7 +104,7 @@ export const WebcamCapture = (props) => {
                     <div className="center-div" style={{ marginTop: "12px" }}>
                         <SyncOutlined
                             style={{ display: switchIconDisplay, marginRight: "15px" }}
-                            ontouchstart={() => setSwitchIconDisplay("inline-block")}
+                            ontouchstart="displaySwitchIcon()"
                             onClick={() => {
                                 if (facingMode === "user") {
                                     setFacingMode("environment");
