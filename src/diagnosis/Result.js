@@ -5,12 +5,6 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { getReport } from "../api/reports";
 
-const LoadingIcon = (
-  <LoadingOutlined
-    style={{ fontSize: '150px', color: "#9772fb", marginBottom: "10px" }}
-  />
-);
-
 export default function Result(props) {
   const history = useHistory();
   // const role = JSON.parse(sessionStorage.getItem("user")).role;
@@ -41,11 +35,11 @@ export default function Result(props) {
 
   return (
     <div className="btn-column">
-      <Spin indicator={LoadingIcon} />
-      <div style={{ fontSize: '25px', fontWeight: 500, color: "#9772fb", marginTop: 20 }}>
+      <Spin indicator={<LoadingOutlined />} />
+      <div className="label-1">
         Diagnosis is processing
       </div>
-      <div style={{ fontSize: '20px', fontWeight: 500, color: "#45c01a", marginBottom: 10 }}>
+      <div className="label-2">
         All data is saved
       </div>
       {btnList.map((btn) => (
