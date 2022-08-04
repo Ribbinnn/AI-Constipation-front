@@ -11,6 +11,7 @@ function UploadImageModal(props) {
     const [useOldImage, setUseOldImage] = useState(false);
     const [imageName, setImageName] = useState(null);
     const [webcamVisible, setWebcamVisible] = useState(false);
+    const [switchIconDisplay, setSwitchIconDisplay] = useState("none");
     const [activity, setActivity] = useState(null);
 
     const onOK = () => {
@@ -32,12 +33,6 @@ function UploadImageModal(props) {
             props.setVisible(false);
         }
     };
-
-    const [switchIconDisplay, setSwitchIconDisplay] = useState("none");
-
-    function displaySwitchIcon() {
-        setSwitchIconDisplay("inline-block");
-    }
 
     const [imageSrc, setImageSrc] = useState(null);
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -141,7 +136,7 @@ function UploadImageModal(props) {
                 className="upload-image-modal"
                 style={{ top: 30 }}
             >
-                <div ontouchstart="displaySwitchIcon()">
+                <div onTouchStart={() => setSwitchIconDisplay("inline-block")}>
                     <Row>
                         <Col md={9} lg={7} style={{ margin: "10px 0 20px" }}>
                             <Row>
