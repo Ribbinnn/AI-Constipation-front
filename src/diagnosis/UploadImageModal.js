@@ -33,12 +33,28 @@ function UploadImageModal(props) {
         }
     };
 
+    const [switchIconDisplay, setSwitchIconDisplay] = useState("none");
+
+    function displaySwitchIcon() {
+        setSwitchIconDisplay("inline-block");
+    }
+
     const [imageSrc, setImageSrc] = useState(null);
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     // const [croppedImage, setCroppedImage] = useState(null);
+
+    const onZoomChange = (zoom) => {
+        setZoom(zoom);
+        setActivity("zoom");
+    }
+
+    const onRotationChange = (rotation) => {
+        setRotation(rotation);
+        setActivity("rotation");
+    }
 
     const ORIENTATION_TO_ANGLE = {
         '3': 180,
@@ -125,7 +141,7 @@ function UploadImageModal(props) {
                 className="upload-image-modal"
                 style={{ top: 30 }}
             >
-                <div>
+                <div ontouchstart="displaySwitchIcon()">
                     <Row>
                         <Col md={9} lg={7} style={{ margin: "10px 0 20px" }}>
                             <Row>
@@ -206,12 +222,9 @@ function UploadImageModal(props) {
                                                 maxZoom={2}
                                                 aspect={4 / 5}
                                                 onCropChange={setCrop}
-                                                onRotationChange={setRotation}
+                                                onRotationChange={onRotationChange}
                                                 onCropComplete={onCropComplete}
-                                                onZoomChange={(zoom) => {
-                                                    setZoom(zoom);
-                                                    setActivity("zoom");
-                                                }}
+                                                onZoomChange={onZoomChange}
                                             />
                                         </div>
                                     </Col>
@@ -238,10 +251,7 @@ function UploadImageModal(props) {
                                                 min={1}
                                                 max={2}
                                                 step={0.01}
-                                                onChange={(zoom) => {
-                                                    setZoom(zoom);
-                                                    setActivity("zoom");
-                                                }}
+                                                onChange={onZoomChange}
                                             />
                                         </Col>
                                         <Col xs={4}>
@@ -251,10 +261,7 @@ function UploadImageModal(props) {
                                                 min={1}
                                                 max={2}
                                                 step={0.01}
-                                                onChange={(zoom) => {
-                                                    setZoom(zoom);
-                                                    setActivity("zoom");
-                                                }}
+                                                onChange={onZoomChange}
                                             />
                                         </Col>
                                     </Row>
@@ -268,10 +275,7 @@ function UploadImageModal(props) {
                                                 min={0}
                                                 max={360}
                                                 step={1}
-                                                onChange={(rotation) => {
-                                                    setRotation(rotation);
-                                                    setActivity("rotation");
-                                                }}
+                                                onChange={onRotationChange}
                                             />
                                         </Col>
                                         <Col xs={4}>
@@ -281,10 +285,7 @@ function UploadImageModal(props) {
                                                 min={0}
                                                 max={360}
                                                 step={1}
-                                                onChange={(rotation) => {
-                                                    setRotation(rotation);
-                                                    setActivity("rotation");
-                                                }}
+                                                onChange={onRotationChange}
                                             />
                                         </Col>
                                     </Row>
@@ -340,6 +341,7 @@ function UploadImageModal(props) {
                 setImage={setImageSrc}
                 setImageName={setImageName}
                 setActivity={setActivity}
+                switchIconDisplay={switchIconDisplay}
             />
         </div>
     );
