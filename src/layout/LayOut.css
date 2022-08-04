@@ -507,6 +507,10 @@ ol {
   border-color: #d9d9d9;
 }
 
+.ant-input-number-disabled .ant-input-number-input {
+  color: rgba(0, 0, 0, 0.25);
+}
+
 .ant-input-number-input {
   height: 35px;
 }
