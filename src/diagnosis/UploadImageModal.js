@@ -277,7 +277,10 @@ function UploadImageModal(props) {
                                         <Col xs={4}>
                                             <InputNumber
                                                 // className="input-text"
-                                                value={rotation}
+                                                value={
+                                                    rotation > 360 ? (rotation - 360).toFixed(2) :
+                                                    (rotation < 0 ? (360 - rotation).toFixed(2) : rotation)
+                                                }
                                                 min={0}
                                                 max={360}
                                                 step={1}

@@ -100,7 +100,7 @@ export const WebcamCapture = (props) => {
                     <div className="center-div" style={{ marginTop: "12px" }}>
                         <SyncOutlined
                             style={{ display: switchIconDisplay, marginRight: "15px" }}
-                            onTouchStart={() => setSwitchIconDisplay("inline-block")}
+                            ontouchstart={() => setSwitchIconDisplay("inline-block")}
                             onClick={() => {
                                 if (facingMode === "user") {
                                     setFacingMode("environment");
