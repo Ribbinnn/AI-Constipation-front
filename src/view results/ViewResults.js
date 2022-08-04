@@ -393,7 +393,7 @@ export default function ViewResults(props) {
 
     return (
         <div className="content">
-            <Form layout="inline" className="view-results-form" style={{ maxWidth: "90%" }}>
+            <Form layout="inline" className="view-results-form" style={{ maxWidth: "80%" }}>
                 <Form.Item
                     name="patient_HN"
                     key="patient_HN"
