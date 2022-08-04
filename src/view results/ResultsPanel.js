@@ -130,7 +130,7 @@ export default function ResultsPanel(props) {
                     <Space
                         direction="vertical"
                         size={10}
-                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px", marginBottom: "30px" }}
+                        style={{ width: "100%", background: "#f5f5f5", padding: "15px 20px" }}
                     >
                         <label style={{ fontWeight: "bold", marginBottom: "10px" }}>AI Diagnosis</label>
                         {printResult("DD Probability:", props.info.DD_probability.toFixed(2))}
@@ -150,7 +150,7 @@ export default function ResultsPanel(props) {
                         </div>
                     )}
                     {(props.info.task === "image" || props.info.task === "integrate") && gradCam &&
-                        <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}>
                             <div>
                                 <img
                                     src={gradCam}

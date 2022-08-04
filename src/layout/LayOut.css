@@ -88,7 +88,8 @@
   font-size: large;
 }
 
-.ant-menu-horizontal > .ant-menu-item {
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-vertical > .ant-menu-item {
   display: flex;
   align-items: center;
 }
@@ -254,7 +255,7 @@
 
 .steps-content-diagnosis {
   padding: 60px 45px 30px 45px;
-  height: 77%;
+  height: calc(100% - 160px);
 }
 
 .steps-content-diagnosis.preview {
@@ -340,6 +341,45 @@ ol {
 .btn-column .primary-btn {
   width: 300px;
   margin-top: 10px;
+}
+
+.btn-column .label-1 {
+  font-size: 25px;
+  font-weight: 500;
+  color: #9772fb;
+  margin-top: 20px;
+}
+
+.btn-column .label-2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #45c01a;
+  margin-bottom: 10px;
+}
+
+.btn-column .anticon {
+  font-size: 150px;
+  color: #9772fb;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .btn-column .primary-btn {
+    width: 240px;
+    font-size: medium;
+  }
+
+  .btn-column .label-1 {
+    font-size: 18px;
+  }
+
+  .btn-column .label-2 {
+    font-size: 16px;
+  }
+
+  .btn-column .anticon {
+    font-size: 110px;
+  }
 }
 
 [ant-click-animating-without-extra-node="true"]::after {
@@ -465,6 +505,10 @@ ol {
   color: rgba(0, 0, 0, 0.25);
   background-color: #f5f5f5;
   border-color: #d9d9d9;
+}
+
+.ant-input-number-disabled .ant-input-number-input {
+  color: rgba(0, 0, 0, 0.25);
 }
 
 .ant-input-number-input {

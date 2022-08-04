@@ -165,7 +165,13 @@ function FillQuestionnaireModal(props) {
                             >
                                     {renderThreeChoice()}
                             </Form.Item>}
-                            {DistFreq !== 0 && <Form.Item label={questions[2]} className="form-item-force-inline">
+                            {DistFreq !== 0 &&
+                            <Form.Item
+                                label={questions[2]}
+                                required
+                                className="form-item-force-inline"
+                                style={{ paddingLeft: "50px" }}
+                            >
                                 <Form.Item
                                     name="DistDur"
                                     key="DistDur"
@@ -177,13 +183,12 @@ function FillQuestionnaireModal(props) {
                                         },
                                     ]}
                                     noStyle
-                                    style={{ paddingLeft: "50px", paddingRight: 0 }}
                                 >
                                         {renderMonthInput()}
                                 </Form.Item>
                                 <label>เดือน</label>
                             </Form.Item>}
-                            <Form.Item label={questions[3]} className="form-item-force-inline">
+                            <Form.Item label={questions[3]} required className="form-item-force-inline">
                                 <Form.Item
                                     name="FreqStool"
                                     key="FreqStool"
@@ -305,7 +310,13 @@ function FillQuestionnaireModal(props) {
                             >
                                     {renderThreeChoice()}
                             </Form.Item>}
-                            {BloatFreq !== 0 && <Form.Item label={questions[11]} className="form-item-force-inline">
+                            {BloatFreq !== 0 &&
+                            <Form.Item
+                                label={questions[11]}
+                                required
+                                className="form-item-force-inline"
+                                style={{ paddingLeft: "50px" }}
+                            >
                                 <Form.Item
                                     name="BloatDur"
                                     key="BloatDur"
@@ -317,7 +328,7 @@ function FillQuestionnaireModal(props) {
                                         },
                                     ]}
                                     noStyle
-                                    style={{ paddingLeft: "50px", background: "white", paddingRight: 0 }}
+                                    style={{ background: "white" }}
                                 >
                                         {renderMonthInput()}
                                 </Form.Item>

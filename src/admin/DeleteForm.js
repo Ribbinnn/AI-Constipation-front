@@ -19,6 +19,7 @@ const LoadingIcon = (
 const { Option } = Select;
 
 export default function DeleteForm(props) {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const [keyword, setKeyword] = useState();
   const [options, setOptions] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -41,17 +42,21 @@ export default function DeleteForm(props) {
 
   const deleteAPI = () => {
     if (cfmMessage === keyword.children) {
-      const key = "updatable";
-      message.loading({ content: "Loading...", key });
-      deleteUserById(keyword.value)
-        .then((res) => {
-          console.log(res);
-          res.success
-            ? message.success({ content: res.message, key, duration: 5 })
-            : message.error({ content: res.message, key, duration: 5 });
-          initializePage();
-        })
-        .catch((err) => message.error(err.response));
+      if (keyword.children === user.username) {
+        Modal.error({ content: "Cannot delete current user." });
+      } else {
+        const key = "updatable";
+        message.loading({ content: "Loading...", key });
+        deleteUserById(keyword.value)
+          .then((res) => {
+            console.log(res);
+            res.success
+              ? message.success({ content: res.message, key, duration: 5 })
+              : message.error({ content: res.message, key, duration: 5 });
+            initializePage();
+          })
+          .catch((err) => message.error(err.response));
+      }
     } else Modal.warning({ content: "Confirm message does not match." });
   };
 
@@ -115,11 +120,10 @@ export default function DeleteForm(props) {
             <div>
               <Input
                 className="input-text"
-                style={{ width: "550px", marginBottom: 0 }}
+                style={{ maxWidth: "550px", marginBottom: 8, marginRight: 8 }}
               />
               <Button
                 className="primary-btn smaller"
-                style={{ marginLeft: 8 }}
                 onClick={deleteAPI}
               >
                 Submit
